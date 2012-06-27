@@ -38,7 +38,7 @@ FILE_LOCAL ReturnCode output(struct Global *, int); /* Output one character */
 FILE_LOCAL void sharp(struct Global *);
 INLINE FILE_LOCAL ReturnCode cppmain(struct Global *);
 
-int PREFIX fppPreProcess(REG(a0) struct fppTag *tags)
+int fppPreProcess(struct fppTag *tags)
 {
   int i=0;
   ReturnCode ret;       /* cpp return code */
@@ -99,6 +99,7 @@ int PREFIX fppPreProcess(REG(a0) struct fppTag *tags)
   global->macro=NULL;
   global->evalue=0;
 
+  global->depends=NULL;
   global->input=NULL;
   global->output=NULL;
   global->error=NULL;
