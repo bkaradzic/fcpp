@@ -176,9 +176,9 @@ int dooptions(struct Global *global, struct fppTag *tags)
           cfatal(global, FATAL_TOO_MANY_INCLUDE_FILES);
           return(FPP_TOO_MANY_INCLUDE_FILES);
       }
-      global->include[global->included] = (char *)tags->data;
+      global->include[(unsigned)global->included] = (char *)tags->data;
 
-      global->includeshow[global->included] =
+      global->includeshow[(unsigned)global->included] =
           (tags->tag == FPPTAG_INCLUDE_FILE);
 
       global->included++;
@@ -202,7 +202,7 @@ int dooptions(struct Global *global, struct fppTag *tags)
         char *text=(char *)tags->data;
 
         sizp = size_table;
-        if (isdatum = (*text != '*')) /* If it's just -S,     */
+        if ((isdatum = (*text != '*'))) /* If it's just -S,     */
           endtest = T_FPTR;     /* Stop here            */
         else {                  /* But if it's -S*      */
           text++;               /* Step over '*'        */
@@ -369,7 +369,6 @@ void deldefines(struct Global *global)
    * Delete the built-in #define's.
    */
   char **pp;
-  int i;
 
 
   /*
@@ -383,7 +382,7 @@ void deldefines(struct Global *global)
   /*
    * The magic pre-defines __FILE__ and __LINE__
    */
-  for (pp = global->magic, i = DEF_NOARGS; *pp != NULL; pp++) {
+  for (pp = global->magic; *pp != NULL; pp++) {
     defendel(global, *pp, TRUE);
   }
 #if OK_DATE
