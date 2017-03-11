@@ -374,7 +374,7 @@ void Putstring(struct Global *, char *);
 void Putint(struct Global *, int);
 char *savestring(struct Global *, char *);
 ReturnCode addfile(struct Global *, FILE *, char *);
-int catenate(struct Global *, ReturnCode *);
+int catenate(struct Global *, int lhs_number, ReturnCode *);
 void cerror(struct Global *, ErrorCode, ...);
 ReturnCode control(struct Global *, int *);
 ReturnCode dodefine(struct Global *);

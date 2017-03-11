@@ -199,7 +199,7 @@ ReturnCode macroid(struct Global *global, int *c)
   return(FPP_OK);
 }
 
-int catenate(struct Global *global, ReturnCode *ret)
+int catenate(struct Global *global, int lhs_number, ReturnCode *ret)
 {
   /*
    * A token was just read (via macroid).
@@ -211,7 +211,7 @@ int catenate(struct Global *global, ReturnCode *ret)
 
 #if OK_CONCAT
   int c;
-  char *token1;
+  char *token1 = "";
 #endif
 
 #if OK_CONCAT
@@ -220,7 +220,9 @@ int catenate(struct Global *global, ReturnCode *ret)
     return (FALSE);
   }
   else {
-    token1 = savestring(global, global->tokenbuf); /* Save first token     */
+    if (lhs_number == 0) { /* The lhs number has already been emit */ 
+      token1 = savestring(global, global->tokenbuf); /* Save first token     */
+    }
     c=get(global);
     if(global->rightconcat) {
       *ret=macroid(global, &c);           /* Scan next token      */
@@ -265,7 +267,9 @@ int catenate(struct Global *global, ReturnCode *ret)
      * new (concatenated) token after freeing token1.
      * Finally, setup to read the new token.
      */
-    free(token1);                            /* Free up memory       */
+    if (lhs_number == 0) {
+      free(token1);                            /* Free up memory       */
+    }
     *ret=ungetstring(global, global->work);  /* Unget the new thing, */
     if(*ret)
       return(FALSE);

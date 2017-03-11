@@ -312,7 +312,7 @@ ReturnCode cppmain(struct Global *global)
 	}
 	if((ret=macroid(global, &c)))   /* Grab the token       */
 	  return(ret);
-      } while (type[c] == LET && catenate(global, &ret) && !ret);
+      } while (type[c] == LET && catenate(global, 0, &ret) && !ret);
       if(ret)
 	/* If the loop was broken because of a fatal error! */
 	return(ret);
@@ -336,6 +336,9 @@ ReturnCode cppmain(struct Global *global)
       case DOT:                 /* Dot may begin floats */
 	go = 0;
 	ret=scannumber(global, c, (ReturnCode(*)(struct Global *, int))output);
+	if(ret)
+	  return(ret);
+	catenate(global, 1, &ret);  /* Check to see if the number is the lhs of a macro concat */
 	if(ret)
 	  return(ret);
 	break;
