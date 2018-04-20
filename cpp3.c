@@ -46,9 +46,9 @@ ReturnCode openfile(struct Global *global, char *filename)
 
   if(!ret && global->showincluded) {
           /* no error occured! */
-          Error(global, "cpp: included \"");
-          Error(global, filename);
-          Error(global, "\"\n");
+          fpp_Error(global, "cpp: included \"");
+          fpp_Error(global, filename);
+          fpp_Error(global, "\"\n");
   }
   return(ret);
 }

@@ -1087,7 +1087,7 @@ void domsg(struct Global *global,
   for (file = global->infile; file && !file->fp; file = file->parent)
     ;
   tp = file ? file->filename : 0;
-  Error(global, "%s\"%s\", line %d: %s: ",
+  fpp_Error(global, "%s\"%s\", line %d: %s: ",
         MSG_PREFIX, tp, global->infile->fp?global->line:file->line, severity);
   if(global->error)
     global->error(global->userdata, ErrorMessage[error], arg);
@@ -1098,15 +1098,15 @@ void domsg(struct Global *global,
   else
     return;
 #endif
-  Error(global, "\n");
+  fpp_Error(global, "\n");
 
   if (file)   /*OIS*0.92*/
     while ((file = file->parent) != NULL) { /* Print #includes, too */
       tp = file->parent ? "," : ".";
       if (file->fp == NULL)
-        Error(global, " from macro %s%s\n", file->filename, tp);
+        fpp_Error(global, " from macro %s%s\n", file->filename, tp);
       else
-        Error(global, " from file %s, line %d%s\n",
+        fpp_Error(global, " from file %s, line %d%s\n",
               (file->progname != NULL) ? file->progname : file->filename,
               file->line, tp);
     }
@@ -1128,7 +1128,7 @@ void cerror(struct Global *global,
   domsg(global, message, arg);
 }
 
-void Error(struct Global *global, char *format, ...)
+void fpp_Error(struct Global *global, char *format, ...)
 {
   /*
    * Just get the arguments and send a decent string to the user error

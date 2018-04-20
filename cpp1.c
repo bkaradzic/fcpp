@@ -197,7 +197,7 @@ ReturnCode cppmain(struct Global *global)
   }
 
   if(global->showversion)
-      Error(global, VERSION_TEXT);
+      fpp_Error(global, VERSION_TEXT);
 
   /*
    * Explicitly output a #line at the start of cpp output so
@@ -372,7 +372,7 @@ ReturnCode cppmain(struct Global *global)
 			/*
 			 * Output the discovered function name to stderr!
 			 */
-			Error(global, "#> Function defined at line %d: %s <#\n",
+			fpp_Error(global, "#> Function defined at line %d: %s <#\n",
 				  global->line,
 				  global->functionname);
 		}
