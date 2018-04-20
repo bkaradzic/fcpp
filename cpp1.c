@@ -55,17 +55,17 @@ int fppPreProcess(struct fppTag *tags)
   global->wrongline=0;
   global->errors=0;
   global->recursion=0;
-  global->rec_recover=TRUE;
-  global->instring=FALSE;
-  global->inmacro=FALSE;
+  global->rec_recover=FPP_TRUE;
+  global->instring=FPP_FALSE;
+  global->inmacro=FPP_FALSE;
   global->workp=NULL;
-  global->keepcomments = FALSE;  /* Write out comments flag     */
-  global->cflag = FALSE;          /* -C option (keep comments)    */
-  global->eflag = FALSE;          /* -E option (never fail)       */
+  global->keepcomments = FPP_FALSE;  /* Write out comments flag     */
+  global->cflag = FPP_FALSE;          /* -C option (keep comments)    */
+  global->eflag = FPP_FALSE;          /* -E option (never fail)       */
   global->nflag = 0;              /* -N option (no predefines)    */
-  global->wflag = FALSE;          /* -W option (write #defines)   */
+  global->wflag = FPP_FALSE;          /* -W option (write #defines)   */
 
-  global->ifstack[0]=TRUE;       /* #if information     */
+  global->ifstack[0]=FPP_TRUE;       /* #if information     */
   global->ifptr = global->ifstack;
   global->incend = global->incdir;
 
@@ -106,23 +106,23 @@ int fppPreProcess(struct fppTag *tags)
   global->first_file=NULL;
   global->userdata=NULL;
 
-  global->linelines=TRUE;
-  global->warnillegalcpp = FALSE;
-  global->outputLINE = TRUE;
-  global->warnnoinclude = TRUE;
-  global->showversion = TRUE;
-  global->showincluded = FALSE;
-  global->showspace = FALSE;
-  global->nestcomments = FALSE;
-  global->warnnestcomments = FALSE;
-  global->outputfile = TRUE;
+  global->linelines=FPP_TRUE;
+  global->warnillegalcpp = FPP_FALSE;
+  global->outputLINE = FPP_TRUE;
+  global->warnnoinclude = FPP_TRUE;
+  global->showversion = FPP_TRUE;
+  global->showincluded = FPP_FALSE;
+  global->showspace = FPP_FALSE;
+  global->nestcomments = FPP_FALSE;
+  global->warnnestcomments = FPP_FALSE;
+  global->outputfile = FPP_TRUE;
   global->included = 0;
 
-  global->comment = FALSE;
-  global->rightconcat = FALSE;
+  global->comment = FPP_FALSE;
+  global->rightconcat = FPP_FALSE;
   global->work[0] = '\0';
   global->initialfunc = NULL;
-  global->allowincludelocal = TRUE;
+  global->allowincludelocal = FPP_TRUE;
 
   memset(global->symtab, 0, SBSIZE * sizeof(DEFBUF *));
 
@@ -209,7 +209,7 @@ ReturnCode cppmain(struct Global *global)
     sharp(global);
   /*
    * This loop is started "from the top" at the beginning of each line
-   * wrongline is set TRUE in many places if it is necessary to write
+   * wrongline is set FPP_TRUE in many places if it is necessary to write
    * a #line record.  (But we don't write them when expanding macros.)
    *
    * The counter variable has two different uses:  at
@@ -225,13 +225,13 @@ ReturnCode cppmain(struct Global *global)
   include = global->included;
 
   while(include--) {
-    openinclude(global, global->include[(unsigned)include], TRUE);
+    openinclude(global, global->include[(unsigned)include], FPP_TRUE);
   }
   
   for (;;) {
     counter = 0;                        /* Count empty lines    */
     for (;;) {                          /* For each line, ...   */
-      global->comment = FALSE;          /* No comment yet!      */
+      global->comment = FPP_FALSE;          /* No comment yet!      */
       global->chpos = 0;                /* Count whitespaces    */
       while (type[(c = get(global))] == SPA)  /* Skip leading blanks */
 	if(global->showspace) {
@@ -248,7 +248,7 @@ ReturnCode cppmain(struct Global *global)
 	  ++counter;                    /* Do nothing now       */
       }
       else if (c == '#') {              /* Is 1st non-space '#' */
-	global->keepcomments = FALSE;   /* Don't pass comments  */
+	global->keepcomments = FPP_FALSE;   /* Don't pass comments  */
 	ret = control(global, &counter); /* Yes, do a #command   */
 	if(ret)
 	  return(ret);
@@ -388,7 +388,7 @@ ReturnCode cppmain(struct Global *global)
 		if(a==global->excluded) {
 		    expstuff(global, "__brace__", "{");
 		    expstuff(global, "__init_func__", global->initialfunc);
-		    initfunc = TRUE;
+		    initfunc = FPP_TRUE;
 		}
 	    }
 
@@ -475,7 +475,7 @@ ReturnCode cppmain(struct Global *global)
     if (c == '\n') {  /* Compiling at EOL?    */
       Putchar(global, '\n');              /* Output newline, if   */
       if (global->infile->fp == NULL)     /* Expanding a macro,   */
-	global->wrongline = TRUE; /* Output # line later        */
+	global->wrongline = FPP_TRUE; /* Output # line later        */
     }
   }                             /* Continue until EOF   */
 
@@ -491,7 +491,7 @@ ReturnCode cppmain(struct Global *global)
     }
   }
   if (global->wflag) {
-    global->out = TRUE;         /* enable output */
+    global->out = FPP_TRUE;         /* enable output */
     outdefines(global);         /* Write out #defines   */
   }
   return(FPP_OK);
@@ -592,6 +592,6 @@ void sharp(struct Global *global)
     }
   }
   Putchar(global, '\n');
-  global->wrongline = FALSE;
+  global->wrongline = FPP_FALSE;
   return;
 }

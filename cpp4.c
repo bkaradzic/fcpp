@@ -73,7 +73,7 @@ ReturnCode dodefine(struct Global *global)
    */
   int c;
   DEFBUF *dp;	/* -> new definition	*/
-  int isredefine;	/* TRUE if redefined	*/
+  int isredefine;	/* FPP_TRUE if redefined	*/
   char *old = NULL;		/* Remember redefined	*/
   ReturnCode ret;
 #if OK_CONCAT
@@ -82,16 +82,16 @@ ReturnCode dodefine(struct Global *global)
   
   if (type[(c = skipws(global))] != LET) {
     cerror(global, ERROR_DEFINE_SYNTAX);
-    global->inmacro = FALSE;		/* Stop <newline> hack	*/
+    global->inmacro = FPP_FALSE;		/* Stop <newline> hack	*/
     return(FPP_OK);
   }
-  isredefine = FALSE;			/* Set if redefining	*/
+  isredefine = FPP_FALSE;			/* Set if redefining	*/
   if ((dp = lookid(global, c)) == NULL) { /* If not known now     */
-    dp = defendel(global, global->tokenbuf, FALSE); /* Save the name  */
+    dp = defendel(global, global->tokenbuf, FPP_FALSE); /* Save the name  */
     if(!dp)
       return(FPP_OUT_OF_MEMORY);
   } else {				/* It's known:          */
-    isredefine = TRUE;			/* Remember this fact	*/
+    isredefine = FPP_TRUE;			/* Remember this fact	*/
     old = dp->repl;			/* Remember replacement */
     dp->repl = NULL;			/* No replacement now	*/
   }
@@ -106,7 +106,7 @@ ReturnCode dodefine(struct Global *global)
 	break;			/* Got them all 	*/
       else if (type[c] != LET) {         /* Bad formal syntax    */
 	cerror(global, ERROR_DEFINE_SYNTAX);
-	global->inmacro = FALSE;		/* Stop <newline> hack	*/
+	global->inmacro = FPP_FALSE;		/* Stop <newline> hack	*/
 	return(FPP_OK);
       }
       scanid(global, c);                        /* Get the formal param */
@@ -117,7 +117,7 @@ ReturnCode dodefine(struct Global *global)
     } while ((c = skipws(global)) == ',');    /* Get another argument */
     if (c != ')') {                     /* Must end at )        */
       cerror(global, ERROR_DEFINE_SYNTAX);
-      global->inmacro = FALSE;		/* Stop <newline> hack	*/
+      global->inmacro = FPP_FALSE;		/* Stop <newline> hack	*/
       return(FPP_OK);
     }
     c = ' ';                            /* Will skip to body    */
@@ -132,7 +132,7 @@ ReturnCode dodefine(struct Global *global)
   if (type[c] == SPA)                   /* At whitespace?       */
     c = skipws(global);                 /* Not any more.        */
   global->workp = global->work;		/* Replacement put here */
-  global->inmacro = TRUE;		/* Keep \<newline> now	*/
+  global->inmacro = FPP_TRUE;		/* Keep \<newline> now	*/
   quoting = 0;				/* No # seen yet.	*/
   while (c != EOF_CHAR && c != '\n') {  /* Compile macro body   */
 #if OK_CONCAT
@@ -178,7 +178,7 @@ ReturnCode dodefine(struct Global *global)
       if(ret)
 	return(ret);
       if ((c = get(global)) == '\n')
-	global->wrongline = TRUE;
+	global->wrongline = FPP_TRUE;
       ret=save(global, c);
       if(ret)
 	return(ret);
@@ -204,7 +204,7 @@ ReturnCode dodefine(struct Global *global)
     quoting = 0;			/* Only when immediately*/
     /* preceding a formal	*/
   }
-  global->inmacro = FALSE;		/* Stop newline hack	*/
+  global->inmacro = FPP_FALSE;		/* Stop newline hack	*/
   unget(global);                            /* For control check    */
   if (global->workp > global->work && global->workp[-1] == ' ') /* Drop trailing blank  */
     global->workp--;
@@ -303,7 +303,7 @@ void doundef(struct Global *global)
     cerror(global, ERROR_ILLEGAL_UNDEF);
   else {
     scanid(global, c);                         /* Get name to tokenbuf */
-    (void) defendel(global, global->tokenbuf, TRUE);
+    (void) defendel(global, global->tokenbuf, FPP_TRUE);
   }
 }
 
@@ -438,7 +438,7 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
       return(FPP_ILLEGAL_MACRO);
     }
     while ((c = skipws(global)) == '\n')      /* Look for (, skipping */
-      global->wrongline = TRUE;		/* spaces and newlines	*/
+      global->wrongline = FPP_TRUE;		/* spaces and newlines	*/
     if (c != '(') {
       /*
        * If the programmer writes
@@ -480,7 +480,7 @@ ReturnCode expcollect(struct Global *global)
   for (;;) {
     paren = 0;			    /* Collect next arg.    */
     while ((c = skipws(global)) == '\n')/* Skip over whitespace */
-      global->wrongline = TRUE;		/* and newlines.	*/
+      global->wrongline = FPP_TRUE;		/* and newlines.	*/
     if (c == ')') {                     /* At end of all args?  */
       /*
        * Note that there is a guard byte in parm[]
@@ -522,7 +522,7 @@ ReturnCode expcollect(struct Global *global)
       else if (c == ',' && paren == 0)  /* Comma delimits args  */
 	break;
       else if (c == '\n')               /* Newline inside arg?  */
-	global->wrongline = TRUE;	/* We'll need a #line   */
+	global->wrongline = FPP_TRUE;	/* We'll need a #line   */
       charput(global, c);               /* Store this one       */
     }				        /* Collect an argument  */
     charput(global, EOS);               /* Terminate argument   */

@@ -243,7 +243,7 @@ ReturnCode control( struct Global *global,
                 global->infile->progname = savestring( global, tp );
                 }
 
-            global->wrongline = TRUE;           /* Force output later   */
+            global->wrongline = FPP_TRUE;           /* Force output later   */
             break;
 
         case L_include:
@@ -284,11 +284,11 @@ ReturnCode control( struct Global *global,
 
             if( (*global->ifptr & WAS_COMPILING) != 0 )
                 {
-                if( compiling || (*global->ifptr & TRUE_SEEN) != 0 )
-                    compiling = FALSE;
+                if( compiling || (*global->ifptr & FPP_TRUE_SEEN) != 0 )
+                    compiling = FPP_FALSE;
                 else
                     {
-                    compiling = TRUE;
+                    compiling = FPP_TRUE;
                     }
                 }
             break;
@@ -311,9 +311,9 @@ ReturnCode control( struct Global *global,
                 return( FPP_OK );
                 }
 
-            if( (*global->ifptr & (WAS_COMPILING | TRUE_SEEN)) != WAS_COMPILING )
+            if( (*global->ifptr & (WAS_COMPILING | FPP_TRUE_SEEN)) != WAS_COMPILING )
                 {
-                compiling = FALSE;        /* Done compiling stuff */
+                compiling = FPP_FALSE;        /* Done compiling stuff */
 
                 dump_line( global, counter );   /* Skip this clause */
 
@@ -361,7 +361,7 @@ ReturnCode control( struct Global *global,
                 }
 
             if( !compiling && (*global->ifptr & WAS_COMPILING) != 0 )
-                global->wrongline = TRUE;
+                global->wrongline = FPP_TRUE;
 
             compiling = ((*global->ifptr & WAS_COMPILING) != 0);
 
@@ -464,7 +464,7 @@ ReturnCode doif(struct Global *global, int hash)
      * Process an #if, #ifdef, or #ifndef. The latter two are straightforward,
      * while #if needs a subroutine of its own to evaluate the expression.
      *
-     * doif() is called only if compiling is TRUE.  If false, compilation
+     * doif() is called only if compiling is FPP_TRUE.  If false, compilation
      * is always supressed, so we don't need to evaluate anything.  This
      * supresses unnecessary warnings.
      */
@@ -497,7 +497,7 @@ ReturnCode doif(struct Global *global, int hash)
         if( ret )
             return( ret );
 
-        found = (found != 0);     /* Evaluate expr, != 0 is  TRUE */
+        found = (found != 0);     /* Evaluate expr, != 0 is  FPP_TRUE */
 
         hash = L_ifdef;       /* #if is now like #ifdef */
         }
@@ -522,12 +522,12 @@ ReturnCode doif(struct Global *global, int hash)
 
     if( found == (hash == L_ifdef) )
         {
-        compiling = TRUE;
+        compiling = FPP_TRUE;
 
-        *global->ifptr |= TRUE_SEEN;
+        *global->ifptr |= FPP_TRUE_SEEN;
         }
     else
-        compiling = FALSE;
+        compiling = FPP_FALSE;
 
     return(FPP_OK);
 }
@@ -615,7 +615,7 @@ ReturnCode MultiAssignLoad( struct Global *global, char *incptr, char *filename,
 
 ReturnCode openinclude( struct Global *global,
     char *filename,     /* Input file name         */
-    int searchlocal )   /* TRUE if #include "file" */
+    int searchlocal )   /* FPP_TRUE if #include "file" */
 {
     /*
      * Actually open an include file.  This routine is only called from
@@ -690,19 +690,19 @@ int hasdirectory( char *source,   /* Directory to examine         */
     /*
      * If a device or directory is found in the source filename string, the
      * node/device/directory part of the string is copied to result and
-     * hasdirectory returns TRUE.  Else, nothing is copied and it returns FALSE.
+     * hasdirectory returns FPP_TRUE.  Else, nothing is copied and it returns FPP_FALSE.
      */
 
     char *tp2;
 
     if( (tp2 = strrchr( source, '/' ) ) == NULL )
-        return(FALSE);
+        return(FPP_FALSE);
 
     strncpy( result, source, tp2 - source + 1 );
 
     result[tp2 - source + 1] = EOS;
 
-    return( TRUE );
+    return( FPP_TRUE );
 }
 
 #ifdef _AMIGA
