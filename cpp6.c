@@ -54,7 +54,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  *              #include opens a new file, or a macro is to be
  *              expanded.
  * Getmem()     Get a specified number of bytes from malloc memory.
- * output()     Write one character to stdout (calling Putchar) --
+ * output()     Write one character to stdout (calling fpp_Putchar) --
  *              implemented as a function so its address may be
  *              passed to scanstring() and scannumber().
  * lookid()     Scans the next token (identifier) from the input
@@ -650,33 +650,33 @@ void outadefine(struct Global *global, DEFBUF *dp)
 
   if (dp->nargs > 0) {
     int i;
-    Putchar(global, '(');
+    fpp_Putchar(global, '(');
     for (i = 1; i < dp->nargs; i++) {
       /* printf("__%d,", i); */
       Putstring(global, "__");
       Putint(global, i);
-      Putchar(global, ',');
+      fpp_Putchar(global, ',');
     }
     /* printf("__%d)", i); */
     Putstring(global, "__");
     Putint(global, i);
-    Putchar(global, ')');
+    fpp_Putchar(global, ')');
 
   } else if (dp->nargs == 0) {
     Putstring(global, "()");
   }
   if (dp->repl != NULL) {
-    Putchar(global, '\t');
+    fpp_Putchar(global, '\t');
     for (cp = dp->repl; (c = *cp++ & 0xFF) != EOS;) {
       if (c >= MAC_PARM && c < (MAC_PARM + PAR_MAC)) {
         /* printf("__%d", c - MAC_PARM + 1); */
         Putstring(global, "__");
         Putint(global, c - MAC_PARM + 1);
       } else if (isprint(c) || c == '\t' || c == '\n')
-        Putchar(global, c);
+        fpp_Putchar(global, c);
       else switch (c) {
       case QUOTE_PARM:
-        Putchar(global, '#');
+        fpp_Putchar(global, '#');
         break;
       case DEF_MAGIC:       /* Special anti-recursion */
       case MAC_PARM + PAR_MAC:    /* Special "arg" marker */
@@ -685,7 +685,7 @@ void outadefine(struct Global *global, DEFBUF *dp)
 #if COMMENT_INVISIBLE
         Putstring(global, "/**/");
 #else
-        Putchar(global, ' ');
+        fpp_Putchar(global, ' ');
 #endif
         break;
       case TOK_SEP:
@@ -701,7 +701,7 @@ void outadefine(struct Global *global, DEFBUF *dp)
       }
     }
   }
-  Putchar(global, '\n');
+  fpp_Putchar(global, '\n');
 }
 
 /*
@@ -828,12 +828,12 @@ int fpp_get(struct Global *global)
       }
 
       if(c=='*') {
-        Putchar(global, '/');           /* Write out the         */
-        Putchar(global, '*');           /*   initializer         */
+        fpp_Putchar(global, '/');           /* Write out the         */
+        fpp_Putchar(global, '*');           /*   initializer         */
       } else {
         /* C++ style comment */
-        Putchar(global, '/');           /* Write out the         */
-        Putchar(global, '/');           /*   initializer         */
+        fpp_Putchar(global, '/');           /* Write out the         */
+        fpp_Putchar(global, '/');           /*   initializer         */
       }
     }
 
@@ -841,7 +841,7 @@ int fpp_get(struct Global *global)
       do {
         c=fpp_get(global);
         if(global->keepcomments)
-          Putchar(global, c);
+          fpp_Putchar(global, c);
       } while(c!='\n' && c!=EOF_CHAR);  /* eat all to EOL or EOF */
       global->instring = FPP_FALSE;         /* End of comment        */
       return(c);                        /* Return the end char   */
@@ -851,7 +851,7 @@ int fpp_get(struct Global *global)
       c = fpp_get(global);
     test:
       if (global->keepcomments && c != EOF_CHAR)
-        Putchar(global, c);
+        fpp_Putchar(global, c);
       switch (c) {
       case EOF_CHAR:
         cerror(global, ERROR_EOF_IN_COMMENT);
@@ -873,7 +873,7 @@ int fpp_get(struct Global *global)
         if ((c = fpp_get(global)) != '/')           /* If comment doesn't   */
           goto test;                    /* end, look at next    */
         if (global->keepcomments) {     /* Put out the comment  */
-          Putchar(global, c);           /* terminator, too      */
+          fpp_Putchar(global, c);           /* terminator, too      */
         }
         if(--comments)
           /* nested comment, continue! */

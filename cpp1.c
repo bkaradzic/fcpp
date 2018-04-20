@@ -242,7 +242,7 @@ ReturnCode cppmain(struct Global *global)
       if (c == '\n') {                  /* If line's all blank, */
 	if(global->comment) {
 	  /* A comment was output! */
-	  Putchar(global, '\n');
+	  fpp_Putchar(global, '\n');
 	}
 	else
 	  ++counter;                    /* Do nothing now       */
@@ -275,7 +275,7 @@ ReturnCode cppmain(struct Global *global)
         sharp(global);                    /* Output # line number */
       else {                              /* If just a few, stuff */
         while (--counter >= 0)            /* them out ourselves   */
-	  Putchar(global, (int)'\n');
+	  fpp_Putchar(global, (int)'\n');
       }
     }
     if(global->showspace) {
@@ -305,7 +305,7 @@ ReturnCode cppmain(struct Global *global)
 	  break;                      /* Exit line loop       */
 	else if (counter > 0) {       /* If we got any spaces */
 	  if(!global->showspace)      /* We don't output all spaces */
-	    Putchar(global, (int)' ');/* Output one space     */
+	    fpp_Putchar(global, (int)' ');/* Output one space     */
 	  else {
 	    global->spacebuf[global->chpos] = '\0';
 	    Putstring(global, global->spacebuf); /* Output all whitespaces */
@@ -404,7 +404,7 @@ ReturnCode cppmain(struct Global *global)
 	    define = 1;
 
 	    if(initfunc) {
-	      Putchar(global, '}');
+	      fpp_Putchar(global, '}');
 	      bracelevel--;
 	      initfunc=0;
 	    }
@@ -466,14 +466,14 @@ ReturnCode cppmain(struct Global *global)
 	}
 	define--; /* decrease function probability */
 	
-	Putchar(global, c);     /* Just output it       */
+	fpp_Putchar(global, c);     /* Just output it       */
 	break;
       }                         /* Switch ends          */
       prev = type[c];
     }                           /* Line for loop        */
     
     if (c == '\n') {  /* Compiling at EOL?    */
-      Putchar(global, '\n');              /* Output newline, if   */
+      fpp_Putchar(global, '\n');              /* Output newline, if   */
       if (global->infile->fp == NULL)     /* Expanding a macro,   */
 	global->wrongline = FPP_TRUE; /* Output # line later        */
     }
@@ -509,11 +509,11 @@ ReturnCode output(struct Global *global, int c)
 #else
   if (c != TOK_SEP)
 #endif
-    Putchar(global, c);
+    fpp_Putchar(global, c);
   return(FPP_OK);
 }
 
-void Putchar(struct Global *global, int c)
+void fpp_Putchar(struct Global *global, int c)
 {
   /*
    * Output one character to stdout or to output function!
@@ -533,14 +533,14 @@ void Putchar(struct Global *global, int c)
 void Putstring(struct Global *global, char *string)
 {
   /*
-   * Output a string! One letter at a time to the Putchar routine!
+   * Output a string! One letter at a time to the fpp_Putchar routine!
    */
 
   if(!string)
     return;
 
   while(*string)
-    Putchar(global, *string++);
+    fpp_Putchar(global, *string++);
 }
 
 void Putint(struct Global *global, int number)
@@ -555,7 +555,7 @@ void Putint(struct Global *global, int number)
   sprintf(buffer, "%d", number);
 
   while(*point)
-    Putchar(global, *point++);
+    fpp_Putchar(global, *point++);
 }
 
 
@@ -568,13 +568,13 @@ void sharp(struct Global *global)
 
   char *name;
   if (global->keepcomments)                     /* Make sure # comes on */
-    Putchar(global, '\n');                      /* a fresh, new line.   */
+    fpp_Putchar(global, '\n');                      /* a fresh, new line.   */
   /*  printf("#%s %d", LINE_PREFIX, global->line); */
 
-  Putchar(global, '#');
+  fpp_Putchar(global, '#');
   if(global->outputLINE)
           Putstring(global, LINE_PREFIX);
-  Putchar(global, ' ');
+  fpp_Putchar(global, ' ');
   Putint(global, global->line);
 
   if (global->infile->fp != NULL) {
@@ -588,10 +588,10 @@ void sharp(struct Global *global)
       /* printf(" \"%s\"", name); */
       Putstring(global, " \"");
       Putstring(global, name);
-      Putchar(global, '\"');
+      fpp_Putchar(global, '\"');
     }
   }
-  Putchar(global, '\n');
+  fpp_Putchar(global, '\n');
   global->wrongline = FPP_FALSE;
   return;
 }

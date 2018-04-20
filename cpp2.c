@@ -186,7 +186,7 @@ ReturnCode control( struct Global *global,
      */
     if( *counter > 0 && (hash == L_line || hash == L_pragma) )
         {
-        Putchar( global, '\n' );
+        fpp_Putchar( global, '\n' );
 
         (*counter)--;
         }
@@ -391,11 +391,11 @@ ReturnCode control( struct Global *global,
             Putstring( global, "#pragma " );
 
             while( (c = fpp_get( global ) ) != '\n' && c != EOF_CHAR )
-                Putchar( global, c );
+                fpp_Putchar( global, c );
 
             fpp_unget( global );
 
-            Putchar( global, '\n' );
+            fpp_Putchar( global, '\n' );
 
             break;
 
@@ -409,16 +409,16 @@ ReturnCode control( struct Global *global,
             if( global->warnillegalcpp )
                 cwarn( global, WARN_ILLEGAL_COMMAND, global->tokenbuf );
 
-            Putchar( global, '#' );
+            fpp_Putchar( global, '#' );
             Putstring( global, global->tokenbuf );
-            Putchar( global, ' ' );
+            fpp_Putchar( global, ' ' );
 
             while( (c = fpp_get( global ) ) != '\n' && c != EOF_CHAR )
-                Putchar( global, c );
+                fpp_Putchar( global, c );
 
             fpp_unget( global );
 
-            Putchar( global, '\n' );
+            fpp_Putchar( global, '\n' );
 
             break;
         }

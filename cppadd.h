@@ -371,7 +371,7 @@ typedef enum {
 int PREFIX fppPreProcess(REG(a0) struct fppTag *);
 void fpp_Freemem(void *);
 void fpp_Error(struct Global *, char *, ...);
-void Putchar(struct Global *, int);
+void fpp_Putchar(struct Global *, int);
 void Putstring(struct Global *, char *);
 void Putint(struct Global *, int);
 char *savestring(struct Global *, char *);
