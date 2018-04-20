@@ -35,6 +35,9 @@
  *
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 struct fppTag {
   int tag;
@@ -163,3 +166,7 @@ struct fppTag {
 #define FPPTAG_ALLOW_INCLUDE_LOCAL 35
 
 int fppPreProcess(struct fppTag *);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
