@@ -376,7 +376,7 @@ void fpp_Putstring(struct Global *, char *);
 void fpp_Putint(struct Global *, int);
 char *fpp_savestring(struct Global *, char *);
 ReturnCode fpp_addfile(struct Global *, FILE *, char *);
-int catenate(struct Global *, int lhs_number, ReturnCode *);
+int fpp_catenate(struct Global *, int lhs_number, ReturnCode *);
 void cerror(struct Global *, ErrorCode, ...);
 ReturnCode control(struct Global *, int *);
 ReturnCode dodefine(struct Global *);

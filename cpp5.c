@@ -401,7 +401,7 @@ ReturnCode evallex(struct Global *global,
 	*op=OP_EOE;           /* End of expression    */
 	return(FPP_OK);
       }
-    } while ((t = type[c]) == LET && catenate(global, 0, &ret) && !ret);
+    } while ((t = type[c]) == LET && fpp_catenate(global, 0, &ret) && !ret);
     if(ret)
       /* If the loop was broken because of a fatal error! */
       return(ret);
@@ -562,7 +562,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
     }
     else if (type[c] != LET)            /* Exit if not a type   */
       break;
-    else if (!catenate(global, 0, &ret) && !ret) { /* Maybe combine tokens */
+    else if (!fpp_catenate(global, 0, &ret) && !ret) { /* Maybe combine tokens */
       /*
        * Look for this unexpandable token in basic_types.
        * The code accepts "int long" as well as "long int"

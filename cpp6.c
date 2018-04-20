@@ -39,7 +39,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  * macroid()    reads the next token (C identifier) into tokenbuf.
  *              If it is a #defined macro, it is expanded, and
  *              macroid() returns FPP_TRUE, otherwise, FPP_FALSE.
- * catenate()   Does the dirty work of token concatenation, FPP_TRUE if it did.
+ * fpp_catenate()   Does the dirty work of token concatenation, FPP_TRUE if it did.
  * scanstring() Reads a string from the input stream, calling
  *              a user-supplied function for each character.
  *              This function may be output() to write the
@@ -199,7 +199,7 @@ ReturnCode macroid(struct Global *global, int *c)
   return(FPP_OK);
 }
 
-int catenate(struct Global *global, int lhs_number, ReturnCode *ret)
+int fpp_catenate(struct Global *global, int lhs_number, ReturnCode *ret)
 {
   /*
    * A token was just read (via macroid).
