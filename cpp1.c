@@ -249,7 +249,7 @@ ReturnCode cppmain(struct Global *global)
       }
       else if (c == '#') {              /* Is 1st non-space '#' */
 	global->keepcomments = FPP_FALSE;   /* Don't pass comments  */
-	ret = control(global, &counter); /* Yes, do a #command   */
+	ret = fpp_control(global, &counter); /* Yes, do a #command   */
 	if(ret)
 	  return(ret);
 	global->keepcomments = (global->cflag && compiling);

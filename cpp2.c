@@ -55,7 +55,7 @@ INLINE FILE_LOCAL int hasdirectory(char *, char *);
 #define L_pragma    ('p' + ('a' << 1))
 #define L_undef     ('u' + ('d' << 1))
 
-ReturnCode control( struct Global *global,
+ReturnCode fpp_control( struct Global *global,
     int *counter )  /* Pending newline counter */
 {
     /*

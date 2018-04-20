@@ -220,7 +220,7 @@ ReturnCode eval(struct Global *global, int *eval)
 {
   /*
    * Evaluate an expression.  Straight-forward operator precedence.
-   * This is called from control() on encountering an #if statement.
+   * This is called from fpp_control() on encountering an #if statement.
    * It calls the following routines:
    * evallex	Lexical analyser -- returns the type and value of
    *		the next input token.
