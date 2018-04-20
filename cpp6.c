@@ -67,7 +67,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  *              handling end of (macro/file) input and embedded
  *              comments appropriately.  Note that the global
  *              instring is -- essentially -- a parameter to fpp_get().
- * cget()       Like fpp_get(), but skip over TOK_SEP.
+ * fpp_cget()       Like fpp_get(), but skip over TOK_SEP.
  * unget()      Push last gotten character back on the input stream.
  * cerror()     This routine format an print messages to the user.
  */
@@ -965,7 +965,7 @@ ReturnCode ungetstring(struct Global *global, char *text)
   return(ret);
 }
 
-int cget(struct Global *global)
+int fpp_cget(struct Global *global)
 {
   /*
    * Get one character, absorb "funny space" after comments or

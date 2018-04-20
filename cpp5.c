@@ -454,7 +454,7 @@ else if (streq(global->tokenbuf, "sizeof")) { /* New sizeof hackery   */
       /*
        * Process a possible multi-byte lexeme.
        */
-      c1 = cget(global);                        /* Peek at next char    */
+      c1 = fpp_cget(global);                        /* Peek at next char    */
       switch (c) {
       case '!':
 	if (c1 == '=') {
@@ -664,9 +664,9 @@ int evalnum(struct Global *global, int c)
   
   if (c != '0')
     base = 10;
-  else if ((c = cget(global)) == 'x' || c == 'X') {
+  else if ((c = fpp_cget(global)) == 'x' || c == 'X') {
     base = 16;
-    c = cget(global);
+    c = fpp_cget(global);
   }
   else base = 8;
   value = 0;
@@ -681,10 +681,10 @@ int evalnum(struct Global *global, int c)
       break;
     value *= base;
     value += c1;
-    c = cget(global);
+    c = fpp_cget(global);
   }
   if (c == 'u' || c == 'U')       /* Unsigned nonsense            */
-    c = cget(global);
+    c = fpp_cget(global);
   unget(global);
   return (value);
 }
@@ -701,8 +701,8 @@ int evalchar(struct Global *global,
   int count;
   
   global->instring = FPP_TRUE;
-  if ((c = cget(global)) == '\\') {
-    switch ((c = cget(global))) {
+  if ((c = fpp_cget(global)) == '\\') {
+    switch ((c = fpp_cget(global))) {
     case 'a':                           /* New in Standard      */
 #if ('a' == '\a' || '\a' == ALERT)
       value = ALERT;			/* Use predefined value */

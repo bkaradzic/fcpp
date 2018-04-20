@@ -494,14 +494,14 @@ ReturnCode expcollect(struct Global *global)
       return(FPP_TOO_MANY_ARGUMENTS);
     }
     global->parlist[global->nargs++] = global->parmp; /* At start of new arg */
-    for (;; c = cget(global)) {               /* Collect arg's bytes  */
+    for (;; c = fpp_cget(global)) {               /* Collect arg's bytes  */
       if (c == EOF_CHAR) {
 	cerror(global, ERROR_EOF_IN_ARGUMENT);
 	return(FPP_EOF_IN_MACRO); /* Sorry.               */
       }
       else if (c == '\\') {             /* Quote next character */
 	charput(global, c);             /* Save the \ for later */
-	charput(global, cget(global));  /* Save the next char.  */
+	charput(global, fpp_cget(global));  /* Save the next char.  */
 	continue;			/* And go get another   */
       }
       else if (type[c] == QUO) {        /* Start of string?     */
