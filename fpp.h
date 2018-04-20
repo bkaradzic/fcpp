@@ -159,4 +159,7 @@ struct fppTag {
 /* Depends function: */
 #define FPPTAG_DEPENDS 34 /* data is an depends funtion */
 
+/* Allow include "X" (rather than <X>) to search local files, default is TRUE */
+#define FPPTAG_ALLOW_INCLUDE_LOCAL 35
+
 int fppPreProcess(struct fppTag *);
