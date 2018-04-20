@@ -543,7 +543,7 @@ void fpp_Putstring(struct Global *global, char *string)
     fpp_Putchar(global, *string++);
 }
 
-void Putint(struct Global *global, int number)
+void fpp_Putint(struct Global *global, int number)
 {
   /*
    * Output the number as a string.
@@ -575,7 +575,7 @@ void sharp(struct Global *global)
   if(global->outputLINE)
           fpp_Putstring(global, LINE_PREFIX);
   fpp_Putchar(global, ' ');
-  Putint(global, global->line);
+  fpp_Putint(global, global->line);
 
   if (global->infile->fp != NULL) {
     name = (global->infile->progname != NULL)

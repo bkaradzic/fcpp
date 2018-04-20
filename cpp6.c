@@ -654,12 +654,12 @@ void outadefine(struct Global *global, DEFBUF *dp)
     for (i = 1; i < dp->nargs; i++) {
       /* printf("__%d,", i); */
       fpp_Putstring(global, "__");
-      Putint(global, i);
+      fpp_Putint(global, i);
       fpp_Putchar(global, ',');
     }
     /* printf("__%d)", i); */
     fpp_Putstring(global, "__");
-    Putint(global, i);
+    fpp_Putint(global, i);
     fpp_Putchar(global, ')');
 
   } else if (dp->nargs == 0) {
@@ -671,7 +671,7 @@ void outadefine(struct Global *global, DEFBUF *dp)
       if (c >= MAC_PARM && c < (MAC_PARM + PAR_MAC)) {
         /* printf("__%d", c - MAC_PARM + 1); */
         fpp_Putstring(global, "__");
-        Putint(global, c - MAC_PARM + 1);
+        fpp_Putint(global, c - MAC_PARM + 1);
       } else if (isprint(c) || c == '\t' || c == '\n')
         fpp_Putchar(global, c);
       else switch (c) {

@@ -373,7 +373,7 @@ void fpp_Freemem(void *);
 void fpp_Error(struct Global *, char *, ...);
 void fpp_Putchar(struct Global *, int);
 void fpp_Putstring(struct Global *, char *);
-void Putint(struct Global *, int);
+void fpp_Putint(struct Global *, int);
 char *savestring(struct Global *, char *);
 ReturnCode addfile(struct Global *, FILE *, char *);
 int catenate(struct Global *, int lhs_number, ReturnCode *);
