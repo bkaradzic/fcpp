@@ -742,7 +742,7 @@ int evalchar(struct Global *global,
     case 'x':                           /* '\xFF'               */
       count = 3;
       value = 0;
-      while ((((c = get(global)) >= '0' && c <= '9')
+      while ((((c = fpp_get(global)) >= '0' && c <= '9')
 	      || (c >= 'a' && c <= 'f')
 	      || (c >= 'A' && c <= 'F'))
 	     && (--count >= 0)) {
@@ -759,7 +759,7 @@ int evalchar(struct Global *global,
 	while (c >= '0' && c <= '7' && --count >= 0) {
 	  value *= 8;
 	  value += (c - '0');
-	  c = get(global);
+	  c = fpp_get(global);
 	}
 	unget(global);
       } else
@@ -776,7 +776,7 @@ int evalchar(struct Global *global,
 #if BIG_ENDIAN
   count = 0;
 #endif
-  while ((c = get(global)) != '\'' && c != EOF_CHAR && c != '\n') {
+  while ((c = fpp_get(global)) != '\'' && c != EOF_CHAR && c != '\n') {
     if (!skip)
       cwarn(global, WARN_MULTIBYTE_NOT_PORTABLE, c);
 #if BIG_ENDIAN

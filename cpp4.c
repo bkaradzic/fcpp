@@ -96,7 +96,7 @@ ReturnCode dodefine(struct Global *global)
     dp->repl = NULL;			/* No replacement now	*/
   }
   global->parlist[0] = global->parmp = global->parm; /* Setup parm buffer */
-  if ((c = get(global)) == '(') {       /* With arguments?      */
+  if ((c = fpp_get(global)) == '(') {       /* With arguments?      */
     global->nargs = 0;			/* Init formals counter */
     do {				/* Collect formal parms */
       if (global->nargs >= LASTPARM) {
@@ -137,7 +137,7 @@ ReturnCode dodefine(struct Global *global)
   while (c != EOF_CHAR && c != '\n') {  /* Compile macro body   */
 #if OK_CONCAT
     if (c == '#') {                     /* Token concatenation? */
-      if ((c = get(global)) != '#') {   /* No, not really       */
+      if ((c = fpp_get(global)) != '#') {   /* No, not really       */
 	quoting = 1;		        /* Maybe quoting op.	*/
 	continue;
       }
@@ -177,7 +177,7 @@ ReturnCode dodefine(struct Global *global)
       ret=save(global, '\\');
       if(ret)
 	return(ret);
-      if ((c = get(global)) == '\n')
+      if ((c = fpp_get(global)) == '\n')
 	global->wrongline = FPP_TRUE;
       ret=save(global, c);
       if(ret)
@@ -200,7 +200,7 @@ ReturnCode dodefine(struct Global *global)
 	return(ret);
       break;
     }
-    c = get(global);
+    c = fpp_get(global);
     quoting = 0;			/* Only when immediately*/
     /* preceding a formal	*/
   }
@@ -354,7 +354,7 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
    * expcollect() to parse actual parameters, checking for the correct number.
    * It then creates a "file" containing a single line containing the
    * macro with actual parameters inserted appropriately.  This is
-   * "pushed back" onto the input stream.  (When the get() routine runs
+   * "pushed back" onto the input stream.  (When the fpp_get() routine runs
    * off the end of the macro line, it will dismiss the macro itself.)
    */
   int c;
@@ -371,7 +371,7 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
     cerror(global, ERROR_RECURSIVE_MACRO, tokenp->name, global->macro->name);
     if (global->rec_recover) {
       do {
-	c = get(global);
+	c = fpp_get(global);
       } while (global->infile != NULL && global->infile->fp == NULL);
       unget(global);
       global->recursion = 0;

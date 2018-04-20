@@ -208,7 +208,7 @@ ReturnCode control( struct Global *global,
                 if( (ret = save( global, c )) )
                     return(ret);
 
-                c = get( global );
+                c = fpp_get( global );
                 }
 
             unget( global );
@@ -390,7 +390,7 @@ ReturnCode control( struct Global *global,
              */
             Putstring( global, "#pragma " );
 
-            while( (c = get( global ) ) != '\n' && c != EOF_CHAR )
+            while( (c = fpp_get( global ) ) != '\n' && c != EOF_CHAR )
                 Putchar( global, c );
 
             unget( global );
@@ -413,7 +413,7 @@ ReturnCode control( struct Global *global,
             Putstring( global, global->tokenbuf );
             Putchar( global, ' ' );
 
-            while( (c = get( global ) ) != '\n' && c != EOF_CHAR )
+            while( (c = fpp_get( global ) ) != '\n' && c != EOF_CHAR )
                 Putchar( global, c );
 
             unget( global );
@@ -574,7 +574,7 @@ ReturnCode doinclude( struct Global *global )
 
     global->workp = global->work;
 
-    while( (c = get(global)) != '\n' && c != EOF_CHAR )
+    while( (c = fpp_get(global)) != '\n' && c != EOF_CHAR )
         if( (ret = save( global, c )) )       /* Put it away.                */
             return( ret );
 

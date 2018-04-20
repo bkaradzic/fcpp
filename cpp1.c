@@ -233,7 +233,7 @@ ReturnCode cppmain(struct Global *global)
     for (;;) {                          /* For each line, ...   */
       global->comment = FPP_FALSE;          /* No comment yet!      */
       global->chpos = 0;                /* Count whitespaces    */
-      while (type[(c = get(global))] == SPA)  /* Skip leading blanks */
+      while (type[(c = fpp_get(global))] == SPA)  /* Skip leading blanks */
 	if(global->showspace) {
 	  if(global->chpos<MAX_SPACE_SIZE-1)
 	    /* we still have buffer to store this! */
@@ -290,7 +290,7 @@ ReturnCode cppmain(struct Global *global)
     unget(global);                      /* Reread the char.     */
     for (;;) {                          /* For the whole line,  */
       do {                              /* Token concat. loop   */
-	for (global->chpos = counter = 0; (type[(c = get(global))] == SPA);) {
+	for (global->chpos = counter = 0; (type[(c = fpp_get(global))] == SPA);) {
 #if COMMENT_INVISIBLE
 	  if (c != COM_SEP)
 	    counter++;

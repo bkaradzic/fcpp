@@ -52,7 +52,7 @@
  */
 #define EOS		'\0'            /* End of string                */
 #endif
-#define EOF_CHAR	0		/* Returned by get() on eof     */
+#define EOF_CHAR	0		/* Returned by fpp_get() on eof     */
 #define NULLST		((char *) NULL) /* Pointer to nowhere (linted)  */
 #define DEF_NOARGS	(-1)            /* #define foo vs #define foo() */
 

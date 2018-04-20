@@ -63,11 +63,11 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  *              if not present.  The identifier is stored in tokenbuf.
  * defnedel()   Define enter/delete subroutine.  Updates the
  *              symbol table.
- * get()        Read the next byte from the current input stream,
+ * fpp_get()        Read the next byte from the current input stream,
  *              handling end of (macro/file) input and embedded
  *              comments appropriately.  Note that the global
- *              instring is -- essentially -- a parameter to get().
- * cget()       Like get(), but skip over TOK_SEP.
+ *              instring is -- essentially -- a parameter to fpp_get().
+ * cget()       Like fpp_get(), but skip over TOK_SEP.
  * unget()      Push last gotten character back on the input stream.
  * cerror()     This routine format an print messages to the user.
  */
@@ -129,7 +129,7 @@ void skipnl(struct Global *global)
   int c;
 
   do {                          /* Skip to newline      */
-    c = get(global);
+    c = fpp_get(global);
   } while (c != '\n' && c != EOF_CHAR);
   return;
 }
@@ -142,7 +142,7 @@ int skipws(struct Global *global)
   int c;
 
   do {                          /* Skip whitespace      */
-    c = get(global);
+    c = fpp_get(global);
 #if COMMENT_INVISIBLE
   } while (type[c] == SPA || c == COM_SEP);
 #else
@@ -163,7 +163,7 @@ void scanid(struct Global *global,
   int ct;
 
   if (c == DEF_MAGIC)                     /* Eat the magic token  */
-    c = get(global);                      /* undefiner.           */
+    c = fpp_get(global);                      /* undefiner.           */
   ct = 0;
   do
     {
@@ -171,7 +171,7 @@ void scanid(struct Global *global,
         global->tokenbuf = realloc(global->tokenbuf, 1 +
                                    (global->tokenbsize *= 2));
       global->tokenbuf[ct++] = c;
-      c = get(global);
+      c = fpp_get(global);
     }
   while (type[c] == LET || type[c] == DIG);
   unget(global);
@@ -194,7 +194,7 @@ ReturnCode macroid(struct Global *global, int *c)
   while (type[*c] == LET && (dp = lookid(global, *c)) != NULL) {
     if((ret=expand(global, dp)))
       return(ret);
-    *c = get(global);
+    *c = fpp_get(global);
   }
   return(FPP_OK);
 }
@@ -215,7 +215,7 @@ int catenate(struct Global *global, int lhs_number, ReturnCode *ret)
 #endif
 
 #if OK_CONCAT
-  if (get(global) != TOK_SEP) {                 /* Token concatenation  */
+  if (fpp_get(global) != TOK_SEP) {                 /* Token concatenation  */
     unget(global);
     return (FPP_FALSE);
   }
@@ -223,7 +223,7 @@ int catenate(struct Global *global, int lhs_number, ReturnCode *ret)
     if (lhs_number == 0) { /* The lhs number has already been emit */ 
       token1 = savestring(global, global->tokenbuf); /* Save first token     */
     }
-    c=get(global);
+    c= fpp_get(global);
     if(global->rightconcat) {
       *ret=macroid(global, &c);           /* Scan next token      */
       if(*ret)
@@ -298,14 +298,14 @@ ReturnCode scanstring(struct Global *global,
   ret=(*outfun)(global, delim);
   if(ret)
     return(ret);
-  while ((c = get(global)) != delim
+  while ((c = fpp_get(global)) != delim
          && c != '\n'
          && c != EOF_CHAR) {
     ret=(*outfun)(global, c);
     if(ret)
       return(ret);
     if (c == '\\') {
-      ret=(*outfun)(global, get(global));
+      ret=(*outfun)(global, fpp_get(global));
       if(ret)
         return(ret);
     }
@@ -347,7 +347,7 @@ ReturnCode scannumber(struct Global *global,
     ret=(*outfun)(global, '.');         /* Always out the dot   */
     if(ret)
       return(ret);
-    if (type[(c = get(global))] != DIG) { /* If not a float numb, */
+    if (type[(c = fpp_get(global))] != DIG) { /* If not a float numb, */
       unget(global);                    /* Rescan strange char  */
       return(FPP_OK);                   /* All done for now     */
     }
@@ -357,13 +357,13 @@ ReturnCode scannumber(struct Global *global,
     if(ret)
       return(ret);
     radix = 8;                          /* Assume it's octal    */
-    c = get(global);                    /* Look for an 'x'      */
-    if (c == 'x' || c == 'X') {         /* Did we get one?      */
+    c = fpp_get(global);                    /* Look for an 'x'      */
+    if (c == 'x' || c == 'X') {         /* Did we fpp_get one?      */
       radix = 16;                       /* Remember new radix   */
       ret=(*outfun)(global, c);         /* Stuff the 'x'        */
       if(ret)
         return(ret);
-      c = get(global);                  /* Get next character   */
+      c = fpp_get(global);                  /* Get next character   */
     }
   }
   while (!done) {                       /* Process curr. char.  */
@@ -409,7 +409,7 @@ ReturnCode scannumber(struct Global *global,
     if(ret)
       return(ret);
     signseen = FPP_TRUE;                    /* Don't read sign now  */
-    c = get(global);                    /* Read another char    */
+    c = fpp_get(global);                    /* Read another char    */
   }                                     /* End of scan loop     */
   /*
    * When we break out of the scan loop, c contains the first
@@ -425,7 +425,7 @@ ReturnCode scannumber(struct Global *global,
       ret=(*outfun)(global, c);
       if(ret)
         return(ret);
-      c = get(global);                   /* Ungotten later       */
+      c = fpp_get(global);                   /* Ungotten later       */
     }
   } else {                                      /* Else it's an integer */
     /*
@@ -459,7 +459,7 @@ ReturnCode scannumber(struct Global *global,
       ret=(*outfun)(global, c);       /* Got 'L' or 'U'.      */
       if(ret)
         return(ret);
-      c = get(global);                /* Look at next, too.   */
+      c = fpp_get(global);                /* Look at next, too.   */
     }
   }
   unget(global);                         /* Not part of a number */
@@ -548,14 +548,14 @@ DEFBUF *lookid(struct Global *global,
 
   nhash = 0;
   if ((isrecurse = (c == DEF_MAGIC)))   /* If recursive macro   */
-    c = get(global);                    /* hack, skip DEF_MAGIC */
+    c = fpp_get(global);                    /* hack, skip DEF_MAGIC */
   ct = 0;
   do {
     if (ct == global->tokenbsize)
       global->tokenbuf = realloc(global->tokenbuf, 1 + (global->tokenbsize *= 2));
     global->tokenbuf[ct++] = c;         /* Store token byte     */
     nhash += c;                         /* Update hash value    */
-    c = get(global);
+    c = fpp_get(global);
   }  while (type[c] == LET || type[c] == DIG);
   unget(global);                        /* Rescan terminator    */
   global->tokenbuf[ct] = EOS;           /* Terminate token      */
@@ -708,7 +708,7 @@ void outadefine(struct Global *global, DEFBUF *dp)
  *                      G E T
  */
 
-int get(struct Global *global)
+int fpp_get(struct Global *global)
 {
   /*
    * Return the next character from a macro or the current file.
@@ -806,10 +806,10 @@ int get(struct Global *global)
   if (global->instring)                 /* Strings just return  */
     return (c);                         /* the character.       */
   else if (c == '/') {                  /* Comment?             */
-    global->instring = FPP_TRUE;            /* So get() won't loop  */
+    global->instring = FPP_TRUE;            /* So fpp_get() won't loop  */
 
     /* Check next byte for '*' and if(cplusplus) also '/' */
-    if ( (c = get(global)) != '*' )
+    if ( (c = fpp_get(global)) != '*' )
       if(!global->cplusplus || (global->cplusplus && c!='/')) {
         global->instring = FPP_FALSE;       /* Nope, no comment     */
         unget(global);                  /* Push the char. back  */
@@ -839,7 +839,7 @@ int get(struct Global *global)
 
     if(global->cplusplus && c=='/') {   /* Eat C++ comment!      */
       do {
-        c=get(global);
+        c=fpp_get(global);
         if(global->keepcomments)
           Putchar(global, c);
       } while(c!='\n' && c!=EOF_CHAR);  /* eat all to EOL or EOF */
@@ -848,7 +848,7 @@ int get(struct Global *global)
     }
 
     for (;;) {                          /* Eat a comment         */
-      c = get(global);
+      c = fpp_get(global);
     test:
       if (global->keepcomments && c != EOF_CHAR)
         Putchar(global, c);
@@ -859,7 +859,7 @@ int get(struct Global *global)
 
       case '/':
         if(global->nestcomments || global->warnnestcomments) {
-          if((c = get(global)) != '*')
+          if((c = fpp_get(global)) != '*')
             goto test;
           if(global->warnnestcomments) {
             cwarn(global, WARN_NESTED_COMMENT);
@@ -870,7 +870,7 @@ int get(struct Global *global)
         break;
 
       case '*':
-        if ((c = get(global)) != '/')           /* If comment doesn't   */
+        if ((c = fpp_get(global)) != '/')           /* If comment doesn't   */
           goto test;                    /* end, look at next    */
         if (global->keepcomments) {     /* Put out the comment  */
           Putchar(global, c);           /* terminator, too      */
@@ -916,7 +916,7 @@ int get(struct Global *global)
     }                                   /* End comment loop     */
   }                                     /* End if in comment    */
   else if (!global->inmacro && c == '\\') { /* If backslash, peek   */
-    if ((c = get(global)) == '\n') {    /* for a <nl>.  If so,  */
+    if ((c = fpp_get(global)) == '\n') {    /* for a <nl>.  If so,  */
       global->wrongline = FPP_TRUE;
       goto newline;
     } else {                            /* Backslash anything   */
@@ -974,7 +974,7 @@ int cget(struct Global *global)
 
   int c;
   do {
-    c = get(global);
+    c = fpp_get(global);
 #if COMMENT_INVISIBLE
   } while (c == TOK_SEP || c == COM_SEP);
 #else

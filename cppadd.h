@@ -95,7 +95,7 @@ struct Global {
    * shouldn't delimit tokens, but we'll worry about that some other
    * time -- it is more important to prevent infinitly long output lines.
    *
-   * instring and inmarcor are parameters to the get() routine which
+   * instring and inmarcor are parameters to the fpp_get() routine which
    * were made global for speed.
    */
   int           instring;       /* FPP_TRUE if scanning string      */
@@ -384,7 +384,7 @@ int dooptions(struct Global *, struct fppTag *);
 void doundef(struct Global *);
 void dumpparm(char *);
 ReturnCode expand(struct Global *, DEFBUF *);
-int get(struct Global *);
+int fpp_get(struct Global *);
 ReturnCode initdefines(struct Global *);
 void outdefines(struct Global *);
 ReturnCode save(struct Global *, int);
