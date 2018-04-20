@@ -263,11 +263,11 @@ ReturnCode eval(struct Global *global, int *eval)
     }
     if (op == DIG) {                      /* Value?               */
       if (binop != 0) {
-	cerror(global, ERROR_MISPLACED_CONSTANT);
+	fpp_cerror(global, ERROR_MISPLACED_CONSTANT);
 	*eval=1;
 	return(FPP_OK);
       } else if (valp >= &value[NEXP-1]) {
-	cerror(global, ERROR_IF_OVERFLOW);
+	fpp_cerror(global, ERROR_IF_OVERFLOW);
 	*eval=1;
 	return(FPP_OK);
       } else {
@@ -277,13 +277,13 @@ ReturnCode eval(struct Global *global, int *eval)
       again=FPP_TRUE;
       continue;
     } else if (op > OP_END) {
-      cerror(global, ERROR_ILLEGAL_IF_LINE);
+      fpp_cerror(global, ERROR_ILLEGAL_IF_LINE);
       *eval=1;
       return(FPP_OK);
     }
     prec = opdope[op];
     if (binop != (prec & 1)) {
-      cerror(global, ERROR_OPERATOR, opname[op]);
+      fpp_cerror(global, ERROR_OPERATOR, opname[op]);
       *eval=1;
       return(FPP_OK);
     }
@@ -300,7 +300,7 @@ ReturnCode eval(struct Global *global, int *eval)
 	 */
 	opp++;
 	if (opp >= &opstack[NEXP]) {
-	  cerror(global, ERROR_EXPR_OVERFLOW, opname[op]);
+	  fpp_cerror(global, ERROR_EXPR_OVERFLOW, opname[op]);
 	  *eval=1;
 	  return(FPP_OK);
 	}
@@ -342,7 +342,7 @@ ReturnCode eval(struct Global *global, int *eval)
 	continue;
       case OP_LPA:			/* ( on stack           */
 	if (op != OP_RPA) {             /* Matches ) on input   */
-	  cerror(global, ERROR_UNBALANCED_PARENS, opname[op]);
+	  fpp_cerror(global, ERROR_UNBALANCED_PARENS, opname[op]);
 	  *eval=1;
 	  return(FPP_OK);
 	}
@@ -355,7 +355,7 @@ ReturnCode eval(struct Global *global, int *eval)
       case OP_COL:			/* : on stack.		*/
 	opp--;				/* Unstack :		*/
 	if (opp->op != OP_QUE) {        /* Matches ? on stack?  */
-	  cerror(global, ERROR_MISPLACED, opname[(unsigned)opp->op]);
+	  fpp_cerror(global, ERROR_MISPLACED, opname[(unsigned)opp->op]);
 	  *eval=1;
 	  return(FPP_OK);
 	}
@@ -408,9 +408,9 @@ ReturnCode evallex(struct Global *global,
     if (t == INV) {                         /* Total nonsense       */
       if (!skip) {
 	if (isascii(c) && isprint(c))
-	  cerror(global, ERROR_ILLEGAL_CHARACTER, c);
+	  fpp_cerror(global, ERROR_ILLEGAL_CHARACTER, c);
 	else
-	  cerror(global, ERROR_ILLEGAL_CHARACTER2, c);
+	  fpp_cerror(global, ERROR_ILLEGAL_CHARACTER2, c);
       }
       return(FPP_ILLEGAL_CHARACTER);
     } else if (t == QUO) {                  /* ' or "               */
@@ -419,7 +419,7 @@ ReturnCode evallex(struct Global *global,
 	*op=DIG;                          /* Return a value       */
 	return(FPP_OK);
       }
-      cerror(global, ERROR_STRING_IN_IF);
+      fpp_cerror(global, ERROR_STRING_IN_IF);
       return(FPP_CANT_USE_STRING_IN_IF);
     } else if (t == LET) {                  /* ID must be a macro   */
       if (streq(global->tokenbuf, "defined")) {   /* Or defined name      */
@@ -434,7 +434,7 @@ ReturnCode evallex(struct Global *global,
 	    return(FPP_OK);               /* Parsed ok            */
 	  }
 	}
-	cerror(global, ERROR_DEFINED_SYNTAX);
+	fpp_cerror(global, ERROR_DEFINED_SYNTAX);
 	return(FPP_BAD_IF_DEFINED_SYNTAX);
       }
 #if OK_SIZEOF
@@ -466,7 +466,7 @@ else if (streq(global->tokenbuf, "sizeof")) { /* New sizeof hackery   */
       case '=':
 	if (c1 != '=') {                  /* Can't say a=b in #if */
 	  fpp_unget(global);
-	  cerror(global, ERROR_ILLEGAL_ASSIGN);
+	  fpp_cerror(global, ERROR_ILLEGAL_ASSIGN);
 	  return (FPP_IF_ERROR);
 	}
 	*op=OP_EQ;
@@ -496,7 +496,7 @@ else if (streq(global->tokenbuf, "sizeof")) { /* New sizeof hackery   */
 	  loop=FPP_TRUE;
 	  break;
 	}
-	cerror(global, ERROR_ILLEGAL_BACKSLASH);
+	fpp_cerror(global, ERROR_ILLEGAL_BACKSLASH);
 	return(FPP_IF_ERROR);
       }
       if(!loop)
@@ -527,7 +527,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
   
   if ((c = skipws(global)) != '(') {
     fpp_unget(global);
-    cerror(global, ERROR_SIZEOF_SYNTAX);
+    fpp_cerror(global, ERROR_SIZEOF_SYNTAX);
     return(FPP_SIZEOF_ERROR);
   }
   /*
@@ -541,7 +541,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
     if (c  == EOF_CHAR || c == '\n') {
       /* End of line is a bug */
       fpp_unget(global);
-      cerror(global, ERROR_SIZEOF_SYNTAX);
+      fpp_cerror(global, ERROR_SIZEOF_SYNTAX);
       return(FPP_SIZEOF_ERROR);
     } else if (c == '(') {                /* thing (*)() func ptr */
       if (skipws(global) == '*'
@@ -550,13 +550,13 @@ ReturnCode dosizeof(struct Global *global, int *result)
 	  fpp_unget(global);
 	else if (skipws(global) != ')') {
 	  fpp_unget(global);
-	  cerror(global, ERROR_SIZEOF_SYNTAX);
+	  fpp_cerror(global, ERROR_SIZEOF_SYNTAX);
 	  return(FPP_SIZEOF_ERROR);
 	}
 	typecode |= T_FPTR; 		/* Function pointer	*/
       } else {				/* Junk is a bug	*/
 	fpp_unget(global);
-	cerror(global, ERROR_SIZEOF_SYNTAX);
+	fpp_cerror(global, ERROR_SIZEOF_SYNTAX);
 	return(FPP_SIZEOF_ERROR);
       }
     }
@@ -574,7 +574,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
 	  break;
       }
       if (tp->name == NULLST) {
-	cerror(global, ERROR_SIZEOF_UNKNOWN, global->tokenbuf);
+	fpp_cerror(global, ERROR_SIZEOF_UNKNOWN, global->tokenbuf);
 	return(FPP_SIZEOF_ERROR);
       }
       typecode |= tp->type;		/* Or in the type bit	*/
@@ -591,7 +591,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
   if (c == ')') {                         /* Last syntax check    */
     for (testp = test_table; *testp != 0; testp++) {
       if (!bittest(typecode & *testp)) {
-	cerror(global, ERROR_SIZEOF_ILLEGAL_TYPE);
+	fpp_cerror(global, ERROR_SIZEOF_ILLEGAL_TYPE);
 	return(FPP_SIZEOF_ERROR);
       }
     }
@@ -609,7 +609,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
 	typecode &= ~T_INT;
     }
     if ((typecode & ~T_PTR) == 0) {
-      cerror(global, ERROR_SIZEOF_NO_TYPE);
+      fpp_cerror(global, ERROR_SIZEOF_NO_TYPE);
       return(FPP_SIZEOF_ERROR);
     }
     /*
@@ -623,11 +623,11 @@ ReturnCode dosizeof(struct Global *global, int *result)
 	return(FPP_OK);
       }
     }					/* We shouldn't fail    */
-    cerror(global, ERROR_SIZEOF_BUG, typecode);
+    fpp_cerror(global, ERROR_SIZEOF_BUG, typecode);
     return(FPP_SIZEOF_ERROR);
   }
   fpp_unget(global);
-  cerror(global, ERROR_SIZEOF_SYNTAX);
+  fpp_cerror(global, ERROR_SIZEOF_SYNTAX);
   return(FPP_SIZEOF_ERROR);
 }
 
@@ -778,7 +778,7 @@ int evalchar(struct Global *global,
 #endif
   while ((c = fpp_get(global)) != '\'' && c != EOF_CHAR && c != '\n') {
     if (!skip)
-      cwarn(global, WARN_MULTIBYTE_NOT_PORTABLE, c);
+      fpp_cwarn(global, WARN_MULTIBYTE_NOT_PORTABLE, c);
 #if BIG_ENDIAN
     count += BITS_CHAR;
     value += (c << count);
@@ -827,7 +827,7 @@ int *evaleval(struct Global *global,
   case OP_MOD:
     if (v2 == 0) {
       if (!skip) {
-	cwarn(global, WARN_DIVISION_BY_ZERO,
+	fpp_cwarn(global, WARN_DIVISION_BY_ZERO,
 	      (op == OP_DIV) ? "divide" : "mod");
       }
       v1 = 0;
@@ -895,7 +895,7 @@ int *evaleval(struct Global *global,
     v1 = !v1;
     break;
   default:
-    cerror(global, ERROR_IF_OPERAND, op);
+    fpp_cerror(global, ERROR_IF_OPERAND, op);
     v1 = 0;
   }
   *valp++ = v1;

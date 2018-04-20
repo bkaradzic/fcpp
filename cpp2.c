@@ -149,7 +149,7 @@ ReturnCode control( struct Global *global,
      * control keyword (or L_nogood if we think it's nonsense).
      */
     if( global->infile->fp == NULL )
-        cwarn( global, WARN_CONTROL_LINE_IN_MACRO, global->tokenbuf );
+        fpp_cwarn( global, WARN_CONTROL_LINE_IN_MACRO, global->tokenbuf );
 
     if( !compiling )
         {                       /* Not compiling now    */
@@ -160,7 +160,7 @@ ReturnCode control( struct Global *global,
             case L_ifndef:          /*   we must nest #if's */
                 if( ++global->ifptr >= &global->ifstack[BLK_NEST] )
                     {
-                    cfatal( global, FATAL_TOO_MANY_NESTINGS, global->tokenbuf );
+                    fpp_cfatal( global, FATAL_TOO_MANY_NESTINGS, global->tokenbuf );
 
                     return( FPP_TOO_MANY_NESTED_STATEMENTS );
                     }
@@ -265,7 +265,7 @@ ReturnCode control( struct Global *global,
         case L_else:
             if( global->ifptr == &global->ifstack[0] )
                 {
-                cerror( global, ERROR_STRING_MUST_BE_IF, global->tokenbuf );
+                fpp_cerror( global, ERROR_STRING_MUST_BE_IF, global->tokenbuf );
 
                 dump_line( global, counter );
 
@@ -273,7 +273,7 @@ ReturnCode control( struct Global *global,
                 }
             else if( (*global->ifptr & ELSE_SEEN) != 0 )
                 {
-                cerror( global, ERROR_STRING_MAY_NOT_FOLLOW_ELSE, global->tokenbuf );
+                fpp_cerror( global, ERROR_STRING_MAY_NOT_FOLLOW_ELSE, global->tokenbuf );
 
                 dump_line( global, counter );
 
@@ -296,7 +296,7 @@ ReturnCode control( struct Global *global,
         case L_elif:
             if( global->ifptr == &global->ifstack[0] )
                 {
-                cerror( global, ERROR_STRING_MUST_BE_IF, global->tokenbuf );
+                fpp_cerror( global, ERROR_STRING_MUST_BE_IF, global->tokenbuf );
 
                 dump_line( global, counter );
 
@@ -304,7 +304,7 @@ ReturnCode control( struct Global *global,
                 }
             else if( (*global->ifptr & ELSE_SEEN) != 0 )
                 {
-                cerror( global, ERROR_STRING_MAY_NOT_FOLLOW_ELSE, global->tokenbuf );
+                fpp_cerror( global, ERROR_STRING_MAY_NOT_FOLLOW_ELSE, global->tokenbuf );
 
                 dump_line( global, counter );
 
@@ -328,7 +328,7 @@ ReturnCode control( struct Global *global,
             break;
 
         case L_error:
-            cerror(global, ERROR_ERROR);
+            fpp_cerror(global, ERROR_ERROR);
             break;
 
         case L_if:
@@ -346,14 +346,14 @@ ReturnCode control( struct Global *global,
                 break;
                 }
 
-            cfatal( global, FATAL_TOO_MANY_NESTINGS, global->tokenbuf );
+            fpp_cfatal( global, FATAL_TOO_MANY_NESTINGS, global->tokenbuf );
 
             return( FPP_TOO_MANY_NESTED_STATEMENTS );
 
         case L_endif:
             if( global->ifptr == &global->ifstack[0] )
                 {
-                cerror( global, ERROR_STRING_MUST_BE_IF, global->tokenbuf );
+                fpp_cerror( global, ERROR_STRING_MUST_BE_IF, global->tokenbuf );
 
                 dump_line( global, counter );
 
@@ -379,7 +379,7 @@ ReturnCode control( struct Global *global,
                 return(ret);
 
             if( result == 0 )
-                cerror( global, ERROR_PREPROC_FAILURE );
+                fpp_cerror( global, ERROR_PREPROC_FAILURE );
             }
             break;
 
@@ -407,7 +407,7 @@ ReturnCode control( struct Global *global,
              * This would allow #asm or similar extensions.
              */
             if( global->warnillegalcpp )
-                cwarn( global, WARN_ILLEGAL_COMMAND, global->tokenbuf );
+                fpp_cwarn( global, WARN_ILLEGAL_COMMAND, global->tokenbuf );
 
             fpp_Putchar( global, '#' );
             fpp_Putstring( global, global->tokenbuf );
@@ -437,7 +437,7 @@ ReturnCode control( struct Global *global,
         #else
         if( skipws( global ) != '\n' )
             {
-            cwarn( global, WARN_UNEXPECTED_TEXT_IGNORED );
+            fpp_cwarn( global, WARN_UNEXPECTED_TEXT_IGNORED );
 
             skipnl( global );
             }
@@ -477,7 +477,7 @@ ReturnCode doif(struct Global *global, int hash)
         {
         fpp_unget( global );
 
-        cerror( global, ERROR_MISSING_ARGUMENT );
+        fpp_cerror( global, ERROR_MISSING_ARGUMENT );
 
         #if !OLD_PREPROCESSOR
         skipnl( global );               /* Prevent an extra     */
@@ -506,7 +506,7 @@ ReturnCode doif(struct Global *global, int hash)
         if( type[c] != LET )
             {         /* Next non-blank isn't letter  */
                           /* ... is an error          */
-            cerror( global, ERROR_MISSING_ARGUMENT );
+            fpp_cerror( global, ERROR_MISSING_ARGUMENT );
 
             #if !OLD_PREPROCESSOR
             skipnl( global );             /* Prevent an extra     */
@@ -564,7 +564,7 @@ ReturnCode doinclude( struct Global *global )
 
     if( delim != '<' && delim != '"' )
         {
-        cerror( global, ERROR_INCLUDE_SYNTAX );
+        fpp_cerror( global, ERROR_INCLUDE_SYNTAX );
 
         return( FPP_OK );
         }
@@ -589,7 +589,7 @@ ReturnCode doinclude( struct Global *global )
 
     if( *global->workp != delim )
         {
-        cerror( global, ERROR_INCLUDE_SYNTAX );
+        fpp_cerror( global, ERROR_INCLUDE_SYNTAX );
 
         return(FPP_OK);
         }
@@ -603,7 +603,7 @@ ReturnCode doinclude( struct Global *global )
         /*
          * Warn if #include file isn't there.
          */
-        cwarn( global, WARN_CANNOT_OPEN_INCLUDE, global->work );
+        fpp_cwarn( global, WARN_CANNOT_OPEN_INCLUDE, global->work );
         }
 
     return( FPP_OK );
@@ -664,7 +664,7 @@ ReturnCode openinclude( struct Global *global,
 
         if( len + strlen(filename) >= sizeof(tmpname) )
             {
-            cfatal( global, FATAL_FILENAME_BUFFER_OVERFLOW );
+            fpp_cfatal( global, FATAL_FILENAME_BUFFER_OVERFLOW );
 
             return( FPP_FILENAME_BUFFER_OVERFLOW );
             }

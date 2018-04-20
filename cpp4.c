@@ -81,7 +81,7 @@ ReturnCode dodefine(struct Global *global)
 #endif
   
   if (type[(c = skipws(global))] != LET) {
-    cerror(global, ERROR_DEFINE_SYNTAX);
+    fpp_cerror(global, ERROR_DEFINE_SYNTAX);
     global->inmacro = FPP_FALSE;		/* Stop <newline> hack	*/
     return(FPP_OK);
   }
@@ -100,12 +100,12 @@ ReturnCode dodefine(struct Global *global)
     global->nargs = 0;			/* Init formals counter */
     do {				/* Collect formal parms */
       if (global->nargs >= LASTPARM) {
-	cfatal(global, FATAL_TOO_MANY_ARGUMENTS_MACRO);
+	fpp_cfatal(global, FATAL_TOO_MANY_ARGUMENTS_MACRO);
 	return(FPP_TOO_MANY_ARGUMENTS);
       } else if ((c = skipws(global)) == ')')
 	break;			/* Got them all 	*/
       else if (type[c] != LET) {         /* Bad formal syntax    */
-	cerror(global, ERROR_DEFINE_SYNTAX);
+	fpp_cerror(global, ERROR_DEFINE_SYNTAX);
 	global->inmacro = FPP_FALSE;		/* Stop <newline> hack	*/
 	return(FPP_OK);
       }
@@ -116,7 +116,7 @@ ReturnCode dodefine(struct Global *global)
 	return(ret);
     } while ((c = skipws(global)) == ',');    /* Get another argument */
     if (c != ')') {                     /* Must end at )        */
-      cerror(global, ERROR_DEFINE_SYNTAX);
+      fpp_cerror(global, ERROR_DEFINE_SYNTAX);
       global->inmacro = FPP_FALSE;		/* Stop <newline> hack	*/
       return(FPP_OK);
     }
@@ -215,7 +215,7 @@ ReturnCode dodefine(struct Global *global)
     if ((old != NULL && dp->repl != NULL && !streq(old, dp->repl))
 	|| (old == NULL && dp->repl != NULL)
 	|| (old != NULL && dp->repl == NULL)) {
-      cerror(global, ERROR_REDEFINE, dp->name);
+      fpp_cerror(global, ERROR_REDEFINE, dp->name);
     }
     if (old != NULL)                  /* We don't need the    */
       free(old);                      /* old definition now.  */
@@ -300,7 +300,7 @@ void doundef(struct Global *global)
 {
   int c;
   if (type[(c = skipws(global))] != LET)
-    cerror(global, ERROR_ILLEGAL_UNDEF);
+    fpp_cerror(global, ERROR_ILLEGAL_UNDEF);
   else {
     scanid(global, c);                         /* Get name to tokenbuf */
     (void) defendel(global, global->tokenbuf, FPP_TRUE);
@@ -318,7 +318,7 @@ ReturnCode textput(struct Global *global, char *text)
   
   size = strlen(text) + 1;
   if ((global->parmp + size) >= &global->parm[NPARMWORK]) {
-    cfatal(global, FATAL_MACRO_AREA_OVERFLOW);
+    fpp_cfatal(global, FATAL_MACRO_AREA_OVERFLOW);
     return(FPP_WORK_AREA_OVERFLOW);
   } else {
     strcpy(global->parmp, text);
@@ -335,7 +335,7 @@ ReturnCode charput(struct Global *global, int c)
    */
   
   if (global->parmp >= &global->parm[NPARMWORK]) {
-    cfatal(global, FATAL_MACRO_AREA_OVERFLOW);
+    fpp_cfatal(global, FATAL_MACRO_AREA_OVERFLOW);
     return(FPP_WORK_AREA_OVERFLOW);
   }
   *global->parmp++ = c;
@@ -368,7 +368,7 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
   if (global->recursion++ == 0)
     global->macro = tokenp;
   else if (global->recursion == RECURSION_LIMIT) {
-    cerror(global, ERROR_RECURSIVE_MACRO, tokenp->name, global->macro->name);
+    fpp_cerror(global, ERROR_RECURSIVE_MACRO, tokenp->name, global->macro->name);
     if (global->rec_recover) {
       do {
 	c = fpp_get(global);
@@ -434,7 +434,7 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
      * Nothing funny about this macro.
      */
     if (tokenp->nargs < 0) {
-      cfatal(global, FATAL_ILLEGAL_MACRO, tokenp->name);
+      fpp_cfatal(global, FATAL_ILLEGAL_MACRO, tokenp->name);
       return(FPP_ILLEGAL_MACRO);
     }
     while ((c = skipws(global)) == '\n')      /* Look for (, skipping */
@@ -448,14 +448,14 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
        * just write foo to the output stream.
        */
       fpp_unget(global);
-      cwarn(global, WARN_MACRO_NEEDS_ARGUMENTS, tokenp->name);
+      fpp_cwarn(global, WARN_MACRO_NEEDS_ARGUMENTS, tokenp->name);
 
       /* fputs(tokenp->name, stdout); */
       fpp_Putstring(global, tokenp->name);
       return(FPP_OK);
     } else if (!(ret=expcollect(global))) {     /* Collect arguments    */
       if (tokenp->nargs != global->nargs) {     /* Should be an error?  */
-	cwarn(global, WARN_WRONG_NUMBER_ARGUMENTS, tokenp->name);
+	fpp_cwarn(global, WARN_WRONG_NUMBER_ARGUMENTS, tokenp->name);
       }
     } else {				/* Collect arguments		*/
       return(ret); /* We failed in argument colleting! */
@@ -490,13 +490,13 @@ ReturnCode expcollect(struct Global *global)
       break;			    /* Exit collection loop */
     }
     else if (global->nargs >= LASTPARM) {
-      cfatal(global, FATAL_TOO_MANY_ARGUMENTS_EXPANSION);
+      fpp_cfatal(global, FATAL_TOO_MANY_ARGUMENTS_EXPANSION);
       return(FPP_TOO_MANY_ARGUMENTS);
     }
     global->parlist[global->nargs++] = global->parmp; /* At start of new arg */
     for (;; c = fpp_cget(global)) {               /* Collect arg's bytes  */
       if (c == EOF_CHAR) {
-	cerror(global, ERROR_EOF_IN_ARGUMENT);
+	fpp_cerror(global, ERROR_EOF_IN_ARGUMENT);
 	return(FPP_EOF_IN_MACRO); /* Sorry.               */
       }
       else if (c == '\\') {             /* Quote next character */
@@ -599,7 +599,7 @@ ReturnCode expstuff(struct Global *global,
 	  }
 #endif
 	  if ((defp + size) >= defend) {
-	    cfatal(global, FATAL_OUT_OF_SPACE_IN_ARGUMENT, MacroName);
+	    fpp_cfatal(global, FATAL_OUT_OF_SPACE_IN_ARGUMENT, MacroName);
 	    return(FPP_OUT_OF_SPACE_IN_MACRO_EXPANSION);
 	  }
 	  /*
@@ -620,7 +620,7 @@ else {
 	}
       }
       else if (defp >= defend) {
-	cfatal(global, FATAL_OUT_OF_SPACE_IN_ARGUMENT, MacroName);
+	fpp_cfatal(global, FATAL_OUT_OF_SPACE_IN_ARGUMENT, MacroName);
 	return(FPP_OUT_OF_SPACE_IN_MACRO_EXPANSION);
       } else
 	*defp++ = c;

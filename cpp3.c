@@ -165,7 +165,7 @@ int dooptions(struct Global *global, struct fppTag *tags)
       break;
     case FPPTAG_INCLUDE_DIR:
       if (global->incend >= &global->incdir[NINCLUDE]) {
-          cfatal(global, FATAL_TOO_MANY_INCLUDE_DIRS);
+          fpp_cfatal(global, FATAL_TOO_MANY_INCLUDE_DIRS);
           return(FPP_TOO_MANY_INCLUDE_DIRS);
       }
       *global->incend++ = (char *)tags->data;
@@ -173,7 +173,7 @@ int dooptions(struct Global *global, struct fppTag *tags)
     case FPPTAG_INCLUDE_FILE:
     case FPPTAG_INCLUDE_MACRO_FILE:
       if (global->included >= NINCLUDE) {
-          cfatal(global, FATAL_TOO_MANY_INCLUDE_FILES);
+          fpp_cfatal(global, FATAL_TOO_MANY_INCLUDE_FILES);
           return(FPP_TOO_MANY_INCLUDE_FILES);
       }
       global->include[(unsigned)global->included] = (char *)tags->data;
@@ -225,14 +225,14 @@ int dooptions(struct Global *global, struct fppTag *tags)
           sizp++;
         }
         if (sizp->bits != endtest)
-          cwarn(global, WARN_TOO_FEW_VALUES_TO_SIZEOF, NULL);
+          fpp_cwarn(global, WARN_TOO_FEW_VALUES_TO_SIZEOF, NULL);
         else if (*text != EOS)
-          cwarn(global, WARN_TOO_MANY_VALUES_TO_SIZEOF, NULL);
+          fpp_cwarn(global, WARN_TOO_MANY_VALUES_TO_SIZEOF, NULL);
       }
       break;
     case FPPTAG_UNDEFINE:
       if (defendel(global, (char *)tags->data, FPP_TRUE) == NULL)
-        cwarn(global, WARN_NOT_DEFINED, tags->data);
+        fpp_cwarn(global, WARN_NOT_DEFINED, tags->data);
       break;
     case FPPTAG_OUTPUT_DEFINES:
       global->wflag++;
@@ -269,7 +269,7 @@ int dooptions(struct Global *global, struct fppTag *tags)
       global->allowincludelocal=(tags->data?1:0);
       break;
     default:
-      cwarn(global, WARN_INTERNAL_ERROR, NULL);
+      fpp_cwarn(global, WARN_INTERNAL_ERROR, NULL);
       break;
     }
     tags++;

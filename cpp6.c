@@ -69,7 +69,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  *              instring is -- essentially -- a parameter to fpp_get().
  * fpp_cget()       Like fpp_get(), but skip over TOK_SEP.
  * fpp_unget()      Push last gotten character back on the input stream.
- * cerror()     This routine format an print messages to the user.
+ * fpp_cerror()     This routine format an print messages to the user.
  */
 
 /*
@@ -235,7 +235,7 @@ int fpp_catenate(struct Global *global, int lhs_number, ReturnCode *ret)
     switch(type[c]) {                   /* What was it?         */
     case LET:                           /* An identifier, ...   */
       if ((int)strlen(token1) + (int)strlen(global->tokenbuf) >= NWORK) {
-        cfatal(global, FATAL_WORK_AREA_OVERFLOW, token1);
+        fpp_cfatal(global, FATAL_WORK_AREA_OVERFLOW, token1);
         *ret=FPP_WORK_AREA_OVERFLOW;
         return(FPP_FALSE);
       }
@@ -254,9 +254,9 @@ int fpp_catenate(struct Global *global, int lhs_number, ReturnCode *ret)
       break;
     default:                            /* An error, ...        */
       if (isprint(c))
-        cerror(global, ERROR_STRANG_CHARACTER, c);
+        fpp_cerror(global, ERROR_STRANG_CHARACTER, c);
       else
-        cerror(global, ERROR_STRANG_CHARACTER2, c);
+        fpp_cerror(global, ERROR_STRANG_CHARACTER2, c);
       strcpy(global->work, token1);
       fpp_unget(global);
       break;
@@ -315,7 +315,7 @@ ReturnCode scanstring(struct Global *global,
     ret=(*outfun)(global, c);
     return(ret);
   } else {
-    cerror(global, ERROR_UNTERMINATED_STRING);
+    fpp_cerror(global, ERROR_UNTERMINATED_STRING);
     fpp_unget(global);
     return(FPP_UNTERMINATED_STRING);
   }
@@ -465,7 +465,7 @@ ReturnCode scannumber(struct Global *global,
   fpp_unget(global);                         /* Not part of a number */
   if(!(global->webmode)) {
     if (octal89 && radix == 8)
-      cwarn(global, WARN_ILLEGAL_OCTAL);
+      fpp_cwarn(global, WARN_ILLEGAL_OCTAL);
   }
   return(FPP_OK);
 }
@@ -473,7 +473,7 @@ ReturnCode scannumber(struct Global *global,
 ReturnCode save(struct Global *global, int c)
 {
   if (global->workp >= &global->work[NWORK]) {
-    cfatal(global, FATAL_WORK_BUFFER_OVERFLOW);
+    fpp_cfatal(global, FATAL_WORK_BUFFER_OVERFLOW);
     return(FPP_WORK_AREA_OVERFLOW);
   } else
     *global->workp++ = c;
@@ -854,7 +854,7 @@ int fpp_get(struct Global *global)
         fpp_Putchar(global, c);
       switch (c) {
       case EOF_CHAR:
-        cerror(global, ERROR_EOF_IN_COMMENT);
+        fpp_cerror(global, ERROR_EOF_IN_COMMENT);
         return (EOF_CHAR);
 
       case '/':
@@ -862,7 +862,7 @@ int fpp_get(struct Global *global)
           if((c = fpp_get(global)) != '*')
             goto test;
           if(global->warnnestcomments) {
-            cwarn(global, WARN_NESTED_COMMENT);
+            fpp_cwarn(global, WARN_NESTED_COMMENT);
           }
           if(global->nestcomments)
             comments++;
@@ -941,7 +941,7 @@ void fpp_unget(struct Global *global)
   if ((file = global->infile) == NULL)
     return;                     /* Unget after EOF            */
   if (--file->bptr < file->buffer) {
-    cfatal(global, FATAL_TOO_MUCH_PUSHBACK);
+    fpp_cfatal(global, FATAL_TOO_MUCH_PUSHBACK);
     /* This happens only if used the wrong way! */
     return;
   }
@@ -1116,7 +1116,7 @@ void domsg(struct Global *global,
     global->errors++;
 }
 
-void cerror(struct Global *global,
+void fpp_cerror(struct Global *global,
             ErrorCode message,
             ...)        /* arguments    */
 {

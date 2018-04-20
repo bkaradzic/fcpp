@@ -361,8 +361,8 @@ typedef enum {
 } ReturnCode;
 
 /* Nasty defines to make them appear as three different functions! */
-#define cwarn cerror
-#define cfatal cerror 
+#define fpp_cwarn fpp_cerror
+#define fpp_cfatal fpp_cerror 
 
 
 /**********************************************************************
@@ -377,7 +377,7 @@ void fpp_Putint(struct Global *, int);
 char *fpp_savestring(struct Global *, char *);
 ReturnCode fpp_addfile(struct Global *, FILE *, char *);
 int fpp_catenate(struct Global *, int lhs_number, ReturnCode *);
-void cerror(struct Global *, ErrorCode, ...);
+void fpp_cerror(struct Global *, ErrorCode, ...);
 ReturnCode control(struct Global *, int *);
 ReturnCode dodefine(struct Global *);
 int dooptions(struct Global *, struct fppTag *);

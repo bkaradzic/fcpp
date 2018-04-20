@@ -138,9 +138,9 @@ int fppPreProcess(struct fppTag *tags)
     ret=cppmain(global);             /* Process main file            */
   if ((i = (global->ifptr - global->ifstack)) != 0) {
 #if OLD_PREPROCESSOR
-    cwarn(global, ERROR_IFDEF_DEPTH, i);
+    fpp_cwarn(global, ERROR_IFDEF_DEPTH, i);
 #else
-    cerror(global, ERROR_IFDEF_DEPTH, i);
+    fpp_cerror(global, ERROR_IFDEF_DEPTH, i);
 #endif
   }
   fflush(stdout);
@@ -481,13 +481,13 @@ ReturnCode cppmain(struct Global *global)
 
   if(global->showbalance) {
     if(bracketlevel) {
-      cwarn(global, WARN_BRACKET_DEPTH, bracketlevel);
+      fpp_cwarn(global, WARN_BRACKET_DEPTH, bracketlevel);
     }
     if(parenlevel) {
-      cwarn(global, WARN_PAREN_DEPTH, parenlevel);
+      fpp_cwarn(global, WARN_PAREN_DEPTH, parenlevel);
     }
     if(bracelevel) {
-      cwarn(global, WARN_BRACE_DEPTH, bracelevel);
+      fpp_cwarn(global, WARN_BRACE_DEPTH, bracelevel);
     }
   }
   if (global->wflag) {
