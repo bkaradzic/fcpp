@@ -122,6 +122,7 @@ int fppPreProcess(struct fppTag *tags)
   global->rightconcat = FALSE;
   global->work[0] = '\0';
   global->initialfunc = NULL;
+  global->allowincludelocal = TRUE;
 
   memset(global->symtab, 0, SBSIZE * sizeof(DEFBUF *));
 

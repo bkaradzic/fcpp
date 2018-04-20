@@ -265,6 +265,9 @@ int dooptions(struct Global *global, struct fppTag *tags)
     case FPPTAG_WEBMODE:
       global->webmode=(tags->data?1:0);
       break;
+    case FPPTAG_ALLOW_INCLUDE_LOCAL:
+      global->allowincludelocal=(tags->data?1:0);
+      break;
     default:
       cwarn(global, WARN_INTERNAL_ERROR, NULL);
       break;

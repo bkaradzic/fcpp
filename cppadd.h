@@ -251,6 +251,8 @@ struct Global {
   char outputfunctions;  /* output all discovered functions to stderr! */
 
   char webmode; /* WWW process mode */
+
+  char allowincludelocal;
 };
 
 typedef enum {
