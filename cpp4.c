@@ -209,7 +209,7 @@ ReturnCode dodefine(struct Global *global)
   if (global->workp > global->work && global->workp[-1] == ' ') /* Drop trailing blank  */
     global->workp--;
   *global->workp = EOS;		/* Terminate work	*/
-  dp->repl = savestring(global, global->work); /* Save the string      */
+  dp->repl = fpp_savestring(global, global->work); /* Save the string      */
   dp->nargs = global->nargs;			/* Save arg count	*/
   if (isredefine) {                   /* Error if redefined   */
     if ((old != NULL && dp->repl != NULL && !streq(old, dp->repl))

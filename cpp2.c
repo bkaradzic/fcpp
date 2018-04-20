@@ -240,7 +240,7 @@ ReturnCode control( struct Global *global,
                     /* Give up the old name if it's allocated.   */
                     free( global->infile->progname );
 
-                global->infile->progname = savestring( global, tp );
+                global->infile->progname = fpp_savestring( global, tp );
                 }
 
             global->wrongline = FPP_TRUE;           /* Force output later   */

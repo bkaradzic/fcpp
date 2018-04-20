@@ -49,7 +49,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  *              calling the user-supplied function for each
  *              character.  (output() or save() as noted above.)
  * save()       Save one character in the work[] buffer.
- * savestring() Saves a string in malloc() memory.
+ * fpp_savestring() Saves a string in malloc() memory.
  * fpp_getfile()    Initialize a new FILEINFO structure, called when
  *              #include opens a new file, or a macro is to be
  *              expanded.
@@ -221,7 +221,7 @@ int catenate(struct Global *global, int lhs_number, ReturnCode *ret)
   }
   else {
     if (lhs_number == 0) { /* The lhs number has already been emit */ 
-      token1 = savestring(global, global->tokenbuf); /* Save first token     */
+      token1 = fpp_savestring(global, global->tokenbuf); /* Save first token     */
     }
     c= fpp_get(global);
     if(global->rightconcat) {
@@ -480,7 +480,7 @@ ReturnCode save(struct Global *global, int c)
   return(FPP_OK);
 }
 
-char *savestring(struct Global *global, char *text)
+char *fpp_savestring(struct Global *global, char *text)
 {
   /*
    * Store a string into free memory.
@@ -515,7 +515,7 @@ ReturnCode fpp_getfile(struct Global *global,
     return(FPP_OUT_OF_MEMORY);
   (*file)->parent = global->infile;             /* Chain files together */
   (*file)->fp = NULL;                           /* No file yet          */
-  (*file)->filename = savestring(global, name); /* Save file/macro name */
+  (*file)->filename = fpp_savestring(global, name); /* Save file/macro name */
   (*file)->progname = NULL;                     /* No #line seen yet    */
   (*file)->unrecur = 0;                         /* No macro fixup       */
   (*file)->bptr = (*file)->buffer;              /* Initialize line ptr  */

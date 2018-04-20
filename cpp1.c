@@ -584,7 +584,7 @@ void sharp(struct Global *global)
         || (global->sharpfilename != NULL && !streq(name, global->sharpfilename))) {
       if (global->sharpfilename != NULL)
         free(global->sharpfilename);
-      global->sharpfilename = savestring(global, name);
+      global->sharpfilename = fpp_savestring(global, name);
       /* printf(" \"%s\"", name); */
       fpp_Putstring(global, " \"");
       fpp_Putstring(global, name);

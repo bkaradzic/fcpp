@@ -156,7 +156,7 @@ int dooptions(struct Global *global, struct fppTag *tags)
         dp = defendel(global, symbol, FPP_FALSE);
         if(!dp)
           return(FPP_OUT_OF_MEMORY);
-        dp->repl = savestring(global, text);
+        dp->repl = fpp_savestring(global, text);
         dp->nargs = DEF_NOARGS;
       }
       break;
@@ -313,7 +313,7 @@ ReturnCode initdefines(struct Global *global)
         dp = defendel(global, *pp, FPP_FALSE);
         if(!dp)
           return(FPP_OUT_OF_MEMORY);
-        dp->repl = savestring(global, "1");
+        dp->repl = fpp_savestring(global, "1");
         dp->nargs = DEF_NOARGS;
       }
     }
