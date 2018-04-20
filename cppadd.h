@@ -392,7 +392,7 @@ void scanid(struct Global *, int);
 ReturnCode scannumber(struct Global *, int, ReturnCode(*)(struct Global *, int));
 ReturnCode scanstring(struct Global *, int, ReturnCode(*)(struct Global *, int));
 void fpp_unget(struct Global *);
-ReturnCode ungetstring(struct Global *, char *);
+ReturnCode fpp_ungetstring(struct Global *, char *);
 ReturnCode eval(struct Global *, int *);
 #ifdef  DEBUG_EVAL
 void dumpstack(OPTAB[NEXP], register OPTAB *, int [NEXP], register int *);

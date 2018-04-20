@@ -396,7 +396,7 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
 		  break;
 	      }
 	  }
-      ret=ungetstring(global, global->work);
+      ret=fpp_ungetstring(global, global->work);
       if(ret)
 	  return(ret);
       break;
@@ -406,7 +406,7 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
       if (file->fp != NULL) {
 	sprintf(global->work, "\"%s\"", (file->progname != NULL)
 		? file->progname : file->filename);
-	ret=ungetstring(global, global->work);
+	ret=fpp_ungetstring(global, global->work);
 	if(ret)
 	  return(ret);
 	break;
@@ -417,14 +417,14 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
   case (-4):				/* __FUNC__ */
     sprintf(global->work, "\"%s\"", global->functionname[0]?
 	    global->functionname : "<unknown function>");
-    ret=ungetstring(global, global->work);
+    ret=fpp_ungetstring(global, global->work);
     if(ret)
 	return(ret);
     break;
 
   case (-5):                              /* __FUNC_LINE__ */
     sprintf(global->work, "%d", global->funcline);
-    ret=ungetstring(global, global->work);
+    ret=fpp_ungetstring(global, global->work);
     if(ret)
       return(ret);
     break;

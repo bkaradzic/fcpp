@@ -270,7 +270,7 @@ int catenate(struct Global *global, int lhs_number, ReturnCode *ret)
     if (lhs_number == 0) {
       free(token1);                            /* Free up memory       */
     }
-    *ret=ungetstring(global, global->work);  /* Unget the new thing, */
+    *ret=fpp_ungetstring(global, global->work);  /* Unget the new thing, */
     if(*ret)
       return(FPP_FALSE);
     return(FPP_TRUE);
@@ -934,7 +934,7 @@ void fpp_unget(struct Global *global)
    * Backup the pointer to reread the last character.  Fatal error
    * (code bug) if we backup too far.  fpp_unget() may be called,
    * without problems, at end of file.  Only one character may
-   * be ungotten.  If you need to unget more, call ungetstring().
+   * be ungotten.  If you need to unget more, call fpp_ungetstring().
    */
 
   FILEINFO *file;
@@ -949,7 +949,7 @@ void fpp_unget(struct Global *global)
     --global->line;                     /* Unget the line number, too */
 }
 
-ReturnCode ungetstring(struct Global *global, char *text)
+ReturnCode fpp_ungetstring(struct Global *global, char *text)
 {
   /*
    * Push a string back on the input stream.  This is done by treating
