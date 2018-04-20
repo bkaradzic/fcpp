@@ -451,7 +451,7 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
       cwarn(global, WARN_MACRO_NEEDS_ARGUMENTS, tokenp->name);
 
       /* fputs(tokenp->name, stdout); */
-      Putstring(global, tokenp->name);
+      fpp_Putstring(global, tokenp->name);
       return(FPP_OK);
     } else if (!(ret=expcollect(global))) {     /* Collect arguments    */
       if (tokenp->nargs != global->nargs) {     /* Should be an error?  */

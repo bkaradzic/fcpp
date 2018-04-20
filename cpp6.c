@@ -645,32 +645,32 @@ void outadefine(struct Global *global, DEFBUF *dp)
   int c;
 
   /* printf("#define %s", dp->name); */
-  Putstring(global, "#define ");
-  Putstring(global, dp->name);
+  fpp_Putstring(global, "#define ");
+  fpp_Putstring(global, dp->name);
 
   if (dp->nargs > 0) {
     int i;
     fpp_Putchar(global, '(');
     for (i = 1; i < dp->nargs; i++) {
       /* printf("__%d,", i); */
-      Putstring(global, "__");
+      fpp_Putstring(global, "__");
       Putint(global, i);
       fpp_Putchar(global, ',');
     }
     /* printf("__%d)", i); */
-    Putstring(global, "__");
+    fpp_Putstring(global, "__");
     Putint(global, i);
     fpp_Putchar(global, ')');
 
   } else if (dp->nargs == 0) {
-    Putstring(global, "()");
+    fpp_Putstring(global, "()");
   }
   if (dp->repl != NULL) {
     fpp_Putchar(global, '\t');
     for (cp = dp->repl; (c = *cp++ & 0xFF) != EOS;) {
       if (c >= MAC_PARM && c < (MAC_PARM + PAR_MAC)) {
         /* printf("__%d", c - MAC_PARM + 1); */
-        Putstring(global, "__");
+        fpp_Putstring(global, "__");
         Putint(global, c - MAC_PARM + 1);
       } else if (isprint(c) || c == '\t' || c == '\n')
         fpp_Putchar(global, c);
@@ -683,20 +683,20 @@ void outadefine(struct Global *global, DEFBUF *dp)
         break;
       case COM_SEP:
 #if COMMENT_INVISIBLE
-        Putstring(global, "/**/");
+        fpp_Putstring(global, "/**/");
 #else
         fpp_Putchar(global, ' ');
 #endif
         break;
       case TOK_SEP:
-        Putstring(global, "##");
+        fpp_Putstring(global, "##");
         break;
       default:
         {
           /* Octal output! */
           char buffer[32];
           sprintf(buffer, "\\0%o", c);
-          Putstring(global, buffer);
+          fpp_Putstring(global, buffer);
         }
       }
     }
@@ -824,7 +824,7 @@ int fpp_get(struct Global *global)
       if(global->showspace) {
         /* Show all whitespaces! */
         global->spacebuf[global->chpos] = '\0';
-        Putstring(global, global->spacebuf);
+        fpp_Putstring(global, global->spacebuf);
       }
 
       if(c=='*') {

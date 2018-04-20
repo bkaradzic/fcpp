@@ -281,7 +281,7 @@ ReturnCode cppmain(struct Global *global)
     if(global->showspace) {
       /* Show all whitespaces! */
       global->spacebuf[global->chpos] = '\0';
-      Putstring(global, global->spacebuf);
+      fpp_Putstring(global, global->spacebuf);
     }
     
     /*
@@ -308,7 +308,7 @@ ReturnCode cppmain(struct Global *global)
 	    fpp_Putchar(global, (int)' ');/* Output one space     */
 	  else {
 	    global->spacebuf[global->chpos] = '\0';
-	    Putstring(global, global->spacebuf); /* Output all whitespaces */
+	    fpp_Putstring(global, global->spacebuf); /* Output all whitespaces */
 	  }
 	}
 	if((ret=macroid(global, &c)))   /* Grab the token       */
@@ -324,7 +324,7 @@ ReturnCode cppmain(struct Global *global)
       case LET:
 	go =0;
 	/* Quite ordinary token */
-	Putstring(global, global->tokenbuf);
+	fpp_Putstring(global, global->tokenbuf);
 	
 	if(!define) {
 	  /* Copy the name */
@@ -530,7 +530,7 @@ void fpp_Putchar(struct Global *global, int c)
 #endif
 }
 
-void Putstring(struct Global *global, char *string)
+void fpp_Putstring(struct Global *global, char *string)
 {
   /*
    * Output a string! One letter at a time to the fpp_Putchar routine!
@@ -573,7 +573,7 @@ void sharp(struct Global *global)
 
   fpp_Putchar(global, '#');
   if(global->outputLINE)
-          Putstring(global, LINE_PREFIX);
+          fpp_Putstring(global, LINE_PREFIX);
   fpp_Putchar(global, ' ');
   Putint(global, global->line);
 
@@ -586,8 +586,8 @@ void sharp(struct Global *global)
         free(global->sharpfilename);
       global->sharpfilename = savestring(global, name);
       /* printf(" \"%s\"", name); */
-      Putstring(global, " \"");
-      Putstring(global, name);
+      fpp_Putstring(global, " \"");
+      fpp_Putstring(global, name);
       fpp_Putchar(global, '\"');
     }
   }

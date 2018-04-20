@@ -388,7 +388,7 @@ ReturnCode control( struct Global *global,
              * #pragma is provided to pass "options" to later
              * passes of the compiler.  cpp doesn't have any yet.
              */
-            Putstring( global, "#pragma " );
+            fpp_Putstring( global, "#pragma " );
 
             while( (c = fpp_get( global ) ) != '\n' && c != EOF_CHAR )
                 fpp_Putchar( global, c );
@@ -410,7 +410,7 @@ ReturnCode control( struct Global *global,
                 cwarn( global, WARN_ILLEGAL_COMMAND, global->tokenbuf );
 
             fpp_Putchar( global, '#' );
-            Putstring( global, global->tokenbuf );
+            fpp_Putstring( global, global->tokenbuf );
             fpp_Putchar( global, ' ' );
 
             while( (c = fpp_get( global ) ) != '\n' && c != EOF_CHAR )
