@@ -86,7 +86,7 @@ ReturnCode control( struct Global *global,
         scanid( global, c );                  /* Get #word to tokenbuf        */
     else
         {
-        unget( global );                    /* Hack -- allow #123 as a      */
+        fpp_unget( global );                    /* Hack -- allow #123 as a      */
 
         strcpy( global->tokenbuf, "line" );   /* synonym for #line 123        */
         }
@@ -211,7 +211,7 @@ ReturnCode control( struct Global *global,
                 c = fpp_get( global );
                 }
 
-            unget( global );
+            fpp_unget( global );
 
             if( (ret = save( global, EOS )) )
                 return(ret);
@@ -393,7 +393,7 @@ ReturnCode control( struct Global *global,
             while( (c = fpp_get( global ) ) != '\n' && c != EOF_CHAR )
                 Putchar( global, c );
 
-            unget( global );
+            fpp_unget( global );
 
             Putchar( global, '\n' );
 
@@ -416,7 +416,7 @@ ReturnCode control( struct Global *global,
             while( (c = fpp_get( global ) ) != '\n' && c != EOF_CHAR )
                 Putchar( global, c );
 
-            unget( global );
+            fpp_unget( global );
 
             Putchar( global, '\n' );
 
@@ -475,14 +475,14 @@ ReturnCode doif(struct Global *global, int hash)
 
     if( (c = skipws( global ) ) == '\n' || c == EOF_CHAR )
         {
-        unget( global );
+        fpp_unget( global );
 
         cerror( global, ERROR_MISSING_ARGUMENT );
 
         #if !OLD_PREPROCESSOR
         skipnl( global );               /* Prevent an extra     */
 
-        unget( global );                /* Error message        */
+        fpp_unget( global );                /* Error message        */
         #endif
 
         return(FPP_OK);
@@ -490,7 +490,7 @@ ReturnCode doif(struct Global *global, int hash)
 
     if( hash == L_if )
         {
-        unget( global );
+        fpp_unget( global );
 
         ret = eval( global, &found );
 
@@ -511,7 +511,7 @@ ReturnCode doif(struct Global *global, int hash)
             #if !OLD_PREPROCESSOR
             skipnl( global );             /* Prevent an extra     */
 
-            unget( global );              /* Error message        */
+            fpp_unget( global );              /* Error message        */
             #endif
 
             return(FPP_OK);
@@ -578,7 +578,7 @@ ReturnCode doinclude( struct Global *global )
         if( (ret = save( global, c )) )       /* Put it away.                */
             return( ret );
 
-    unget( global );                        /* Force nl after include      */
+    fpp_unget( global );                        /* Force nl after include      */
 
     /*
      * The draft is unclear if the following should be done.

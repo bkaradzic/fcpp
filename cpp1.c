@@ -287,7 +287,7 @@ ReturnCode cppmain(struct Global *global)
     /*
      * Process each token on this line.
      */
-    unget(global);                      /* Reread the char.     */
+    fpp_unget(global);                      /* Reread the char.     */
     for (;;) {                          /* For the whole line,  */
       do {                              /* Token concat. loop   */
 	for (global->chpos = counter = 0; (type[(c = fpp_get(global))] == SPA);) {

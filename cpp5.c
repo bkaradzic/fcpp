@@ -397,7 +397,7 @@ ReturnCode evallex(struct Global *global,
       if((ret=macroid(global, &c)))
       return(ret);
       if (c == EOF_CHAR || c == '\n') {
-	unget(global);
+	fpp_unget(global);
 	*op=OP_EOE;           /* End of expression    */
 	return(FPP_OK);
       }
@@ -465,7 +465,7 @@ else if (streq(global->tokenbuf, "sizeof")) { /* New sizeof hackery   */
 	
       case '=':
 	if (c1 != '=') {                  /* Can't say a=b in #if */
-	  unget(global);
+	  fpp_unget(global);
 	  cerror(global, ERROR_ILLEGAL_ASSIGN);
 	  return (FPP_IF_ERROR);
 	}
@@ -500,7 +500,7 @@ else if (streq(global->tokenbuf, "sizeof")) { /* New sizeof hackery   */
 	return(FPP_IF_ERROR);
       }
       if(!loop)
-	unget(global);
+	fpp_unget(global);
     }
   } while(loop);
   *op=t;
@@ -526,7 +526,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
   ReturnCode ret;
   
   if ((c = skipws(global)) != '(') {
-    unget(global);
+    fpp_unget(global);
     cerror(global, ERROR_SIZEOF_SYNTAX);
     return(FPP_SIZEOF_ERROR);
   }
@@ -540,22 +540,22 @@ ReturnCode dosizeof(struct Global *global, int *result)
     /* (I) return on fail! */
     if (c  == EOF_CHAR || c == '\n') {
       /* End of line is a bug */
-      unget(global);
+      fpp_unget(global);
       cerror(global, ERROR_SIZEOF_SYNTAX);
       return(FPP_SIZEOF_ERROR);
     } else if (c == '(') {                /* thing (*)() func ptr */
       if (skipws(global) == '*'
 	  && skipws(global) == ')') {         /* We found (*)         */
 	if (skipws(global) != '(')            /* Let () be optional   */
-	  unget(global);
+	  fpp_unget(global);
 	else if (skipws(global) != ')') {
-	  unget(global);
+	  fpp_unget(global);
 	  cerror(global, ERROR_SIZEOF_SYNTAX);
 	  return(FPP_SIZEOF_ERROR);
 	}
 	typecode |= T_FPTR; 		/* Function pointer	*/
       } else {				/* Junk is a bug	*/
-	unget(global);
+	fpp_unget(global);
 	cerror(global, ERROR_SIZEOF_SYNTAX);
 	return(FPP_SIZEOF_ERROR);
       }
@@ -626,7 +626,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
     cerror(global, ERROR_SIZEOF_BUG, typecode);
     return(FPP_SIZEOF_ERROR);
   }
-  unget(global);
+  fpp_unget(global);
   cerror(global, ERROR_SIZEOF_SYNTAX);
   return(FPP_SIZEOF_ERROR);
 }
@@ -685,7 +685,7 @@ int evalnum(struct Global *global, int c)
   }
   if (c == 'u' || c == 'U')       /* Unsigned nonsense            */
     c = fpp_cget(global);
-  unget(global);
+  fpp_unget(global);
   return (value);
 }
 
@@ -749,7 +749,7 @@ int evalchar(struct Global *global,
 	value *= 16;
 	value += (c <= '9') ? (c - '0') : ((c & 0xF) + 9);
       }
-      unget(global);
+      fpp_unget(global);
       break;
       
     default:
@@ -761,7 +761,7 @@ int evalchar(struct Global *global,
 	  value += (c - '0');
 	  c = fpp_get(global);
 	}
-	unget(global);
+	fpp_unget(global);
       } else
 	value = c;
       break;

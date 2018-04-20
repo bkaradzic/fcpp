@@ -205,7 +205,7 @@ ReturnCode dodefine(struct Global *global)
     /* preceding a formal	*/
   }
   global->inmacro = FPP_FALSE;		/* Stop newline hack	*/
-  unget(global);                            /* For control check    */
+  fpp_unget(global);                            /* For control check    */
   if (global->workp > global->work && global->workp[-1] == ' ') /* Drop trailing blank  */
     global->workp--;
   *global->workp = EOS;		/* Terminate work	*/
@@ -373,7 +373,7 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
       do {
 	c = fpp_get(global);
       } while (global->infile != NULL && global->infile->fp == NULL);
-      unget(global);
+      fpp_unget(global);
       global->recursion = 0;
       return(FPP_OK);
     }
@@ -447,7 +447,7 @@ ReturnCode expand(struct Global *global, DEFBUF *tokenp)
        *	foo [no ()]
        * just write foo to the output stream.
        */
-      unget(global);
+      fpp_unget(global);
       cwarn(global, WARN_MACRO_NEEDS_ARGUMENTS, tokenp->name);
 
       /* fputs(tokenp->name, stdout); */
@@ -514,7 +514,7 @@ ReturnCode expcollect(struct Global *global)
 	paren++;			/* To know about commas */
       else if (c == ')') {              /* Other side too       */
 	if (paren == 0) {               /* At the end?          */
-	  unget(global);                /* Look at it later     */
+	  fpp_unget(global);                /* Look at it later     */
 	  break;			/* Exit arg getter.     */
 	}
 	paren--;			/* More to come.        */

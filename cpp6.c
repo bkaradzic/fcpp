@@ -68,7 +68,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  *              comments appropriately.  Note that the global
  *              instring is -- essentially -- a parameter to fpp_get().
  * fpp_cget()       Like fpp_get(), but skip over TOK_SEP.
- * unget()      Push last gotten character back on the input stream.
+ * fpp_unget()      Push last gotten character back on the input stream.
  * cerror()     This routine format an print messages to the user.
  */
 
@@ -174,7 +174,7 @@ void scanid(struct Global *global,
       c = fpp_get(global);
     }
   while (type[c] == LET || type[c] == DIG);
-  unget(global);
+  fpp_unget(global);
   global->tokenbuf[ct] = EOS;
 }
 
@@ -205,7 +205,7 @@ int catenate(struct Global *global, int lhs_number, ReturnCode *ret)
    * A token was just read (via macroid).
    * If the next character is TOK_SEP, concatenate the next token
    * return FPP_TRUE -- which should recall macroid after refreshing
-   * macroid's argument.  If it is not TOK_SEP, unget() the character
+   * macroid's argument.  If it is not TOK_SEP, fpp_unget() the character
    * and return FPP_FALSE.
    */
 
@@ -216,7 +216,7 @@ int catenate(struct Global *global, int lhs_number, ReturnCode *ret)
 
 #if OK_CONCAT
   if (fpp_get(global) != TOK_SEP) {                 /* Token concatenation  */
-    unget(global);
+    fpp_unget(global);
     return (FPP_FALSE);
   }
   else {
@@ -258,7 +258,7 @@ int catenate(struct Global *global, int lhs_number, ReturnCode *ret)
       else
         cerror(global, ERROR_STRANG_CHARACTER2, c);
       strcpy(global->work, token1);
-      unget(global);
+      fpp_unget(global);
       break;
     }
     /*
@@ -316,7 +316,7 @@ ReturnCode scanstring(struct Global *global,
     return(ret);
   } else {
     cerror(global, ERROR_UNTERMINATED_STRING);
-    unget(global);
+    fpp_unget(global);
     return(FPP_UNTERMINATED_STRING);
   }
 }
@@ -348,7 +348,7 @@ ReturnCode scannumber(struct Global *global,
     if(ret)
       return(ret);
     if (type[(c = fpp_get(global))] != DIG) { /* If not a float numb, */
-      unget(global);                    /* Rescan strange char  */
+      fpp_unget(global);                    /* Rescan strange char  */
       return(FPP_OK);                   /* All done for now     */
     }
   }                                     /* End of float test    */
@@ -462,7 +462,7 @@ ReturnCode scannumber(struct Global *global,
       c = fpp_get(global);                /* Look at next, too.   */
     }
   }
-  unget(global);                         /* Not part of a number */
+  fpp_unget(global);                         /* Not part of a number */
   if(!(global->webmode)) {
     if (octal89 && radix == 8)
       cwarn(global, WARN_ILLEGAL_OCTAL);
@@ -557,7 +557,7 @@ DEFBUF *lookid(struct Global *global,
     nhash += c;                         /* Update hash value    */
     c = fpp_get(global);
   }  while (type[c] == LET || type[c] == DIG);
-  unget(global);                        /* Rescan terminator    */
+  fpp_unget(global);                        /* Rescan terminator    */
   global->tokenbuf[ct] = EOS;           /* Terminate token      */
   if (isrecurse)                        /* Recursive definition */
     return(NULL);                       /* undefined just now   */
@@ -812,7 +812,7 @@ int fpp_get(struct Global *global)
     if ( (c = fpp_get(global)) != '*' )
       if(!global->cplusplus || (global->cplusplus && c!='/')) {
         global->instring = FPP_FALSE;       /* Nope, no comment     */
-        unget(global);                  /* Push the char. back  */
+        fpp_unget(global);                  /* Push the char. back  */
         return ('/');                   /* Return the slash     */
       }
 
@@ -920,7 +920,7 @@ int fpp_get(struct Global *global)
       global->wrongline = FPP_TRUE;
       goto newline;
     } else {                            /* Backslash anything   */
-      unget(global);                    /* Get it later         */
+      fpp_unget(global);                    /* Get it later         */
       return ('\\');                    /* Return the backslash */
     }
   } else if (c == '\f' || c == VT)      /* Form Feed, Vertical  */
@@ -928,11 +928,11 @@ int fpp_get(struct Global *global)
   return (c);                           /* Just return the char */
 }
 
-void unget(struct Global *global)
+void fpp_unget(struct Global *global)
 {
   /*
    * Backup the pointer to reread the last character.  Fatal error
-   * (code bug) if we backup too far.  unget() may be called,
+   * (code bug) if we backup too far.  fpp_unget() may be called,
    * without problems, at end of file.  Only one character may
    * be ungotten.  If you need to unget more, call ungetstring().
    */

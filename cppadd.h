@@ -391,7 +391,7 @@ ReturnCode save(struct Global *, int);
 void scanid(struct Global *, int);
 ReturnCode scannumber(struct Global *, int, ReturnCode(*)(struct Global *, int));
 ReturnCode scanstring(struct Global *, int, ReturnCode(*)(struct Global *, int));
-void unget(struct Global *);
+void fpp_unget(struct Global *);
 ReturnCode ungetstring(struct Global *, char *);
 ReturnCode eval(struct Global *, int *);
 #ifdef  DEBUG_EVAL
