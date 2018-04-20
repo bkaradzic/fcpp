@@ -38,7 +38,7 @@ ReturnCode openfile(struct Global *global, char *filename)
   if ((fp = fopen(filename, "r")) == NULL)
     ret=FPP_OPEN_ERROR;
   else
-    ret=addfile(global, fp, filename);
+    ret=fpp_addfile(global, fp, filename);
 
   if(!ret && global->depends) {
 	global->depends(filename, global->userdata);
@@ -53,7 +53,7 @@ ReturnCode openfile(struct Global *global, char *filename)
   return(ret);
 }
 
-ReturnCode addfile(struct Global *global,
+ReturnCode fpp_addfile(struct Global *global,
                    FILE *fp,            /* Open file pointer */
                    char *filename)      /* Name of the file  */
 {
