@@ -60,15 +60,15 @@ ReturnCode addfile(struct Global *global,
   /*
    * Initialize tables for this open file.  This is called from openfile()
    * above (for #include files), and from the entry to cpp to open the main
-   * input file. It calls a common routine, getfile() to build the FILEINFO
-   * structure which is used to read characters. (getfile() is also called
+   * input file. It calls a common routine, fpp_getfile() to build the FILEINFO
+   * structure which is used to read characters. (fpp_getfile() is also called
    * to setup a macro replacement.)
    */
 
   FILEINFO *file;
   ReturnCode ret;
 
-  ret = getfile(global, NBUFF, filename, &file);
+  ret = fpp_getfile(global, NBUFF, filename, &file);
   if(ret)
     return(ret);
   file->fp = fp;                        /* Better remember FILE *       */

@@ -50,7 +50,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  *              character.  (output() or save() as noted above.)
  * save()       Save one character in the work[] buffer.
  * savestring() Saves a string in malloc() memory.
- * getfile()    Initialize a new FILEINFO structure, called when
+ * fpp_getfile()    Initialize a new FILEINFO structure, called when
  *              #include opens a new file, or a macro is to be
  *              expanded.
  * Getmem()     Get a specified number of bytes from malloc memory.
@@ -492,7 +492,7 @@ char *savestring(struct Global *global, char *text)
   return (result);
 }
 
-ReturnCode getfile(struct Global *global,
+ReturnCode fpp_getfile(struct Global *global,
                    size_t bufsize, /* Line or define buffer size   */
                    char *name,
                    FILEINFO **file) /* File or macro name string        */
@@ -959,7 +959,7 @@ ReturnCode fpp_ungetstring(struct Global *global, char *text)
   FILEINFO *file;
   ReturnCode ret;
 
-  ret = getfile(global, strlen(text) + 1, "", &file);
+  ret = fpp_getfile(global, strlen(text) + 1, "", &file);
   if(!ret)
     strcpy(file->buffer, text);
   return(ret);

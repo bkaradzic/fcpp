@@ -568,7 +568,7 @@ ReturnCode expstuff(struct Global *global,
   char quoting;	/* Quote macro argument */
 #endif
       
-  ret = getfile(global, NBUFF, MacroName, &file);
+  ret = fpp_getfile(global, NBUFF, MacroName, &file);
   if(ret)
     return(ret);
   inp = MacroReplace;			/* -> macro replacement */
