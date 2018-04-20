@@ -158,7 +158,7 @@ struct Global {
    */
   char  *include[NINCLUDE];
   char  includeshow[NINCLUDE]; /* show it or not! */
-  char  included;
+  unsigned  included;
 
   /*
    * This is the table used to predefine target machine and operating

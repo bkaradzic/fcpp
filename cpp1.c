@@ -176,7 +176,7 @@ ReturnCode cppmain(struct Global *global)
   char define = 0; /* probability of a function define phase in the program */
   char prev = 0; /* previous type */
   char go = 0;
-  char include = 0;
+  unsigned include = 0;
   char initfunc = 0;
 
   /* Initialize for reading tokens */
