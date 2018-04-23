@@ -35,6 +35,9 @@
  *
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 struct fppTag {
   int tag;
@@ -111,8 +114,8 @@ struct fppTag {
 /* Output the 'line' keyword on #line-lines? */
 #define FPPTAG_OUTPUTLINE 18 /* data is boolean, default is TRUE */
 
-/* Do not output the version information string */
-#define FPPTAG_IGNOREVERSION 19 /* data is boolean, default is FALSE */
+/* Output the version information string */
+#define FPPTAG_SHOWVERSION 19 /* data is boolean, default is TRUE */
 
 /* Output all included file names to stderr */
 #define FPPTAG_OUTPUTINCLUDES 20 /* data is boolean, default is FALSE */
@@ -159,4 +162,11 @@ struct fppTag {
 /* Depends function: */
 #define FPPTAG_DEPENDS 34 /* data is an depends funtion */
 
+/* Allow include "X" (rather than <X>) to search local files, default is TRUE */
+#define FPPTAG_ALLOW_INCLUDE_LOCAL 35
+
 int fppPreProcess(struct fppTag *);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif

@@ -158,7 +158,7 @@ struct Global {
    */
   char  *include[NINCLUDE];
   char  includeshow[NINCLUDE]; /* show it or not! */
-  char  included;
+  unsigned  included;
 
   /*
    * This is the table used to predefine target machine and operating
@@ -251,6 +251,8 @@ struct Global {
   char outputfunctions;  /* output all discovered functions to stderr! */
 
   char webmode; /* WWW process mode */
+
+  char allowincludelocal;
 };
 
 typedef enum {

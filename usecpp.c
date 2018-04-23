@@ -392,7 +392,7 @@ int SetOptions(int argc, char **argv, struct fppTag **tagptr)
         break;
 
       case 'V':			      /* do not output version */
-	(*tagptr)->tag = FPPTAG_IGNOREVERSION;
+	(*tagptr)->tag = FPPTAG_SHOWVERSION;
 	(*tagptr)->data= (void *)FALSE;
 	(*tagptr)++;
 	break;

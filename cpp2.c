@@ -635,7 +635,7 @@ ReturnCode openinclude( struct Global *global,
             return(FPP_OK);
         }
 
-    if( searchlocal )
+    if( searchlocal && global->allowincludelocal )
         {
         /*
          * Look in local directory first.

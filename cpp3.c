@@ -122,7 +122,7 @@ int dooptions(struct Global *global, struct fppTag *tags)
     case FPPTAG_OUTPUTINCLUDES:
       global->showincluded = tags->data?1:0;
       break;
-    case FPPTAG_IGNOREVERSION:
+    case FPPTAG_SHOWVERSION:
       global->showversion = tags->data?1:0;
       break;
     case FPPTAG_WARNILLEGALCPP:
@@ -264,6 +264,9 @@ int dooptions(struct Global *global, struct fppTag *tags)
       break;
     case FPPTAG_WEBMODE:
       global->webmode=(tags->data?1:0);
+      break;
+    case FPPTAG_ALLOW_INCLUDE_LOCAL:
+      global->allowincludelocal=(tags->data?1:0);
       break;
     default:
       cwarn(global, WARN_INTERNAL_ERROR, NULL);
