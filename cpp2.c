@@ -30,7 +30,7 @@ SOFTWARE.
 
 FILE_LOCAL void fpp_dump_line(struct Global *, int *);
 FILE_LOCAL ReturnCode fpp_doif(struct Global *, int);
-INLINE FILE_LOCAL ReturnCode doinclude(struct Global *);
+INLINE FILE_LOCAL ReturnCode fpp_doinclude(struct Global *);
 INLINE FILE_LOCAL int hasdirectory(char *, char *);
 
 
@@ -247,7 +247,7 @@ ReturnCode fpp_control( struct Global *global,
             break;
 
         case L_include:
-            ret = doinclude( global );
+            ret = fpp_doinclude( global );
             if( ret )
                 return(ret);
             break;
@@ -533,7 +533,7 @@ ReturnCode fpp_doif(struct Global *global, int hash)
 }
 
 INLINE FILE_LOCAL
-ReturnCode doinclude( struct Global *global )
+ReturnCode fpp_doinclude( struct Global *global )
 {
     /*
      *  Process the #include control line.
@@ -619,7 +619,7 @@ ReturnCode fpp_openinclude( struct Global *global,
 {
     /*
      * Actually open an include file.  This routine is only called from
-     * doinclude() above, but was written as a separate subroutine for
+     * fpp_doinclude() above, but was written as a separate subroutine for
      * programmer convenience.  It searches the list of directories
      * and actually opens the file, linking it into the list of
      * active files.  Returns ReturnCode. No error message is printed.

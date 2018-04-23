@@ -764,7 +764,7 @@ int fpp_get(struct Global *global)
         if ((global->infile = file->parent) != NULL) {
           /*
            * There is an "ungotten" newline in the current
-           * infile buffer (set there by doinclude() in
+           * infile buffer (set there by fpp_doinclude() in
            * cpp1.c).  Thus, we know that the mainline code
            * is skipping over blank lines and will do a
            * #line at its convenience.
