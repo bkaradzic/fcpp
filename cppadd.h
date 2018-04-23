@@ -395,7 +395,7 @@ void fpp_unget(struct Global *);
 ReturnCode fpp_ungetstring(struct Global *, char *);
 ReturnCode fpp_eval(struct Global *, int *);
 #ifdef  DEBUG_EVAL
-void dumpstack(OPTAB[NEXP], register OPTAB *, int [NEXP], register int *);
+void fpp_dumpstack(OPTAB[NEXP], register OPTAB *, int [NEXP], register int *);
 #endif
 void skipnl(struct Global *);
 int skipws(struct Global *);
