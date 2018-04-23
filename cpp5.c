@@ -673,7 +673,7 @@ int fpp_evalnum(struct Global *global, int c)
   for (;;) {
     c1 = c;
     if (isascii(c) && isupper(c1))
-      c1 = tolower(c1);
+      c1 = fpp_tolower(c1);
     if (c1 >= 'a')
       c1 -= ('a' - 10);
     else c1 -= '0';

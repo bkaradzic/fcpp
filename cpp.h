@@ -38,9 +38,9 @@
 #ifndef fpp_toupper
 #define fpp_toupper(c) ((c) + ('A' - 'a'))
 #endif /* no fpp_toupper */
-#ifndef tolower
-#define tolower(c) ((c) + ('a' - 'A'))
-#endif /* no tolower */
+#ifndef fpp_tolower
+#define fpp_tolower(c) ((c) + ('a' - 'A'))
+#endif /* no fpp_tolower */
 
 #ifndef FPP_TRUE
 #define FPP_TRUE		1
