@@ -36,7 +36,7 @@ void __stdargs _XCEXIT(long a) { return; }
 
 FILE_LOCAL ReturnCode fpp_output(struct Global *, int); /* Output one character */
 FILE_LOCAL void sharp(struct Global *);
-INLINE FILE_LOCAL ReturnCode cppmain(struct Global *);
+INLINE FILE_LOCAL ReturnCode fpp_cppmain(struct Global *);
 
 int fppPreProcess(struct fppTag *tags)
 {
@@ -135,7 +135,7 @@ int fppPreProcess(struct fppTag *tags)
   global->out = global->outputfile;
 
   if(!ret)
-    ret=cppmain(global);             /* Process main file            */
+    ret=fpp_cppmain(global);             /* Process main file            */
   if ((i = (global->ifptr - global->ifstack)) != 0) {
 #if OLD_PREPROCESSOR
     fpp_cwarn(global, ERROR_IFDEF_DEPTH, i);
@@ -152,7 +152,7 @@ int fppPreProcess(struct fppTag *tags)
 }
 
 INLINE FILE_LOCAL
-ReturnCode cppmain(struct Global *global)
+ReturnCode fpp_cppmain(struct Global *global)
 {
   /*
    * Main process for cpp -- copies tokens from the current input
