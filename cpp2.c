@@ -31,7 +31,7 @@ SOFTWARE.
 FILE_LOCAL void fpp_dump_line(struct Global *, int *);
 FILE_LOCAL ReturnCode fpp_doif(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode fpp_doinclude(struct Global *);
-INLINE FILE_LOCAL int hasdirectory(char *, char *);
+INLINE FILE_LOCAL int fpp_hasdirectory(char *, char *);
 
 
 /*
@@ -645,7 +645,7 @@ ReturnCode fpp_openinclude( struct Global *global,
          * discarding the last pathname component of the source file
          * name then tacking on the #include argument.
          */
-        if( hasdirectory( global->infile->filename, tmpname ) )
+        if( fpp_hasdirectory( global->infile->filename, tmpname ) )
             strcat( tmpname, filename );
         else
             strcpy( tmpname, filename );
@@ -684,13 +684,13 @@ ReturnCode fpp_openinclude( struct Global *global,
 }
 
 INLINE FILE_LOCAL
-int hasdirectory( char *source,   /* Directory to examine         */
+int fpp_hasdirectory( char *source,   /* Directory to examine         */
     char *result )  /* Put directory stuff here     */
 {
     /*
      * If a device or directory is found in the source filename string, the
      * node/device/directory part of the string is copied to result and
-     * hasdirectory returns FPP_TRUE.  Else, nothing is copied and it returns FPP_FALSE.
+     * fpp_hasdirectory returns FPP_TRUE.  Else, nothing is copied and it returns FPP_FALSE.
      */
 
     char *tp2;
