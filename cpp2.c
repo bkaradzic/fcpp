@@ -29,7 +29,7 @@ SOFTWARE.
 #endif
 
 FILE_LOCAL void fpp_dump_line(struct Global *, int *);
-FILE_LOCAL ReturnCode doif(struct Global *, int);
+FILE_LOCAL ReturnCode fpp_doif(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode doinclude(struct Global *);
 INLINE FILE_LOCAL int hasdirectory(char *, char *);
 
@@ -320,7 +320,7 @@ ReturnCode fpp_control( struct Global *global,
                 return( FPP_OK );
                 }
 
-            ret = doif( global, L_if );
+            ret = fpp_doif( global, L_if );
 
             if( ret )
                 return(ret);
@@ -338,7 +338,7 @@ ReturnCode fpp_control( struct Global *global,
                 {
                 *global->ifptr = WAS_COMPILING;
 
-                ret = doif( global, hash );
+                ret = fpp_doif( global, hash );
 
                 if( ret )
                     return(ret);
@@ -458,13 +458,13 @@ void fpp_dump_line(struct Global *global, int *counter)
 }
 
 FILE_LOCAL
-ReturnCode doif(struct Global *global, int hash)
+ReturnCode fpp_doif(struct Global *global, int hash)
 {
     /*
      * Process an #if, #ifdef, or #ifndef. The latter two are straightforward,
      * while #if needs a subroutine of its own to evaluate the expression.
      *
-     * doif() is called only if compiling is FPP_TRUE.  If false, compilation
+     * fpp_doif() is called only if compiling is FPP_TRUE.  If false, compilation
      * is always supressed, so we don't need to evaluate anything.  This
      * supresses unnecessary warnings.
      */
