@@ -29,7 +29,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
 
 /*
  * fpp_skipnl()     skips over input text to the end of the line.
- * skipws()     skips over "whitespace" (spaces or tabs), but
+ * fpp_skipws()     skips over "whitespace" (spaces or tabs), but
  *              not skip over the end of the line.  It skips over
  *              TOK_SEP, however (though that shouldn't happen).
  * fpp_scanid()     reads the next token (C identifier) into tokenbuf.
@@ -134,7 +134,7 @@ void fpp_skipnl(struct Global *global)
   return;
 }
 
-int skipws(struct Global *global)
+int fpp_skipws(struct Global *global)
 {
   /*
    * Skip over whitespace

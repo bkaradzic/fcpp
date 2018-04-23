@@ -393,7 +393,7 @@ ReturnCode fpp_evallex(struct Global *global,
   /* again: */
     loop=FPP_FALSE;
     do {					/* Collect the token	*/
-      c = skipws(global);
+      c = fpp_skipws(global);
       if((ret=macroid(global, &c)))
       return(ret);
       if (c == EOF_CHAR || c == '\n') {
@@ -423,13 +423,13 @@ ReturnCode fpp_evallex(struct Global *global,
       return(FPP_CANT_USE_STRING_IN_IF);
     } else if (t == LET) {                  /* ID must be a macro   */
       if (streq(global->tokenbuf, "defined")) {   /* Or defined name      */
-	c1 = c = skipws(global);
+	c1 = c = fpp_skipws(global);
 	if (c == '(')                     /* Allow defined(name)  */
-	  c = skipws(global);
+	  c = fpp_skipws(global);
 	if (type[c] == LET) {
 	  global->evalue = (lookid(global, c) != NULL);
 	  if (c1 != '('                   /* Need to balance      */
-	      || skipws(global) == ')') { /* Did we balance?      */
+	      || fpp_skipws(global) == ')') { /* Did we balance?      */
 	    *op=DIG;
 	    return(FPP_OK);               /* Parsed ok            */
 	  }
@@ -525,7 +525,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
   short typecode;
   ReturnCode ret;
   
-  if ((c = skipws(global)) != '(') {
+  if ((c = fpp_skipws(global)) != '(') {
     fpp_unget(global);
     fpp_cerror(global, ERROR_SIZEOF_SYNTAX);
     return(FPP_SIZEOF_ERROR);
@@ -534,7 +534,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
    * Scan off the tokens.
    */
   typecode = 0;
-  while ((c = skipws(global))) {
+  while ((c = fpp_skipws(global))) {
     if((ret=macroid(global, &c)))
       return(ret);
     /* (I) return on fail! */
@@ -544,11 +544,11 @@ ReturnCode dosizeof(struct Global *global, int *result)
       fpp_cerror(global, ERROR_SIZEOF_SYNTAX);
       return(FPP_SIZEOF_ERROR);
     } else if (c == '(') {                /* thing (*)() func ptr */
-      if (skipws(global) == '*'
-	  && skipws(global) == ')') {         /* We found (*)         */
-	if (skipws(global) != '(')            /* Let () be optional   */
+      if (fpp_skipws(global) == '*'
+	  && fpp_skipws(global) == ')') {         /* We found (*)         */
+	if (fpp_skipws(global) != '(')            /* Let () be optional   */
 	  fpp_unget(global);
-	else if (skipws(global) != ')') {
+	else if (fpp_skipws(global) != ')') {
 	  fpp_unget(global);
 	  fpp_cerror(global, ERROR_SIZEOF_SYNTAX);
 	  return(FPP_SIZEOF_ERROR);
@@ -586,7 +586,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
    */
   if (c == '*') {
     typecode |= T_PTR;
-    c = skipws(global);
+    c = fpp_skipws(global);
   }
   if (c == ')') {                         /* Last syntax check    */
     for (testp = test_table; *testp != 0; testp++) {

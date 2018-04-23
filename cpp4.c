@@ -80,7 +80,7 @@ ReturnCode fpp_dodefine(struct Global *global)
   int quoting;	/* Remember we saw a #	*/
 #endif
   
-  if (type[(c = skipws(global))] != LET) {
+  if (type[(c = fpp_skipws(global))] != LET) {
     fpp_cerror(global, ERROR_DEFINE_SYNTAX);
     global->inmacro = FPP_FALSE;		/* Stop <newline> hack	*/
     return(FPP_OK);
@@ -102,7 +102,7 @@ ReturnCode fpp_dodefine(struct Global *global)
       if (global->nargs >= LASTPARM) {
 	fpp_cfatal(global, FATAL_TOO_MANY_ARGUMENTS_MACRO);
 	return(FPP_TOO_MANY_ARGUMENTS);
-      } else if ((c = skipws(global)) == ')')
+      } else if ((c = fpp_skipws(global)) == ')')
 	break;			/* Got them all 	*/
       else if (type[c] != LET) {         /* Bad formal syntax    */
 	fpp_cerror(global, ERROR_DEFINE_SYNTAX);
@@ -114,7 +114,7 @@ ReturnCode fpp_dodefine(struct Global *global)
       ret=textput(global, global->tokenbuf); /* Save text in parm[]  */
       if(ret)
 	return(ret);
-    } while ((c = skipws(global)) == ',');    /* Get another argument */
+    } while ((c = fpp_skipws(global)) == ',');    /* Get another argument */
     if (c != ')') {                     /* Must end at )        */
       fpp_cerror(global, ERROR_DEFINE_SYNTAX);
       global->inmacro = FPP_FALSE;		/* Stop <newline> hack	*/
@@ -130,7 +130,7 @@ ReturnCode fpp_dodefine(struct Global *global)
     global->nargs = DEF_NOARGS;		/* No () parameters     */
   }
   if (type[c] == SPA)                   /* At whitespace?       */
-    c = skipws(global);                 /* Not any more.        */
+    c = fpp_skipws(global);                 /* Not any more.        */
   global->workp = global->work;		/* Replacement put here */
   global->inmacro = FPP_TRUE;		/* Keep \<newline> now	*/
   quoting = 0;				/* No # seen yet.	*/
@@ -145,7 +145,7 @@ ReturnCode fpp_dodefine(struct Global *global)
 	--global->workp;		/* Erase leading spaces */
       if((ret=fpp_save(global, TOK_SEP)))     /* Stuff a delimiter    */
 	return(ret);
-      c = skipws(global);               /* Eat whitespace       */
+      c = fpp_skipws(global);               /* Eat whitespace       */
       continue;
     }
 #endif
@@ -299,7 +299,7 @@ void fpp_doundef(struct Global *global)
    */
 {
   int c;
-  if (type[(c = skipws(global))] != LET)
+  if (type[(c = fpp_skipws(global))] != LET)
     fpp_cerror(global, ERROR_ILLEGAL_UNDEF);
   else {
     fpp_scanid(global, c);                         /* Get name to tokenbuf */
@@ -437,7 +437,7 @@ ReturnCode fpp_expand(struct Global *global, DEFBUF *tokenp)
       fpp_cfatal(global, FATAL_ILLEGAL_MACRO, tokenp->name);
       return(FPP_ILLEGAL_MACRO);
     }
-    while ((c = skipws(global)) == '\n')      /* Look for (, skipping */
+    while ((c = fpp_skipws(global)) == '\n')      /* Look for (, skipping */
       global->wrongline = FPP_TRUE;		/* spaces and newlines	*/
     if (c != '(') {
       /*
@@ -479,7 +479,7 @@ ReturnCode expcollect(struct Global *global)
       
   for (;;) {
     paren = 0;			    /* Collect next arg.    */
-    while ((c = skipws(global)) == '\n')/* Skip over whitespace */
+    while ((c = fpp_skipws(global)) == '\n')/* Skip over whitespace */
       global->wrongline = FPP_TRUE;		/* and newlines.	*/
     if (c == ')') {                     /* At end of all args?  */
       /*

@@ -73,7 +73,7 @@ ReturnCode fpp_control( struct Global *global,
     char *ep;
     ReturnCode ret;
 
-    c = skipws( global );
+    c = fpp_skipws( global );
 
     if( c == '\n' || c == EOF_CHAR )
         {
@@ -199,7 +199,7 @@ ReturnCode fpp_control( struct Global *global,
              * field and line number for the next input line.
              * Set wrongline to force it out later.
              */
-            c = skipws( global );
+            c = fpp_skipws( global );
 
             global->workp = global->work;       /* Save name in work    */
 
@@ -435,7 +435,7 @@ ReturnCode fpp_control( struct Global *global,
 
         return( FPP_OK );
         #else
-        if( skipws( global ) != '\n' )
+        if( fpp_skipws( global ) != '\n' )
             {
             fpp_cwarn( global, WARN_UNEXPECTED_TEXT_IGNORED );
 
@@ -473,7 +473,7 @@ ReturnCode doif(struct Global *global, int hash)
     int found;
     ReturnCode ret;
 
-    if( (c = skipws( global ) ) == '\n' || c == EOF_CHAR )
+    if( (c = fpp_skipws( global ) ) == '\n' || c == EOF_CHAR )
         {
         fpp_unget( global );
 
@@ -557,7 +557,7 @@ ReturnCode doinclude( struct Global *global )
     int delim;
     ReturnCode ret;
 
-    delim = skipws( global );
+    delim = fpp_skipws( global );
 
     if( (ret = macroid( global, &delim )) )
         return(ret);
