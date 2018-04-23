@@ -19,11 +19,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ******************************************************************************/
-#include        <stdio.h>
-#include        <ctype.h>
-#include        <time.h>        /*OIS*0.92*/
-#include        "cppdef.h"
-#include        "cpp.h"
+#include <stdio.h>
+#include <ctype.h>
+#include <time.h> /*OIS*0.92*/
+
+#include "cppdef.h"
+#include "cpp.h"
 
 ReturnCode fpp_openfile(struct Global *global, char *filename)
 {
