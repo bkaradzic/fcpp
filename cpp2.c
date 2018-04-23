@@ -259,7 +259,7 @@ ReturnCode fpp_control( struct Global *global,
             break;
 
         case L_undef:
-            doundef( global );
+            fpp_doundef( global );
             break;
 
         case L_else:

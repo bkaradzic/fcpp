@@ -292,7 +292,7 @@ ReturnCode stparmscan(struct Global *global, int delim)
   return(FPP_OK);
 }
   
-void doundef(struct Global *global)
+void fpp_doundef(struct Global *global)
   /*
    * Remove the symbol from the defined list.
    * Called from the #control processor.

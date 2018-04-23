@@ -381,7 +381,7 @@ void fpp_cerror(struct Global *, ErrorCode, ...);
 ReturnCode fpp_control(struct Global *, int *);
 ReturnCode fpp_dodefine(struct Global *);
 int fpp_dooptions(struct Global *, struct fppTag *);
-void doundef(struct Global *);
+void fpp_doundef(struct Global *);
 void dumpparm(char *);
 ReturnCode expand(struct Global *, DEFBUF *);
 int fpp_get(struct Global *);
