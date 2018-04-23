@@ -26,7 +26,7 @@ SOFTWARE.
 
 INLINE FILE_LOCAL ReturnCode fpp_checkparm(struct Global *, int, DEFBUF *, int);
 INLINE FILE_LOCAL ReturnCode fpp_stparmscan(struct Global *, int);
-INLINE FILE_LOCAL ReturnCode textput(struct Global *, char *);
+INLINE FILE_LOCAL ReturnCode fpp_textput(struct Global *, char *);
 FILE_LOCAL ReturnCode charput(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode expcollect(struct Global *);
 INLINE FILE_LOCAL char *doquoting(char *, char *);
@@ -65,11 +65,11 @@ ReturnCode fpp_dodefine(struct Global *global)
    *		array of formal parameters.  If a match is found, the
    *		token is replaced by a control byte which will be used
    *		to locate the parameter when the macro is expanded.
-   * textput	puts a string in the macro work area (parm[]), updating
+   * fpp_textput	puts a string in the macro work area (parm[]), updating
    *		parmp to point to the first free byte in parm[].
-   *		textput() tests for work buffer overflow.
+   *		fpp_textput() tests for work buffer overflow.
    * charput	puts a single character in the macro work area (parm[])
-   *		in a manner analogous to textput().
+   *		in a manner analogous to fpp_textput().
    */
   int c;
   DEFBUF *dp;	/* -> new definition	*/
@@ -111,7 +111,7 @@ ReturnCode fpp_dodefine(struct Global *global)
       }
       fpp_scanid(global, c);                        /* Get the formal param */
       global->parlist[global->nargs++] = global->parmp; /* Save its start */
-      ret=textput(global, global->tokenbuf); /* Save text in parm[]  */
+      ret=fpp_textput(global, global->tokenbuf); /* Save text in parm[]  */
       if(ret)
 	return(ret);
     } while ((c = fpp_skipws(global)) == ',');    /* Get another argument */
@@ -308,7 +308,7 @@ void fpp_doundef(struct Global *global)
 }
 
 INLINE FILE_LOCAL  
-ReturnCode textput(struct Global *global, char *text)
+ReturnCode fpp_textput(struct Global *global, char *text)
 {
   /*
    * Put the string in the parm[] buffer.
