@@ -45,7 +45,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  *              This function may be output() to write the
  *              string to the output file, or fpp_save() to fpp_save
  *              the string in the work buffer.
- * scannumber() Reads a C numeric constant from the input stream,
+ * fpp_scannumber() Reads a C numeric constant from the input stream,
  *              calling the user-supplied function for each
  *              character.  (output() or fpp_save() as noted above.)
  * fpp_save()       Save one character in the work[] buffer.
@@ -56,7 +56,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  * Getmem()     Get a specified number of bytes from malloc memory.
  * output()     Write one character to stdout (calling fpp_Putchar) --
  *              implemented as a function so its address may be
- *              passed to scanstring() and scannumber().
+ *              passed to scanstring() and fpp_scannumber().
  * lookid()     Scans the next token (identifier) from the input
  *              stream.  Looks for it in the #defined symbol table.
  *              Returns a pointer to the definition, if found, or NULL
@@ -245,7 +245,7 @@ int fpp_catenate(struct Global *global, int lhs_number, ReturnCode *ret)
     case DOT:                           /* Or maybe a float     */
       strcpy(global->work, token1);
       global->workp = global->work + strlen(global->work);
-      *ret=scannumber(global, c, fpp_save);
+      *ret=fpp_scannumber(global, c, fpp_save);
       if(*ret)
         return(FPP_FALSE);
       *ret=fpp_save(global, EOS);
@@ -321,7 +321,7 @@ ReturnCode scanstring(struct Global *global,
   }
 }
 
-ReturnCode scannumber(struct Global *global,
+ReturnCode fpp_scannumber(struct Global *global,
                       int c,            /* First char of number */
                       /* Output/store func: */
                       ReturnCode (*outfun)(struct Global *, int))

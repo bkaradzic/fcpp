@@ -162,7 +162,7 @@ ReturnCode fpp_dodefine(struct Global *global)
 	
     case DIG:				/* Number in mac. body	*/
     case DOT:				/* Maybe a float number */
-      ret=scannumber(global, c, fpp_save);  /* Scan it off          */
+      ret=fpp_scannumber(global, c, fpp_save);  /* Scan it off          */
       if(ret)
 	return(ret);
       break;

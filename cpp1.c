@@ -336,7 +336,7 @@ ReturnCode cppmain(struct Global *global)
       case DIG:                 /* Output a number      */
       case DOT:                 /* Dot may begin floats */
 	go = 0;
-	ret=scannumber(global, c, (ReturnCode(*)(struct Global *, int))output);
+	ret=fpp_scannumber(global, c, (ReturnCode(*)(struct Global *, int))output);
 	if(ret)
 	  return(ret);
 	fpp_catenate(global, 1, &ret);  /* Check to see if the number is the lhs of a macro concat */
