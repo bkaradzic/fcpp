@@ -596,7 +596,7 @@ ReturnCode doinclude( struct Global *global )
 
     *global->workp = EOS;         /* Terminate filename       */
 
-    ret = openinclude( global, global->work, (delim == '"') );
+    ret = fpp_openinclude( global, global->work, (delim == '"') );
 
     if( ret && global->warnnoinclude )
         {
@@ -613,7 +613,7 @@ ReturnCode doinclude( struct Global *global )
 ReturnCode MultiAssignLoad( struct Global *global, char *incptr, char *filename, char *tmpname );
 #endif
 
-ReturnCode openinclude( struct Global *global,
+ReturnCode fpp_openinclude( struct Global *global,
     char *filename,     /* Input file name         */
     int searchlocal )   /* FPP_TRUE if #include "file" */
 {

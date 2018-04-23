@@ -225,7 +225,7 @@ ReturnCode cppmain(struct Global *global)
   include = global->included;
 
   while(include--) {
-    openinclude(global, global->include[(unsigned)include], FPP_TRUE);
+    fpp_openinclude(global, global->include[(unsigned)include], FPP_TRUE);
   }
   
   for (;;) {
