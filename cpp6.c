@@ -628,7 +628,7 @@ void fpp_outdefines(struct Global *global)
   DEFBUF *dp;
   DEFBUF **syp;
 
-  deldefines(global);                   /* Delete built-in #defines     */
+  fpp_deldefines(global);                   /* Delete built-in #defines     */
   for (syp = global->symtab; syp < &global->symtab[SBSIZE]; syp++) {
     if ((dp = *syp) != (DEFBUF *) NULL) {
       do {

@@ -409,7 +409,7 @@ void fpp_dumpadef(char *, register DEFBUF *);
 #endif
 ReturnCode fpp_openfile(struct Global *,char *);
 int fpp_cget(struct Global *);
-void deldefines(struct Global *);
+void fpp_deldefines(struct Global *);
 char *Getmem(struct Global *, int);
 ReturnCode openinclude(struct Global *, char *, int);
 ReturnCode expstuff(struct Global *, char *, char *);
