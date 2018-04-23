@@ -350,7 +350,7 @@ ReturnCode fpp_expand(struct Global *global, DEFBUF *tokenp)
 {
   /*
    * Expand a macro.  Called from the cpp mainline routine (via subroutine
-   * macroid()) when a token is found in the symbol table.  It calls
+   * fpp_macroid()) when a token is found in the symbol table.  It calls
    * expcollect() to parse actual parameters, checking for the correct number.
    * It then creates a "file" containing a single line containing the
    * macro with actual parameters inserted appropriately.  This is

@@ -559,7 +559,7 @@ ReturnCode doinclude( struct Global *global )
 
     delim = fpp_skipws( global );
 
-    if( (ret = macroid( global, &delim )) )
+    if( (ret = fpp_macroid( global, &delim )) )
         return(ret);
 
     if( delim != '<' && delim != '"' )

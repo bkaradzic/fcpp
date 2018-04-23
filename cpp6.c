@@ -34,11 +34,11 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  *              TOK_SEP, however (though that shouldn't happen).
  * fpp_scanid()     reads the next token (C identifier) into tokenbuf.
  *              The caller has already read the first character of
- *              the identifier.  Unlike macroid(), the token is
+ *              the identifier.  Unlike fpp_macroid(), the token is
  *              never expanded.
- * macroid()    reads the next token (C identifier) into tokenbuf.
+ * fpp_macroid()    reads the next token (C identifier) into tokenbuf.
  *              If it is a #defined macro, it is expanded, and
- *              macroid() returns FPP_TRUE, otherwise, FPP_FALSE.
+ *              fpp_macroid() returns FPP_TRUE, otherwise, FPP_FALSE.
  * fpp_catenate()   Does the dirty work of token concatenation, FPP_TRUE if it did.
  * fpp_scanstring() Reads a string from the input stream, calling
  *              a user-supplied function for each character.
@@ -178,7 +178,7 @@ void fpp_scanid(struct Global *global,
   global->tokenbuf[ct] = EOS;
 }
 
-ReturnCode macroid(struct Global *global, int *c)
+ReturnCode fpp_macroid(struct Global *global, int *c)
 {
   /*
    * If c is a letter, scan the id.  if it's #defined, expand it and scan
@@ -202,10 +202,10 @@ ReturnCode macroid(struct Global *global, int *c)
 int fpp_catenate(struct Global *global, int lhs_number, ReturnCode *ret)
 {
   /*
-   * A token was just read (via macroid).
+   * A token was just read (via fpp_macroid).
    * If the next character is TOK_SEP, concatenate the next token
-   * return FPP_TRUE -- which should recall macroid after refreshing
-   * macroid's argument.  If it is not TOK_SEP, fpp_unget() the character
+   * return FPP_TRUE -- which should recall fpp_macroid after refreshing
+   * fpp_macroid's argument.  If it is not TOK_SEP, fpp_unget() the character
    * and return FPP_FALSE.
    */
 
@@ -225,7 +225,7 @@ int fpp_catenate(struct Global *global, int lhs_number, ReturnCode *ret)
     }
     c= fpp_get(global);
     if(global->rightconcat) {
-      *ret=macroid(global, &c);           /* Scan next token      */
+      *ret=fpp_macroid(global, &c);           /* Scan next token      */
       if(*ret)
         return(FPP_FALSE);
     } /* BK - BUG? Parses token into global->tokenbuf but never uses it.

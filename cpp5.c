@@ -394,7 +394,7 @@ ReturnCode fpp_evallex(struct Global *global,
     loop=FPP_FALSE;
     do {					/* Collect the token	*/
       c = fpp_skipws(global);
-      if((ret=macroid(global, &c)))
+      if((ret=fpp_macroid(global, &c)))
       return(ret);
       if (c == EOF_CHAR || c == '\n') {
 	fpp_unget(global);
@@ -535,7 +535,7 @@ ReturnCode dosizeof(struct Global *global, int *result)
    */
   typecode = 0;
   while ((c = fpp_skipws(global))) {
-    if((ret=macroid(global, &c)))
+    if((ret=fpp_macroid(global, &c)))
       return(ret);
     /* (I) return on fail! */
     if (c  == EOF_CHAR || c == '\n') {

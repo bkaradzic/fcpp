@@ -311,7 +311,7 @@ ReturnCode cppmain(struct Global *global)
 	    fpp_Putstring(global, global->spacebuf); /* Output all whitespaces */
 	  }
 	}
-	if((ret=macroid(global, &c)))   /* Grab the token       */
+	if((ret=fpp_macroid(global, &c)))   /* Grab the token       */
 	  return(ret);
       } while (type[c] == LET && fpp_catenate(global, 0, &ret) && !ret);
       if(ret)
