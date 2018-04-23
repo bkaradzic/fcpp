@@ -24,7 +24,7 @@ SOFTWARE.
 #include	"cppdef.h"
 #include	"cpp.h"
 
-INLINE FILE_LOCAL ReturnCode checkparm(struct Global *, int, DEFBUF *, int);
+INLINE FILE_LOCAL ReturnCode fpp_checkparm(struct Global *, int, DEFBUF *, int);
 INLINE FILE_LOCAL ReturnCode stparmscan(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode textput(struct Global *, char *);
 FILE_LOCAL ReturnCode charput(struct Global *, int);
@@ -61,7 +61,7 @@ ReturnCode fpp_dodefine(struct Global *global)
    * is not.
    *
    * The following subroutines are called from define():
-   * checkparm	called when a token is scanned.  It checks through the
+   * fpp_checkparm	called when a token is scanned.  It checks through the
    *		array of formal parameters.  If a match is found, the
    *		token is replaced by a control byte which will be used
    *		to locate the parameter when the macro is expanded.
@@ -152,9 +152,9 @@ ReturnCode fpp_dodefine(struct Global *global)
     switch (type[c]) {
     case LET:
 #if OK_CONCAT
-      ret=checkparm(global, c, dp, quoting);      /* Might be a formal    */
+      ret=fpp_checkparm(global, c, dp, quoting);      /* Might be a formal    */
 #else
-      ret=checkparm(c, dp);               /* Might be a formal    */
+      ret=fpp_checkparm(c, dp);               /* Might be a formal    */
 #endif
       if(ret)
 	return(ret);
@@ -224,7 +224,7 @@ ReturnCode fpp_dodefine(struct Global *global)
 }
 
 INLINE FILE_LOCAL
-ReturnCode checkparm(struct Global *global,
+ReturnCode fpp_checkparm(struct Global *global,
 		     int c,
 		     DEFBUF *dp,
 		     int quoting)	/* Preceded by a # ?	*/
