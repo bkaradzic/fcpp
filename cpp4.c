@@ -109,7 +109,7 @@ ReturnCode fpp_dodefine(struct Global *global)
 	global->inmacro = FPP_FALSE;		/* Stop <newline> hack	*/
 	return(FPP_OK);
       }
-      scanid(global, c);                        /* Get the formal param */
+      fpp_scanid(global, c);                        /* Get the formal param */
       global->parlist[global->nargs++] = global->parmp; /* Save its start */
       ret=textput(global, global->tokenbuf); /* Save text in parm[]  */
       if(ret)
@@ -241,7 +241,7 @@ ReturnCode checkparm(struct Global *global,
   char *cp;
   ReturnCode ret=FPP_OK;
       
-  scanid(global, c);                /* Get parm to tokenbuf */
+  fpp_scanid(global, c);                /* Get parm to tokenbuf */
   for (i = 0; i < global->nargs; i++) {     /* For each argument    */
     if (streq(global->parlist[i], global->tokenbuf)) {  /* If it's known */
 #if OK_CONCAT
@@ -302,7 +302,7 @@ void fpp_doundef(struct Global *global)
   if (type[(c = skipws(global))] != LET)
     fpp_cerror(global, ERROR_ILLEGAL_UNDEF);
   else {
-    scanid(global, c);                         /* Get name to tokenbuf */
+    fpp_scanid(global, c);                         /* Get name to tokenbuf */
     (void) defendel(global, global->tokenbuf, FPP_TRUE);
   }
 }

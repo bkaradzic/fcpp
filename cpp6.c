@@ -32,7 +32,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  * skipws()     skips over "whitespace" (spaces or tabs), but
  *              not skip over the end of the line.  It skips over
  *              TOK_SEP, however (though that shouldn't happen).
- * scanid()     reads the next token (C identifier) into tokenbuf.
+ * fpp_scanid()     reads the next token (C identifier) into tokenbuf.
  *              The caller has already read the first character of
  *              the identifier.  Unlike macroid(), the token is
  *              never expanded.
@@ -151,7 +151,7 @@ int skipws(struct Global *global)
  return(c);
 }
 
-void scanid(struct Global *global,
+void fpp_scanid(struct Global *global,
   int c)                                /* First char of id     */
 {
   /*

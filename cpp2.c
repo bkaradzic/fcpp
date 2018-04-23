@@ -83,7 +83,7 @@ ReturnCode fpp_control( struct Global *global,
         }
 
     if( !isdigit(c) )
-        scanid( global, c );                  /* Get #word to tokenbuf        */
+        fpp_scanid( global, c );                  /* Get #word to tokenbuf        */
     else
         {
         fpp_unget( global );                    /* Hack -- allow #123 as a      */
