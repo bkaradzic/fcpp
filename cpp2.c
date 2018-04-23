@@ -439,7 +439,7 @@ ReturnCode fpp_control( struct Global *global,
             {
             fpp_cwarn( global, WARN_UNEXPECTED_TEXT_IGNORED );
 
-            skipnl( global );
+            fpp_skipnl( global );
             }
         #endif
         }
@@ -452,7 +452,7 @@ ReturnCode fpp_control( struct Global *global,
 FILE_LOCAL
 void dump_line(struct Global *global, int *counter)
 {
-    skipnl( global );         /* Ignore rest of line  */
+    fpp_skipnl( global );         /* Ignore rest of line  */
 
     (*counter)++;
 }
@@ -480,7 +480,7 @@ ReturnCode doif(struct Global *global, int hash)
         fpp_cerror( global, ERROR_MISSING_ARGUMENT );
 
         #if !OLD_PREPROCESSOR
-        skipnl( global );               /* Prevent an extra     */
+        fpp_skipnl( global );               /* Prevent an extra     */
 
         fpp_unget( global );                /* Error message        */
         #endif
@@ -509,7 +509,7 @@ ReturnCode doif(struct Global *global, int hash)
             fpp_cerror( global, ERROR_MISSING_ARGUMENT );
 
             #if !OLD_PREPROCESSOR
-            skipnl( global );             /* Prevent an extra     */
+            fpp_skipnl( global );             /* Prevent an extra     */
 
             fpp_unget( global );              /* Error message        */
             #endif

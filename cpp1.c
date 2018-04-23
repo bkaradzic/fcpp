@@ -257,7 +257,7 @@ ReturnCode cppmain(struct Global *global)
       else if (c == EOF_CHAR)           /* At end of file?      */
 	break;
       else if (!compiling) {            /* #ifdef false?        */
-	skipnl(global);                 /* Skip to newline      */
+	fpp_skipnl(global);                 /* Skip to newline      */
 	counter++;                      /* Count it, too.       */
       } else {
 	break;                          /* Actual token         */

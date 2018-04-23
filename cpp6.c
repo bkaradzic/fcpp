@@ -28,7 +28,7 @@ INLINE FILE_LOCAL void outadefine(struct Global *, DEFBUF *);
 INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
 
 /*
- * skipnl()     skips over input text to the end of the line.
+ * fpp_skipnl()     skips over input text to the end of the line.
  * skipws()     skips over "whitespace" (spaces or tabs), but
  *              not skip over the end of the line.  It skips over
  *              TOK_SEP, however (though that shouldn't happen).
@@ -121,7 +121,7 @@ char type[256] = {              /* Character type codes    Hex          */
   000,   000,    000,   000,   000,   000,   000,   000, /*   80 .. FF  */
 };
 
-void skipnl(struct Global *global)
+void fpp_skipnl(struct Global *global)
 {
   /*
    * Skip to the end of the current input line.
