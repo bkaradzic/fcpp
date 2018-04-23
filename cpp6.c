@@ -623,7 +623,7 @@ DEFBUF *defendel(struct Global *global,
 }
 
 
-void outdefines(struct Global *global)
+void fpp_outdefines(struct Global *global)
 {
   DEFBUF *dp;
   DEFBUF **syp;

@@ -492,7 +492,7 @@ ReturnCode cppmain(struct Global *global)
   }
   if (global->wflag) {
     global->out = FPP_TRUE;         /* enable output */
-    outdefines(global);         /* Write out #defines   */
+    fpp_outdefines(global);         /* Write out #defines   */
   }
   return(FPP_OK);
 }
