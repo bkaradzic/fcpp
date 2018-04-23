@@ -24,7 +24,7 @@ SOFTWARE.
 #include "cppdef.h"
 #include "cpp.h"
 
-INLINE FILE_LOCAL void outadefine(struct Global *, DEFBUF *);
+INLINE FILE_LOCAL void fpp_outadefine(struct Global *, DEFBUF *);
 INLINE FILE_LOCAL void fpp_domsg(struct Global *, ErrorCode, va_list);
 
 /*
@@ -632,14 +632,14 @@ void fpp_outdefines(struct Global *global)
   for (syp = global->symtab; syp < &global->symtab[SBSIZE]; syp++) {
     if ((dp = *syp) != (DEFBUF *) NULL) {
       do {
-        outadefine(global, dp);
+        fpp_outadefine(global, dp);
       } while ((dp = dp->link) != (DEFBUF *) NULL);
     }
   }
 }
 
 INLINE FILE_LOCAL
-void outadefine(struct Global *global, DEFBUF *dp)
+void fpp_outadefine(struct Global *global, DEFBUF *dp)
 {
   char *cp;
   int c;
