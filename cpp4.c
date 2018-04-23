@@ -28,7 +28,7 @@ INLINE FILE_LOCAL ReturnCode fpp_checkparm(struct Global *, int, DEFBUF *, int);
 INLINE FILE_LOCAL ReturnCode fpp_stparmscan(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode fpp_textput(struct Global *, char *);
 FILE_LOCAL ReturnCode fpp_charput(struct Global *, int);
-INLINE FILE_LOCAL ReturnCode expcollect(struct Global *);
+INLINE FILE_LOCAL ReturnCode fpp_expcollect(struct Global *);
 INLINE FILE_LOCAL char *doquoting(char *, char *);
 
 
@@ -351,7 +351,7 @@ ReturnCode fpp_expand(struct Global *global, DEFBUF *tokenp)
   /*
    * Expand a macro.  Called from the cpp mainline routine (via subroutine
    * fpp_macroid()) when a token is found in the symbol table.  It calls
-   * expcollect() to parse actual parameters, checking for the correct number.
+   * fpp_expcollect() to parse actual parameters, checking for the correct number.
    * It then creates a "file" containing a single line containing the
    * macro with actual parameters inserted appropriately.  This is
    * "pushed back" onto the input stream.  (When the fpp_get() routine runs
@@ -453,7 +453,7 @@ ReturnCode fpp_expand(struct Global *global, DEFBUF *tokenp)
       /* fputs(tokenp->name, stdout); */
       fpp_Putstring(global, tokenp->name);
       return(FPP_OK);
-    } else if (!(ret=expcollect(global))) {     /* Collect arguments    */
+    } else if (!(ret=fpp_expcollect(global))) {     /* Collect arguments    */
       if (tokenp->nargs != global->nargs) {     /* Should be an error?  */
 	fpp_cwarn(global, WARN_WRONG_NUMBER_ARGUMENTS, tokenp->name);
       }
@@ -467,7 +467,7 @@ ReturnCode fpp_expand(struct Global *global, DEFBUF *tokenp)
 }
 
 INLINE FILE_LOCAL
-ReturnCode expcollect(struct Global *global)
+ReturnCode fpp_expcollect(struct Global *global)
 {
   /*
    * Collect the actual parameters for this macro.
