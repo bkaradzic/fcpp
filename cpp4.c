@@ -25,7 +25,7 @@ SOFTWARE.
 #include	"cpp.h"
 
 INLINE FILE_LOCAL ReturnCode fpp_checkparm(struct Global *, int, DEFBUF *, int);
-INLINE FILE_LOCAL ReturnCode stparmscan(struct Global *, int);
+INLINE FILE_LOCAL ReturnCode fpp_stparmscan(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode textput(struct Global *, char *);
 FILE_LOCAL ReturnCode charput(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode expcollect(struct Global *);
@@ -168,7 +168,7 @@ ReturnCode fpp_dodefine(struct Global *global)
       break;
 	
     case QUO:				/* String in mac. body	*/
-      ret=stparmscan(global, c);
+      ret=fpp_stparmscan(global, c);
       if(ret)
 	return(ret);
       break;
@@ -263,7 +263,7 @@ ReturnCode fpp_checkparm(struct Global *global,
 }
 
 INLINE FILE_LOCAL
-ReturnCode stparmscan(struct Global *global, int delim)
+ReturnCode fpp_stparmscan(struct Global *global, int delim)
 {
   /*
    * Normal string parameter scan.
