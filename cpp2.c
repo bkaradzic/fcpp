@@ -631,7 +631,7 @@ ReturnCode openinclude( struct Global *global,
 
     if( filename[0] == '/' )
         {
-        if( ! openfile( global, filename ) )
+        if( ! fpp_openfile( global, filename ) )
             return(FPP_OK);
         }
 
@@ -650,7 +650,7 @@ ReturnCode openinclude( struct Global *global,
         else
             strcpy( tmpname, filename );
 
-        if( ! openfile( global, tmpname ) )
+        if( ! fpp_openfile( global, tmpname ) )
             return(FPP_OK);
         }
 
@@ -675,7 +675,7 @@ ReturnCode openinclude( struct Global *global,
             else
                 sprintf( tmpname, "%s%s", *incptr, filename );
 
-            if( !openfile( global, tmpname ) )
+            if( !fpp_openfile( global, tmpname ) )
                 return(FPP_OK);
             }
         }
@@ -742,7 +742,7 @@ ReturnCode MultiAssignLoad( struct Global *global, char *incptr, char *filename,
             //  Normally we would pass the lock and filename
             //  to the Load() routine, which would CD to the
             //  directory and Open(filename), but in order to
-            //  satisfy the exisiting openfile() function, we
+            //  satisfy the exisiting fpp_openfile() function, we
             //  bite the bullet and build the complete pathspec
             //  rather than add the standard Load() routine.
             //
@@ -750,7 +750,7 @@ ReturnCode MultiAssignLoad( struct Global *global, char *incptr, char *filename,
                 {
                 AddPart( tmpname, filename, NWORK );
 
-                RtnCode = openfile( global, tmpname );
+                RtnCode = fpp_openfile( global, tmpname );
 
                 if( ! RtnCode )
                     break;

@@ -25,11 +25,11 @@ SOFTWARE.
 #include        "cppdef.h"
 #include        "cpp.h"
 
-ReturnCode openfile(struct Global *global, char *filename)
+ReturnCode fpp_openfile(struct Global *global, char *filename)
 {
   /*
    * Open a file, add it to the linked list of open files.
-   * This is called only from openfile() in cpp2.c.
+   * This is called only from fpp_openfile() in cpp2.c.
    */
 
   FILE *fp;
@@ -58,7 +58,7 @@ ReturnCode fpp_addfile(struct Global *global,
                    char *filename)      /* Name of the file  */
 {
   /*
-   * Initialize tables for this open file.  This is called from openfile()
+   * Initialize tables for this open file.  This is called from fpp_openfile()
    * above (for #include files), and from the entry to cpp to open the main
    * input file. It calls a common routine, fpp_getfile() to build the FILEINFO
    * structure which is used to read characters. (fpp_getfile() is also called

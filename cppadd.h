@@ -407,7 +407,7 @@ DEFBUF *fpp_defendel(struct Global *, char *, int);
 void fpp_dumpdef(char *);
 void fpp_dumpadef(char *, register DEFBUF *);
 #endif
-ReturnCode openfile(struct Global *,char *);
+ReturnCode fpp_openfile(struct Global *,char *);
 int fpp_cget(struct Global *);
 void deldefines(struct Global *);
 char *Getmem(struct Global *, int);
