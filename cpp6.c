@@ -57,7 +57,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  * output()     Write one character to stdout (calling fpp_Putchar) --
  *              implemented as a function so its address may be
  *              passed to fpp_scanstring() and fpp_scannumber().
- * lookid()     Scans the next token (identifier) from the input
+ * fpp_lookid()     Scans the next token (identifier) from the input
  *              stream.  Looks for it in the #defined symbol table.
  *              Returns a pointer to the definition, if found, or NULL
  *              if not present.  The identifier is stored in tokenbuf.
@@ -156,7 +156,7 @@ void fpp_scanid(struct Global *global,
 {
   /*
    * Get the next token (an id) into the token buffer.
-   * Note: this code is duplicated in lookid().
+   * Note: this code is duplicated in fpp_lookid().
    * Change one, change both.
    */
 
@@ -191,7 +191,7 @@ ReturnCode fpp_macroid(struct Global *global, int *c)
 
   if (global->infile != NULL && global->infile->fp != NULL)
     global->recursion = 0;
-  while (type[*c] == LET && (dp = lookid(global, *c)) != NULL) {
+  while (type[*c] == LET && (dp = fpp_lookid(global, *c)) != NULL) {
     if((ret=fpp_expand(global, dp)))
       return(ret);
     *c = fpp_get(global);
@@ -230,7 +230,7 @@ int fpp_catenate(struct Global *global, int lhs_number, ReturnCode *ret)
         return(FPP_FALSE);
     } /* BK - BUG? Parses token into global->tokenbuf but never uses it.
       else
-      lookid(global, c);
+      fpp_lookid(global, c);
       */
     switch(type[c]) {                   /* What was it?         */
     case LET:                           /* An identifier, ...   */
@@ -532,7 +532,7 @@ ReturnCode fpp_getfile(struct Global *global,
  *                      C P P   S y m b o l   T a b l e s
  */
 
-DEFBUF *lookid(struct Global *global,
+DEFBUF *fpp_lookid(struct Global *global,
                int c)           /* First character of token     */
 {
   /*

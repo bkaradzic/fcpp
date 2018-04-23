@@ -86,7 +86,7 @@ ReturnCode fpp_dodefine(struct Global *global)
     return(FPP_OK);
   }
   isredefine = FPP_FALSE;			/* Set if redefining	*/
-  if ((dp = lookid(global, c)) == NULL) { /* If not known now     */
+  if ((dp = fpp_lookid(global, c)) == NULL) { /* If not known now     */
     dp = defendel(global, global->tokenbuf, FPP_FALSE); /* Save the name  */
     if(!dp)
       return(FPP_OUT_OF_MEMORY);

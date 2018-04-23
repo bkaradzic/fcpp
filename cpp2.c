@@ -517,7 +517,7 @@ ReturnCode doif(struct Global *global, int hash)
             return(FPP_OK);
             }
 
-        found = ( lookid( global, c ) != NULL ); /* Look for it in symbol table */
+        found = ( fpp_lookid( global, c ) != NULL ); /* Look for it in symbol table */
         }
 
     if( found == (hash == L_ifdef) )

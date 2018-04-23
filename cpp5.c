@@ -427,7 +427,7 @@ ReturnCode fpp_evallex(struct Global *global,
 	if (c == '(')                     /* Allow defined(name)  */
 	  c = fpp_skipws(global);
 	if (type[c] == LET) {
-	  global->evalue = (lookid(global, c) != NULL);
+	  global->evalue = (fpp_lookid(global, c) != NULL);
 	  if (c1 != '('                   /* Need to balance      */
 	      || fpp_skipws(global) == ')') { /* Did we balance?      */
 	    *op=DIG;
