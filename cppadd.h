@@ -383,7 +383,7 @@ ReturnCode fpp_dodefine(struct Global *);
 int fpp_dooptions(struct Global *, struct fppTag *);
 void fpp_doundef(struct Global *);
 void fpp_dumpparm(char *);
-ReturnCode expand(struct Global *, DEFBUF *);
+ReturnCode fpp_expand(struct Global *, DEFBUF *);
 int fpp_get(struct Global *);
 ReturnCode initdefines(struct Global *);
 void outdefines(struct Global *);

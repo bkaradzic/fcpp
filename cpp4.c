@@ -346,7 +346,7 @@ ReturnCode charput(struct Global *global, int c)
  *		M a c r o   E x p a n s i o n
  */
 
-ReturnCode expand(struct Global *global, DEFBUF *tokenp)
+ReturnCode fpp_expand(struct Global *global, DEFBUF *tokenp)
 {
   /*
    * Expand a macro.  Called from the cpp mainline routine (via subroutine

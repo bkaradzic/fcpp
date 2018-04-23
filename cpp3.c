@@ -320,7 +320,7 @@ ReturnCode initdefines(struct Global *global)
   }
   /*
    * The magic pre-defines (__FILE__ and __LINE__ are
-   * initialized with negative argument counts.  expand()
+   * initialized with negative argument counts.  fpp_expand()
    * notices this and calls the appropriate routine.
    * DEF_NOARGS is one greater than the first "magic" definition.
    */
