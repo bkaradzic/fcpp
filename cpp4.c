@@ -27,7 +27,7 @@ SOFTWARE.
 INLINE FILE_LOCAL ReturnCode fpp_checkparm(struct Global *, int, DEFBUF *, int);
 INLINE FILE_LOCAL ReturnCode fpp_stparmscan(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode fpp_textput(struct Global *, char *);
-FILE_LOCAL ReturnCode charput(struct Global *, int);
+FILE_LOCAL ReturnCode fpp_charput(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode expcollect(struct Global *);
 INLINE FILE_LOCAL char *doquoting(char *, char *);
 
@@ -68,7 +68,7 @@ ReturnCode fpp_dodefine(struct Global *global)
    * fpp_textput	puts a string in the macro work area (parm[]), updating
    *		parmp to point to the first free byte in parm[].
    *		fpp_textput() tests for work buffer overflow.
-   * charput	puts a single character in the macro work area (parm[])
+   * fpp_charput	puts a single character in the macro work area (parm[])
    *		in a manner analogous to fpp_textput().
    */
   int c;
@@ -328,7 +328,7 @@ ReturnCode fpp_textput(struct Global *global, char *text)
 }
 
 FILE_LOCAL
-ReturnCode charput(struct Global *global, int c)
+ReturnCode fpp_charput(struct Global *global, int c)
 {
   /*
    * Put the byte in the parm[] buffer.
@@ -500,12 +500,12 @@ ReturnCode expcollect(struct Global *global)
 	return(FPP_EOF_IN_MACRO); /* Sorry.               */
       }
       else if (c == '\\') {             /* Quote next character */
-	charput(global, c);             /* Save the \ for later */
-	charput(global, fpp_cget(global));  /* Save the next char.  */
+	fpp_charput(global, c);             /* Save the \ for later */
+	fpp_charput(global, fpp_cget(global));  /* Save the next char.  */
 	continue;			/* And go get another   */
       }
       else if (type[c] == QUO) {        /* Start of string?     */
-	ret=fpp_scanstring(global, c, (ReturnCode (*)(struct Global *, int))charput); /* Scan it off    */
+	ret=fpp_scanstring(global, c, (ReturnCode (*)(struct Global *, int))fpp_charput); /* Scan it off    */
 	if(ret)
 	  return(ret);
 	continue;			    /* Go get next char     */
@@ -523,9 +523,9 @@ ReturnCode expcollect(struct Global *global)
 	break;
       else if (c == '\n')               /* Newline inside arg?  */
 	global->wrongline = FPP_TRUE;	/* We'll need a #line   */
-      charput(global, c);               /* Store this one       */
+      fpp_charput(global, c);               /* Store this one       */
     }				        /* Collect an argument  */
-    charput(global, EOS);               /* Terminate argument   */
+    fpp_charput(global, EOS);               /* Terminate argument   */
   }				        /* Collect all args.    */
   return(FPP_OK);                       /* Normal return        */
 }
