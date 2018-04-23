@@ -26,7 +26,7 @@ SOFTWARE.
 
 INLINE FILE_LOCAL ReturnCode fpp_evallex(struct Global *, int, int *);
 INLINE FILE_LOCAL ReturnCode fpp_dosizeof(struct Global *, int *);
-INLINE FILE_LOCAL int bittest(int);
+INLINE FILE_LOCAL int fpp_bittest(int);
 INLINE FILE_LOCAL int fpp_evalnum(struct Global *, int);
 INLINE FILE_LOCAL int fpp_evalchar(struct Global *, int);
 INLINE FILE_LOCAL int *fpp_evaleval(struct Global *, int *, int, int);
@@ -590,7 +590,7 @@ ReturnCode fpp_dosizeof(struct Global *global, int *result)
   }
   if (c == ')') {                         /* Last syntax check    */
     for (testp = test_table; *testp != 0; testp++) {
-      if (!bittest(typecode & *testp)) {
+      if (!fpp_bittest(typecode & *testp)) {
 	fpp_cerror(global, ERROR_SIZEOF_ILLEGAL_TYPE);
 	return(FPP_SIZEOF_ERROR);
       }
@@ -632,7 +632,7 @@ ReturnCode fpp_dosizeof(struct Global *global, int *result)
 }
 
 INLINE FILE_LOCAL
-int bittest(int value)
+int fpp_bittest(int value)
 {
   /*
    * FPP_TRUE if value is zero or exactly one bit is set in value.
