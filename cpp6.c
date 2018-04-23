@@ -40,7 +40,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  *              If it is a #defined macro, it is expanded, and
  *              macroid() returns FPP_TRUE, otherwise, FPP_FALSE.
  * fpp_catenate()   Does the dirty work of token concatenation, FPP_TRUE if it did.
- * scanstring() Reads a string from the input stream, calling
+ * fpp_scanstring() Reads a string from the input stream, calling
  *              a user-supplied function for each character.
  *              This function may be output() to write the
  *              string to the output file, or fpp_save() to fpp_save
@@ -56,7 +56,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  * Getmem()     Get a specified number of bytes from malloc memory.
  * output()     Write one character to stdout (calling fpp_Putchar) --
  *              implemented as a function so its address may be
- *              passed to scanstring() and fpp_scannumber().
+ *              passed to fpp_scanstring() and fpp_scannumber().
  * lookid()     Scans the next token (identifier) from the input
  *              stream.  Looks for it in the #defined symbol table.
  *              Returns a pointer to the definition, if found, or NULL
@@ -280,7 +280,7 @@ int fpp_catenate(struct Global *global, int lhs_number, ReturnCode *ret)
 #endif
 }
 
-ReturnCode scanstring(struct Global *global,
+ReturnCode fpp_scanstring(struct Global *global,
                       int delim, /* ' or " */
                       /* Output function: */
                       ReturnCode (*outfun)(struct Global *, int))

@@ -390,7 +390,7 @@ void fpp_outdefines(struct Global *);
 ReturnCode fpp_save(struct Global *, int);
 void scanid(struct Global *, int);
 ReturnCode fpp_scannumber(struct Global *, int, ReturnCode(*)(struct Global *, int));
-ReturnCode scanstring(struct Global *, int, ReturnCode(*)(struct Global *, int));
+ReturnCode fpp_scanstring(struct Global *, int, ReturnCode(*)(struct Global *, int));
 void fpp_unget(struct Global *);
 ReturnCode fpp_ungetstring(struct Global *, char *);
 ReturnCode eval(struct Global *, int *);

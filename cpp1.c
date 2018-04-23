@@ -347,7 +347,7 @@ ReturnCode cppmain(struct Global *global)
 	go = 0;
 	/* Copy it to output */
         if(!global->webmode) {
-          ret=scanstring(global, c,
+          ret=fpp_scanstring(global, c,
                          (ReturnCode(*)(struct Global *, int))output);
           if(ret)
             return(ret);
@@ -502,7 +502,7 @@ ReturnCode output(struct Global *global, int c)
 {
   /*
    * Output one character to stdout -- output() is passed as an
-   * argument to scanstring()
+   * argument to fpp_scanstring()
    */
 #if COMMENT_INVISIBLE
   if (c != TOK_SEP && c != COM_SEP)

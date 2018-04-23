@@ -274,9 +274,9 @@ ReturnCode stparmscan(struct Global *global, int delim)
   ReturnCode ret;
       
   wp = (unsigned char *)global->workp;	/* Here's where it starts       */
-  ret=scanstring(global, delim, fpp_save);
+  ret=fpp_scanstring(global, delim, fpp_save);
   if(ret)
-    return(ret);		/* Exit on scanstring error	*/
+    return(ret);		/* Exit on fpp_scanstring error	*/
   global->workp[-1] = EOS;		/* Erase trailing quote 	*/
   wp++;				/* -> first string content byte */
   for (i = 0; i < global->nargs; i++) {
@@ -505,7 +505,7 @@ ReturnCode expcollect(struct Global *global)
 	continue;			/* And go get another   */
       }
       else if (type[c] == QUO) {        /* Start of string?     */
-	ret=scanstring(global, c, (ReturnCode (*)(struct Global *, int))charput); /* Scan it off    */
+	ret=fpp_scanstring(global, c, (ReturnCode (*)(struct Global *, int))charput); /* Scan it off    */
 	if(ret)
 	  return(ret);
 	continue;			    /* Go get next char     */
