@@ -25,7 +25,7 @@ SOFTWARE.
 #include "cpp.h"
 
 INLINE FILE_LOCAL ReturnCode fpp_evallex(struct Global *, int, int *);
-INLINE FILE_LOCAL ReturnCode dosizeof(struct Global *, int *);
+INLINE FILE_LOCAL ReturnCode fpp_dosizeof(struct Global *, int *);
 INLINE FILE_LOCAL int bittest(int);
 INLINE FILE_LOCAL int fpp_evalnum(struct Global *, int);
 INLINE FILE_LOCAL int fpp_evalchar(struct Global *, int);
@@ -439,7 +439,7 @@ ReturnCode fpp_evallex(struct Global *global,
       }
 #if OK_SIZEOF
 else if (streq(global->tokenbuf, "sizeof")) { /* New sizeof hackery   */
-  ret=dosizeof(global, op);             /* Gets own routine     */
+  ret=fpp_dosizeof(global, op);             /* Gets own routine     */
   return(ret);
 }
 #endif
@@ -510,7 +510,7 @@ else if (streq(global->tokenbuf, "sizeof")) { /* New sizeof hackery   */
 #if OK_SIZEOF
 
 INLINE FILE_LOCAL
-ReturnCode dosizeof(struct Global *global, int *result)
+ReturnCode fpp_dosizeof(struct Global *global, int *result)
 {
   /*
    * Process the sizeof (basic type) operation in an #if string.
