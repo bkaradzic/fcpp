@@ -35,9 +35,9 @@
 
 #include <stdlib.h>
 #include <string.h>
-#ifndef toupper
-#define toupper(c) ((c) + ('A' - 'a'))
-#endif /* no toupper */
+#ifndef fpp_toupper
+#define fpp_toupper(c) ((c) + ('A' - 'a'))
+#endif /* no fpp_toupper */
 #ifndef tolower
 #define tolower(c) ((c) + ('a' - 'A'))
 #endif /* no tolower */
