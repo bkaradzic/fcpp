@@ -29,7 +29,7 @@ INLINE FILE_LOCAL ReturnCode fpp_stparmscan(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode fpp_textput(struct Global *, char *);
 FILE_LOCAL ReturnCode fpp_charput(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode fpp_expcollect(struct Global *);
-INLINE FILE_LOCAL char *doquoting(char *, char *);
+INLINE FILE_LOCAL char *fpp_doquoting(char *, char *);
 
 
 ReturnCode fpp_dodefine(struct Global *global)
@@ -534,7 +534,7 @@ ReturnCode fpp_expcollect(struct Global *global)
 #if OK_CONCAT
   
 INLINE FILE_LOCAL
-char *doquoting(char *to, char *from)
+char *fpp_doquoting(char *to, char *from)
 {
   *to++ = '"';
   while (*from) {
@@ -611,7 +611,7 @@ ReturnCode fpp_expstuff(struct Global *global,
 	  }
 #if OK_CONCAT
 else if (quoting)
-  defp = doquoting(defp, global->parlist[c]);
+  defp = fpp_doquoting(defp, global->parlist[c]);
 #endif
 else {
   strcpy(defp, global->parlist[c]);
