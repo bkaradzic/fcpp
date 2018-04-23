@@ -34,7 +34,7 @@ void __stdargs _XCEXIT(long a) { return; }
 #endif
 #endif
 
-FILE_LOCAL ReturnCode output(struct Global *, int); /* Output one character */
+FILE_LOCAL ReturnCode fpp_output(struct Global *, int); /* Output one character */
 FILE_LOCAL void sharp(struct Global *);
 INLINE FILE_LOCAL ReturnCode cppmain(struct Global *);
 
@@ -336,7 +336,7 @@ ReturnCode cppmain(struct Global *global)
       case DIG:                 /* Output a number      */
       case DOT:                 /* Dot may begin floats */
 	go = 0;
-	ret=fpp_scannumber(global, c, (ReturnCode(*)(struct Global *, int))output);
+	ret=fpp_scannumber(global, c, (ReturnCode(*)(struct Global *, int))fpp_output);
 	if(ret)
 	  return(ret);
 	fpp_catenate(global, 1, &ret);  /* Check to see if the number is the lhs of a macro concat */
@@ -348,7 +348,7 @@ ReturnCode cppmain(struct Global *global)
 	/* Copy it to output */
         if(!global->webmode) {
           ret=fpp_scanstring(global, c,
-                         (ReturnCode(*)(struct Global *, int))output);
+                         (ReturnCode(*)(struct Global *, int))fpp_output);
           if(ret)
             return(ret);
           break;
@@ -491,17 +491,17 @@ ReturnCode cppmain(struct Global *global)
     }
   }
   if (global->wflag) {
-    global->out = FPP_TRUE;         /* enable output */
+    global->out = FPP_TRUE;         /* enable fpp_output */
     fpp_outdefines(global);         /* Write out #defines   */
   }
   return(FPP_OK);
 }
 
 FILE_LOCAL
-ReturnCode output(struct Global *global, int c)
+ReturnCode fpp_output(struct Global *global, int c)
 {
   /*
-   * Output one character to stdout -- output() is passed as an
+   * Output one character to stdout -- fpp_output() is passed as an
    * argument to fpp_scanstring()
    */
 #if COMMENT_INVISIBLE
@@ -516,7 +516,7 @@ ReturnCode output(struct Global *global, int c)
 void fpp_Putchar(struct Global *global, int c)
 {
   /*
-   * Output one character to stdout or to output function!
+   * Output one character to stdout or to fpp_output function!
    */
   if(!global->out)
     return;

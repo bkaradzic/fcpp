@@ -233,7 +233,7 @@ ReturnCode checkparm(struct Global *global,
    * Replace this param if it's defined.  Note that the macro name is a
    * possible replacement token. We stuff DEF_MAGIC in front of the token
    * which is treated as a LETTER by the token scanner and eaten by
-   * the output routine. This prevents the macro expander from
+   * the fpp_output routine. This prevents the macro expander from
    * looping if someone writes "#define foo foo".
    */
   

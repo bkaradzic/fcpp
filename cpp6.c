@@ -42,19 +42,19 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  * fpp_catenate()   Does the dirty work of token concatenation, FPP_TRUE if it did.
  * fpp_scanstring() Reads a string from the input stream, calling
  *              a user-supplied function for each character.
- *              This function may be output() to write the
+ *              This function may be fpp_output() to write the
  *              string to the output file, or fpp_save() to fpp_save
  *              the string in the work buffer.
  * fpp_scannumber() Reads a C numeric constant from the input stream,
  *              calling the user-supplied function for each
- *              character.  (output() or fpp_save() as noted above.)
+ *              character.  (fpp_output() or fpp_save() as noted above.)
  * fpp_save()       Save one character in the work[] buffer.
  * fpp_savestring() Saves a string in malloc() memory.
  * fpp_getfile()    Initialize a new FILEINFO structure, called when
  *              #include opens a new file, or a macro is to be
  *              expanded.
  * fpp_Getmem()     Get a specified number of bytes from malloc memory.
- * output()     Write one character to stdout (calling fpp_Putchar) --
+ * fpp_output()     Write one character to stdout (calling fpp_Putchar) --
  *              implemented as a function so its address may be
  *              passed to fpp_scanstring() and fpp_scannumber().
  * fpp_lookid()     Scans the next token (identifier) from the input
