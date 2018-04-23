@@ -373,7 +373,7 @@ ReturnCode fpp_control( struct Global *global,
             {
             int result;
 
-            ret = eval( global, &result );
+            ret = fpp_eval( global, &result );
 
             if(ret)
                 return(ret);
@@ -492,7 +492,7 @@ ReturnCode doif(struct Global *global, int hash)
         {
         fpp_unget( global );
 
-        ret = eval( global, &found );
+        ret = fpp_eval( global, &found );
 
         if( ret )
             return( ret );

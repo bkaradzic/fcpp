@@ -24,12 +24,12 @@ SOFTWARE.
 #include "cppdef.h"
 #include "cpp.h"
 
-INLINE FILE_LOCAL ReturnCode evallex(struct Global *, int, int *);
+INLINE FILE_LOCAL ReturnCode fpp_evallex(struct Global *, int, int *);
 INLINE FILE_LOCAL ReturnCode dosizeof(struct Global *, int *);
 INLINE FILE_LOCAL int bittest(int);
-INLINE FILE_LOCAL int evalnum(struct Global *, int);
-INLINE FILE_LOCAL int evalchar(struct Global *, int);
-INLINE FILE_LOCAL int *evaleval(struct Global *, int *, int, int);
+INLINE FILE_LOCAL int fpp_evalnum(struct Global *, int);
+INLINE FILE_LOCAL int fpp_evalchar(struct Global *, int);
+INLINE FILE_LOCAL int *fpp_evaleval(struct Global *, int *, int, int);
 
 /*
  * Evaluate an #if expression.
@@ -216,15 +216,15 @@ SIZES size_table[] = {
 
 #endif /* OK_SIZEOF */
 
-ReturnCode eval(struct Global *global, int *eval)
+ReturnCode fpp_eval(struct Global *global, int *eval)
 {
   /*
    * Evaluate an expression.  Straight-forward operator precedence.
    * This is called from fpp_control() on encountering an #if statement.
    * It calls the following routines:
-   * evallex	Lexical analyser -- returns the type and value of
+   * fpp_evallex	Lexical analyser -- returns the type and value of
    *		the next input token.
-   * evaleval	Evaluate the current operator, given the values on
+   * fpp_evaleval	Evaluate the current operator, given the values on
    *		the value stack.  Returns a pointer to the (new)
    *		value stack.
    * For compatiblity with older cpp's, this return returns 1 (FPP_TRUE)
@@ -250,7 +250,7 @@ ReturnCode eval(struct Global *global, int *eval)
   binop = 0;
 
   while(again) {
-    ret=evallex(global, opp->skip, &op);
+    ret=fpp_evallex(global, opp->skip, &op);
     if(ret)
       return(ret);
     if (op == OP_SUB && binop == 0)
@@ -364,7 +364,7 @@ ReturnCode eval(struct Global *global, int *eval)
 	 */
       default:				/* Others:		*/
 	opp--;				/* Unstack the operator */
-	valp = evaleval(global, valp, op1, skip);
+	valp = fpp_evaleval(global, valp, op1, skip);
 	again=FPP_FALSE;
       }					/* op1 switch end	*/
     } while (!again);			/* Stack unwind loop	*/
@@ -373,16 +373,16 @@ ReturnCode eval(struct Global *global, int *eval)
 }
 
 INLINE FILE_LOCAL
-ReturnCode evallex(struct Global *global,
+ReturnCode fpp_evallex(struct Global *global,
 		   int skip,	/* FPP_TRUE if short-circuit evaluation */
 		   int *op)
 {
   /*
-   * Set *op to next eval operator or value. Called from eval(). It
+   * Set *op to next fpp_eval operator or value. Called from fpp_eval(). It
    * calls a special-purpose routines for 'char' strings and
    * numeric values:
-   * evalchar	called to evaluate 'x'
-   * evalnum	called to evaluate numbers.
+   * fpp_evalchar	called to evaluate 'x'
+   * fpp_evalnum	called to evaluate numbers.
    */
 
   int c, c1, t;
@@ -415,7 +415,7 @@ ReturnCode evallex(struct Global *global,
       return(FPP_ILLEGAL_CHARACTER);
     } else if (t == QUO) {                  /* ' or "               */
       if (c == '\'') {                    /* Character constant   */
-	global->evalue = evalchar(global, skip);  /* Somewhat messy       */
+	global->evalue = fpp_evalchar(global, skip);  /* Somewhat messy       */
 	*op=DIG;                          /* Return a value       */
 	return(FPP_OK);
       }
@@ -448,7 +448,7 @@ else if (streq(global->tokenbuf, "sizeof")) { /* New sizeof hackery   */
       return(FPP_OK);
     }
     else if (t == DIG) {                  /* Numbers are harder   */
-      global->evalue = evalnum(global, c);
+      global->evalue = fpp_evalnum(global, c);
     }
     else if (strchr("!=<>&|\\", c) != NULL) {
       /*
@@ -651,10 +651,10 @@ int bittest(int value)
 #endif /* OK_SIZEOF */
 
 INLINE FILE_LOCAL
-int evalnum(struct Global *global, int c)
+int fpp_evalnum(struct Global *global, int c)
 {
   /*
-   * Expand number for #if lexical analysis.  Note: evalnum recognizes
+   * Expand number for #if lexical analysis.  Note: fpp_evalnum recognizes
    * the unsigned suffix, but only returns a signed int value.
    */
 
@@ -690,7 +690,7 @@ int evalnum(struct Global *global, int c)
 }
 
 INLINE FILE_LOCAL
-int evalchar(struct Global *global,
+int fpp_evalchar(struct Global *global,
 	     int skip)		/* FPP_TRUE if short-circuit evaluation	*/
      /*
       * Get a character constant
@@ -792,7 +792,7 @@ int evalchar(struct Global *global,
 }
 
 INLINE FILE_LOCAL
-int *evaleval(struct Global *global,
+int *fpp_evaleval(struct Global *global,
 	      int *valp,
 	      int op,
 	      int skip)		/* FPP_TRUE if short-circuit evaluation	*/
@@ -804,7 +804,7 @@ int *evaleval(struct Global *global,
    *
    * OP_COL is a special case.
    *
-   * evaleval() returns the new pointer to the top of the value stack.
+   * fpp_evaleval() returns the new pointer to the top of the value stack.
    */
   int v1, v2 = 0;
   

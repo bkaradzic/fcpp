@@ -197,7 +197,7 @@ struct Global {
 
   DEFBUF *symtab[SBSIZE];       /* Symbol table queue headers   */
 
-  int evalue;                   /* Current value from evallex() */
+  int evalue;                   /* Current value from fpp_evallex() */
 
   void (*depends)(char *filename, void *); /* depends function */
 
@@ -393,7 +393,7 @@ ReturnCode fpp_scannumber(struct Global *, int, ReturnCode(*)(struct Global *, i
 ReturnCode fpp_scanstring(struct Global *, int, ReturnCode(*)(struct Global *, int));
 void fpp_unget(struct Global *);
 ReturnCode fpp_ungetstring(struct Global *, char *);
-ReturnCode eval(struct Global *, int *);
+ReturnCode fpp_eval(struct Global *, int *);
 #ifdef  DEBUG_EVAL
 void dumpstack(OPTAB[NEXP], register OPTAB *, int [NEXP], register int *);
 #endif
