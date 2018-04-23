@@ -32,7 +32,7 @@ INLINE FILE_LOCAL ReturnCode expcollect(struct Global *);
 INLINE FILE_LOCAL char *doquoting(char *, char *);
 
 
-ReturnCode dodefine(struct Global *global)
+ReturnCode fpp_dodefine(struct Global *global)
 {
   /*
    * Called from control when a #define is scanned.  This module

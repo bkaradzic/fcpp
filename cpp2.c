@@ -253,7 +253,7 @@ ReturnCode fpp_control( struct Global *global,
             break;
 
         case L_define:
-            ret = dodefine( global );
+            ret = fpp_dodefine( global );
             if( ret )
                 return(ret);
             break;
