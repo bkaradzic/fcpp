@@ -405,7 +405,7 @@ DEFBUF *lookid(struct Global *, int );
 DEFBUF *defendel(struct Global *, char *, int);
 #if DEBUG
 void fpp_dumpdef(char *);
-void dumpadef(char *, register DEFBUF *);
+void fpp_dumpadef(char *, register DEFBUF *);
 #endif
 ReturnCode openfile(struct Global *,char *);
 int fpp_cget(struct Global *);
