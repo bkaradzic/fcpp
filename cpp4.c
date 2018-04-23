@@ -143,7 +143,7 @@ ReturnCode fpp_dodefine(struct Global *global)
       }
       while (global->workp > global->work && type[(unsigned)*(global->workp - 1)] == SPA)
 	--global->workp;		/* Erase leading spaces */
-      if((ret=save(global, TOK_SEP)))     /* Stuff a delimiter    */
+      if((ret=fpp_save(global, TOK_SEP)))     /* Stuff a delimiter    */
 	return(ret);
       c = skipws(global);               /* Eat whitespace       */
       continue;
@@ -162,7 +162,7 @@ ReturnCode fpp_dodefine(struct Global *global)
 	
     case DIG:				/* Number in mac. body	*/
     case DOT:				/* Maybe a float number */
-      ret=scannumber(global, c, save);  /* Scan it off          */
+      ret=scannumber(global, c, fpp_save);  /* Scan it off          */
       if(ret)
 	return(ret);
       break;
@@ -174,12 +174,12 @@ ReturnCode fpp_dodefine(struct Global *global)
       break;
 	
     case BSH:				/* Backslash		*/
-      ret=save(global, '\\');
+      ret=fpp_save(global, '\\');
       if(ret)
 	return(ret);
       if ((c = fpp_get(global)) == '\n')
 	global->wrongline = FPP_TRUE;
-      ret=save(global, c);
+      ret=fpp_save(global, c);
       if(ret)
 	return(ret);
       break;
@@ -195,7 +195,7 @@ ReturnCode fpp_dodefine(struct Global *global)
 	c = ' ';                      /* Normalize tabs       */
       /* Fall through to store character			*/
     default:				/* Other character	*/
-      ret=save(global, c);
+      ret=fpp_save(global, c);
       if(ret)
 	return(ret);
       break;
@@ -246,19 +246,19 @@ ReturnCode checkparm(struct Global *global,
     if (streq(global->parlist[i], global->tokenbuf)) {  /* If it's known */
 #if OK_CONCAT
       if (quoting) {                    /* Special handling of  */
-	ret=save(global, QUOTE_PARM);     /* #formal inside defn  */
+	ret=fpp_save(global, QUOTE_PARM);     /* #formal inside defn  */
 	if(ret)
 	  return(ret);
       }
 #endif
-      ret=save(global, i + MAC_PARM);     /* Save a magic cookie  */
+      ret=fpp_save(global, i + MAC_PARM);     /* Save a magic cookie  */
       return(ret);		      /* And exit the search	*/
     }
   }
   if (streq(dp->name, global->tokenbuf))    /* Macro name in body?  */
-    ret=save(global, DEF_MAGIC);            /* Save magic marker    */
-  for (cp = global->tokenbuf; *cp != EOS;)  /* And save             */
-    ret=save(global, *cp++);                /* The token itself     */
+    ret=fpp_save(global, DEF_MAGIC);            /* Save magic marker    */
+  for (cp = global->tokenbuf; *cp != EOS;)  /* And fpp_save             */
+    ret=fpp_save(global, *cp++);                /* The token itself     */
   return(ret);
 }
 
@@ -274,7 +274,7 @@ ReturnCode stparmscan(struct Global *global, int delim)
   ReturnCode ret;
       
   wp = (unsigned char *)global->workp;	/* Here's where it starts       */
-  ret=scanstring(global, delim, save);
+  ret=scanstring(global, delim, fpp_save);
   if(ret)
     return(ret);		/* Exit on scanstring error	*/
   global->workp[-1] = EOS;		/* Erase trailing quote 	*/

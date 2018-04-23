@@ -43,12 +43,12 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  * scanstring() Reads a string from the input stream, calling
  *              a user-supplied function for each character.
  *              This function may be output() to write the
- *              string to the output file, or save() to save
+ *              string to the output file, or fpp_save() to fpp_save
  *              the string in the work buffer.
  * scannumber() Reads a C numeric constant from the input stream,
  *              calling the user-supplied function for each
- *              character.  (output() or save() as noted above.)
- * save()       Save one character in the work[] buffer.
+ *              character.  (output() or fpp_save() as noted above.)
+ * fpp_save()       Save one character in the work[] buffer.
  * fpp_savestring() Saves a string in malloc() memory.
  * fpp_getfile()    Initialize a new FILEINFO structure, called when
  *              #include opens a new file, or a macro is to be
@@ -245,10 +245,10 @@ int fpp_catenate(struct Global *global, int lhs_number, ReturnCode *ret)
     case DOT:                           /* Or maybe a float     */
       strcpy(global->work, token1);
       global->workp = global->work + strlen(global->work);
-      *ret=scannumber(global, c, save);
+      *ret=scannumber(global, c, fpp_save);
       if(*ret)
         return(FPP_FALSE);
-      *ret=save(global, EOS);
+      *ret=fpp_save(global, EOS);
       if(*ret)
         return(FPP_FALSE);
       break;
@@ -470,7 +470,7 @@ ReturnCode scannumber(struct Global *global,
   return(FPP_OK);
 }
 
-ReturnCode save(struct Global *global, int c)
+ReturnCode fpp_save(struct Global *global, int c)
 {
   if (global->workp >= &global->work[NWORK]) {
     fpp_cfatal(global, FATAL_WORK_BUFFER_OVERFLOW);

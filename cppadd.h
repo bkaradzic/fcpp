@@ -104,8 +104,8 @@ struct Global {
   /*
    * work[] and workp are used to store one piece of text in a temporay
    * buffer.  To initialize storage, set workp = work.  To store one
-   * character, call save(c);  (This will fatally exit if there isn't
-   * room.)  To terminate the string, call save(EOS).  Note that
+   * character, call fpp_save(c);  (This will fatally exit if there isn't
+   * room.)  To terminate the string, call fpp_save(EOS).  Note that
    * the work buffer is used by several subroutines -- be sure your
    * data won't be overwritten.  The extra byte in the allocation is
    * needed for string formal replacement.
@@ -387,7 +387,7 @@ ReturnCode fpp_expand(struct Global *, DEFBUF *);
 int fpp_get(struct Global *);
 ReturnCode fpp_initdefines(struct Global *);
 void fpp_outdefines(struct Global *);
-ReturnCode save(struct Global *, int);
+ReturnCode fpp_save(struct Global *, int);
 void scanid(struct Global *, int);
 ReturnCode scannumber(struct Global *, int, ReturnCode(*)(struct Global *, int));
 ReturnCode scanstring(struct Global *, int, ReturnCode(*)(struct Global *, int));

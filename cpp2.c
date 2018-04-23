@@ -205,7 +205,7 @@ ReturnCode fpp_control( struct Global *global,
 
             while( c != '\n' && c != EOF_CHAR )
                 {
-                if( (ret = save( global, c )) )
+                if( (ret = fpp_save( global, c )) )
                     return(ret);
 
                 c = fpp_get( global );
@@ -213,7 +213,7 @@ ReturnCode fpp_control( struct Global *global,
 
             fpp_unget( global );
 
-            if( (ret = save( global, EOS )) )
+            if( (ret = fpp_save( global, EOS )) )
                 return(ret);
 
             /*
@@ -575,7 +575,7 @@ ReturnCode doinclude( struct Global *global )
     global->workp = global->work;
 
     while( (c = fpp_get(global)) != '\n' && c != EOF_CHAR )
-        if( (ret = save( global, c )) )       /* Put it away.                */
+        if( (ret = fpp_save( global, c )) )       /* Put it away.                */
             return( ret );
 
     fpp_unget( global );                        /* Force nl after include      */
