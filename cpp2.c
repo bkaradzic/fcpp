@@ -28,7 +28,7 @@ SOFTWARE.
 #include <proto/dos.h>
 #endif
 
-FILE_LOCAL void dump_line(struct Global *, int *);
+FILE_LOCAL void fpp_dump_line(struct Global *, int *);
 FILE_LOCAL ReturnCode doif(struct Global *, int);
 INLINE FILE_LOCAL ReturnCode doinclude(struct Global *);
 INLINE FILE_LOCAL int hasdirectory(char *, char *);
@@ -177,7 +177,7 @@ ReturnCode fpp_control( struct Global *global,
             case L_undef:           /*     aren't           */
             case L_assert:          /*  compiling.  */
             case L_error:
-                dump_line( global, counter );       /* Ignore rest of line  */
+                fpp_dump_line( global, counter );       /* Ignore rest of line  */
                 return(FPP_OK);
             }
         }
@@ -267,7 +267,7 @@ ReturnCode fpp_control( struct Global *global,
                 {
                 fpp_cerror( global, ERROR_STRING_MUST_BE_IF, global->tokenbuf );
 
-                dump_line( global, counter );
+                fpp_dump_line( global, counter );
 
                 return( FPP_OK );
                 }
@@ -275,7 +275,7 @@ ReturnCode fpp_control( struct Global *global,
                 {
                 fpp_cerror( global, ERROR_STRING_MAY_NOT_FOLLOW_ELSE, global->tokenbuf );
 
-                dump_line( global, counter );
+                fpp_dump_line( global, counter );
 
                 return( FPP_OK );
                 }
@@ -298,7 +298,7 @@ ReturnCode fpp_control( struct Global *global,
                 {
                 fpp_cerror( global, ERROR_STRING_MUST_BE_IF, global->tokenbuf );
 
-                dump_line( global, counter );
+                fpp_dump_line( global, counter );
 
                 return( FPP_OK );
                 }
@@ -306,7 +306,7 @@ ReturnCode fpp_control( struct Global *global,
                 {
                 fpp_cerror( global, ERROR_STRING_MAY_NOT_FOLLOW_ELSE, global->tokenbuf );
 
-                dump_line( global, counter );
+                fpp_dump_line( global, counter );
 
                 return( FPP_OK );
                 }
@@ -315,7 +315,7 @@ ReturnCode fpp_control( struct Global *global,
                 {
                 compiling = FPP_FALSE;        /* Done compiling stuff */
 
-                dump_line( global, counter );   /* Skip this clause */
+                fpp_dump_line( global, counter );   /* Skip this clause */
 
                 return( FPP_OK );
                 }
@@ -355,7 +355,7 @@ ReturnCode fpp_control( struct Global *global,
                 {
                 fpp_cerror( global, ERROR_STRING_MUST_BE_IF, global->tokenbuf );
 
-                dump_line( global, counter );
+                fpp_dump_line( global, counter );
 
                 return(FPP_OK);
                 }
@@ -431,7 +431,7 @@ ReturnCode fpp_control( struct Global *global,
          *      #if foo
          *      #endif  foo
          */
-        dump_line( global, counter );         /* Take common exit */
+        fpp_dump_line( global, counter );         /* Take common exit */
 
         return( FPP_OK );
         #else
@@ -450,7 +450,7 @@ ReturnCode fpp_control( struct Global *global,
 }
 
 FILE_LOCAL
-void dump_line(struct Global *global, int *counter)
+void fpp_dump_line(struct Global *global, int *counter)
 {
     fpp_skipnl( global );         /* Ignore rest of line  */
 
