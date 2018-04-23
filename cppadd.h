@@ -253,6 +253,8 @@ struct Global {
   char webmode; /* WWW process mode */
 
   char allowincludelocal;
+
+  FILE* (*openfile)(char *,char *, void *);
 };
 
 typedef enum {
