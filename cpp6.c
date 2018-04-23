@@ -53,7 +53,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  * fpp_getfile()    Initialize a new FILEINFO structure, called when
  *              #include opens a new file, or a macro is to be
  *              expanded.
- * Getmem()     Get a specified number of bytes from malloc memory.
+ * fpp_Getmem()     Get a specified number of bytes from malloc memory.
  * output()     Write one character to stdout (calling fpp_Putchar) --
  *              implemented as a function so its address may be
  *              passed to fpp_scanstring() and fpp_scannumber().
