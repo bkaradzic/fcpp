@@ -412,4 +412,4 @@ int fpp_cget(struct Global *);
 void fpp_deldefines(struct Global *);
 char *fpp_Getmem(struct Global *, int);
 ReturnCode fpp_openinclude(struct Global *, char *, int);
-ReturnCode expstuff(struct Global *, char *, char *);
+ReturnCode fpp_expstuff(struct Global *, char *, char *);

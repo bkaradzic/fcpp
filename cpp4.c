@@ -461,7 +461,7 @@ ReturnCode fpp_expand(struct Global *global, DEFBUF *tokenp)
       return(ret); /* We failed in argument colleting! */
     }
   case DEF_NOARGS:			/* No parameters just stuffs	*/
-    ret=expstuff(global, tokenp->name, tokenp->repl); /* expand macro   */
+    ret=fpp_expstuff(global, tokenp->name, tokenp->repl); /* expand macro   */
   }					/* nargs switch 		*/
   return(ret);
 }
@@ -549,7 +549,7 @@ char *doquoting(char *to, char *from)
   
 #endif
   
-ReturnCode expstuff(struct Global *global,
+ReturnCode fpp_expstuff(struct Global *global,
 		    char *MacroName,
 		    char *MacroReplace)
 {
