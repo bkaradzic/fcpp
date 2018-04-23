@@ -35,7 +35,7 @@ void __stdargs _XCEXIT(long a) { return; }
 #endif
 
 FILE_LOCAL ReturnCode fpp_output(struct Global *, int); /* Output one character */
-FILE_LOCAL void sharp(struct Global *);
+FILE_LOCAL void fpp_sharp(struct Global *);
 INLINE FILE_LOCAL ReturnCode fpp_cppmain(struct Global *);
 
 int fppPreProcess(struct fppTag *tags)
@@ -206,7 +206,7 @@ ReturnCode fpp_cppmain(struct Global *global)
    * the name of the first #include file instead.
    */
   if(global->linelines) /* if #line lines are wanted! */
-    sharp(global);
+    fpp_sharp(global);
   /*
    * This loop is started "from the top" at the beginning of each line
    * wrongline is set FPP_TRUE in many places if it is necessary to write
@@ -272,7 +272,7 @@ ReturnCode fpp_cppmain(struct Global *global)
      */
     if(global->linelines) { /* if #line lines are wanted! */
       if ((global->wrongline && global->infile->fp != NULL) || counter > 4)
-        sharp(global);                    /* Output # line number */
+        fpp_sharp(global);                    /* Output # line number */
       else {                              /* If just a few, stuff */
         while (--counter >= 0)            /* them out ourselves   */
 	  fpp_Putchar(global, (int)'\n');
@@ -560,7 +560,7 @@ void fpp_Putint(struct Global *global, int number)
 
 
 FILE_LOCAL
-void sharp(struct Global *global)
+void fpp_sharp(struct Global *global)
 {
   /*
    * Output a line number line.
