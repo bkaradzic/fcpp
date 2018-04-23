@@ -87,7 +87,7 @@ ReturnCode fpp_dodefine(struct Global *global)
   }
   isredefine = FPP_FALSE;			/* Set if redefining	*/
   if ((dp = fpp_lookid(global, c)) == NULL) { /* If not known now     */
-    dp = defendel(global, global->tokenbuf, FPP_FALSE); /* Save the name  */
+    dp = fpp_defendel(global, global->tokenbuf, FPP_FALSE); /* Save the name  */
     if(!dp)
       return(FPP_OUT_OF_MEMORY);
   } else {				/* It's known:          */
@@ -303,7 +303,7 @@ void fpp_doundef(struct Global *global)
     fpp_cerror(global, ERROR_ILLEGAL_UNDEF);
   else {
     fpp_scanid(global, c);                         /* Get name to tokenbuf */
-    (void) defendel(global, global->tokenbuf, FPP_TRUE);
+    (void) fpp_defendel(global, global->tokenbuf, FPP_TRUE);
   }
 }
 

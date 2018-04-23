@@ -153,7 +153,7 @@ int fpp_dooptions(struct Global *global, struct fppTag *tags)
         /*
          * Now, save the word and its definition.
          */
-        dp = defendel(global, symbol, FPP_FALSE);
+        dp = fpp_defendel(global, symbol, FPP_FALSE);
         if(!dp)
           return(FPP_OUT_OF_MEMORY);
         dp->repl = fpp_savestring(global, text);
@@ -231,7 +231,7 @@ int fpp_dooptions(struct Global *global, struct fppTag *tags)
       }
       break;
     case FPPTAG_UNDEFINE:
-      if (defendel(global, (char *)tags->data, FPP_TRUE) == NULL)
+      if (fpp_defendel(global, (char *)tags->data, FPP_TRUE) == NULL)
         fpp_cwarn(global, WARN_NOT_DEFINED, tags->data);
       break;
     case FPPTAG_OUTPUT_DEFINES:
@@ -310,7 +310,7 @@ ReturnCode fpp_initdefines(struct Global *global)
   if (!(global->nflag & NFLAG_BUILTIN)) {
     for (pp = global->preset; *pp != NULL; pp++) {
       if (*pp[0] != EOS) {
-        dp = defendel(global, *pp, FPP_FALSE);
+        dp = fpp_defendel(global, *pp, FPP_FALSE);
         if(!dp)
           return(FPP_OUT_OF_MEMORY);
         dp->repl = fpp_savestring(global, "1");
@@ -326,7 +326,7 @@ ReturnCode fpp_initdefines(struct Global *global)
    */
   if (!(global->nflag & NFLAG_PREDEFINE)) {
     for (pp = global->magic, i = DEF_NOARGS; *pp != NULL; pp++) {
-      dp = defendel(global, *pp, FPP_FALSE);
+      dp = fpp_defendel(global, *pp, FPP_FALSE);
       if(!dp)
         return(FPP_OUT_OF_MEMORY);
       dp->nargs = --i;
@@ -335,7 +335,7 @@ ReturnCode fpp_initdefines(struct Global *global)
     /*
      * Define __DATE__ as today's date.
      */
-    dp = defendel(global, "__DATE__", FPP_FALSE);
+    dp = fpp_defendel(global, "__DATE__", FPP_FALSE);
     tp = malloc(14);
     if(!tp || !dp)
       return(FPP_OUT_OF_MEMORY);
@@ -351,7 +351,7 @@ ReturnCode fpp_initdefines(struct Global *global)
     /*
      * Define __TIME__ as this moment's time.
      */
-    dp = defendel(global, "__TIME__", FPP_FALSE);
+    dp = fpp_defendel(global, "__TIME__", FPP_FALSE);
     tp = malloc(11);
     if(!tp || !dp)
       return(FPP_OUT_OF_MEMORY);
@@ -379,25 +379,25 @@ void deldefines(struct Global *global)
    */
   if (global->wflag < 2) {
     for (pp = global->preset; *pp != NULL; pp++) {
-      defendel(global, *pp, FPP_TRUE);
+      fpp_defendel(global, *pp, FPP_TRUE);
     }
   }
   /*
    * The magic pre-defines __FILE__ and __LINE__
    */
   for (pp = global->magic; *pp != NULL; pp++) {
-    defendel(global, *pp, FPP_TRUE);
+    fpp_defendel(global, *pp, FPP_TRUE);
   }
 #if OK_DATE
   /*
    * Undefine __DATE__.
    */
-  defendel(global, "__DATE__", FPP_TRUE);
+  fpp_defendel(global, "__DATE__", FPP_TRUE);
 
   /*
    * Undefine __TIME__.
    */
-  defendel(global, "__TIME__", FPP_TRUE);
+  fpp_defendel(global, "__TIME__", FPP_TRUE);
 #endif
   return;
 }

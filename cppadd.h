@@ -402,7 +402,7 @@ int fpp_skipws(struct Global *);
 ReturnCode fpp_macroid(struct Global *, int *);
 ReturnCode fpp_getfile(struct Global *, size_t, char *, FILEINFO **);
 DEFBUF *fpp_lookid(struct Global *, int );
-DEFBUF *defendel(struct Global *, char *, int);
+DEFBUF *fpp_defendel(struct Global *, char *, int);
 #if DEBUG
 void fpp_dumpdef(char *);
 void fpp_dumpadef(char *, register DEFBUF *);

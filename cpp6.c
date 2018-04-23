@@ -61,7 +61,7 @@ INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
  *              stream.  Looks for it in the #defined symbol table.
  *              Returns a pointer to the definition, if found, or NULL
  *              if not present.  The identifier is stored in tokenbuf.
- * defnedel()   Define enter/delete subroutine.  Updates the
+ * fpp_defendel()   Define enter/delete subroutine.  Updates the
  *              symbol table.
  * fpp_get()        Read the next byte from the current input stream,
  *              handling end of (macro/file) input and embedded
@@ -572,7 +572,7 @@ DEFBUF *fpp_lookid(struct Global *global,
   return((temp == 0) ? dp : NULL);
 }
 
-DEFBUF *defendel(struct Global *global,
+DEFBUF *fpp_defendel(struct Global *global,
                  char *name,
                  int delete)            /* FPP_TRUE to delete a symbol */
 {
