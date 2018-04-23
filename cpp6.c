@@ -25,7 +25,7 @@ SOFTWARE.
 #include "cpp.h"
 
 INLINE FILE_LOCAL void outadefine(struct Global *, DEFBUF *);
-INLINE FILE_LOCAL void domsg(struct Global *, ErrorCode, va_list);
+INLINE FILE_LOCAL void fpp_domsg(struct Global *, ErrorCode, va_list);
 
 /*
  * fpp_skipnl()     skips over input text to the end of the line.
@@ -988,7 +988,7 @@ int fpp_cget(struct Global *global)
  */
 
 INLINE FILE_LOCAL
-void domsg(struct Global *global,
+void fpp_domsg(struct Global *global,
   ErrorCode error,  /* error message number */
   va_list arg)      /* Something for the message    */
 {
@@ -1125,7 +1125,7 @@ void fpp_cerror(struct Global *global,
    */
   va_list arg;
   va_start(arg, message);
-  domsg(global, message, arg);
+  fpp_domsg(global, message, arg);
 }
 
 void fpp_Error(struct Global *global, char *format, ...)
