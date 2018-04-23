@@ -277,7 +277,7 @@ int fpp_dooptions(struct Global *global, struct fppTag *tags)
   return(0);
 }
 
-ReturnCode initdefines(struct Global *global)
+ReturnCode fpp_initdefines(struct Global *global)
 {
   /*
    * Initialize the built-in #define's.  There are two flavors:

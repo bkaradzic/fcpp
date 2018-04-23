@@ -385,7 +385,7 @@ void fpp_doundef(struct Global *);
 void fpp_dumpparm(char *);
 ReturnCode fpp_expand(struct Global *, DEFBUF *);
 int fpp_get(struct Global *);
-ReturnCode initdefines(struct Global *);
+ReturnCode fpp_initdefines(struct Global *);
 void outdefines(struct Global *);
 ReturnCode save(struct Global *, int);
 void scanid(struct Global *, int);

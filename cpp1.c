@@ -126,7 +126,7 @@ int fppPreProcess(struct fppTag *tags)
 
   memset(global->symtab, 0, SBSIZE * sizeof(DEFBUF *));
 
-  ret=initdefines(global);  /* O.S. specific def's  */
+  ret=fpp_initdefines(global);  /* O.S. specific def's  */
   if(ret)
     return(ret);
   fpp_dooptions(global, tags);  /* Command line -flags  */
