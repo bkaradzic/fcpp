@@ -78,10 +78,10 @@ ReturnCode fpp_addfile(struct Global *global,
   return(FPP_OK);
 }
 
-int dooptions(struct Global *global, struct fppTag *tags)
+int fpp_dooptions(struct Global *global, struct fppTag *tags)
 {
   /*
-   * dooptions is called to process command line arguments (-Detc).
+   * fpp_dooptions is called to process command line arguments (-Detc).
    * It is called only at cpp startup.
    */
   DEFBUF *dp;

@@ -129,7 +129,7 @@ int fppPreProcess(struct fppTag *tags)
   ret=initdefines(global);  /* O.S. specific def's  */
   if(ret)
     return(ret);
-  dooptions(global, tags);  /* Command line -flags  */
+  fpp_dooptions(global, tags);  /* Command line -flags  */
   ret=fpp_addfile(global, stdin, global->work); /* "open" main input file       */
 
   global->out = global->outputfile;
