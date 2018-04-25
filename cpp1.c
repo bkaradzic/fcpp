@@ -42,6 +42,7 @@ int fppPreProcess(struct fppTag *tags)
 {
   size_t i=0;
   ReturnCode ret;       /* cpp return code */
+  int retVal;           /* fppPreProcess return code */
   struct Global *global;
 
   global=(struct Global *)malloc(sizeof(struct Global));
@@ -144,10 +145,16 @@ int fppPreProcess(struct fppTag *tags)
   }
   fflush(stdout);
 // BK -  fclose(stdout);
+  delalldefines(global);
 
+  retVal = IO_NORMAL;
   if (global->errors > 0 && !global->eflag)
-    return(IO_ERROR);
-  return(IO_NORMAL);       /* No errors or -E option set   */
+    retVal = IO_ERROR;
+  free(global->tokenbuf);
+  free(global->functionname);
+  free(global->spacebuf);
+  free(global);
+  return retVal;       /* No errors or -E option set   */
 }
 
 INLINE FILE_LOCAL
@@ -289,7 +296,7 @@ ReturnCode cppmain(struct Global *global)
     unget(global);                      /* Reread the char.     */
     for (;;) {                          /* For the whole line,  */
       do {                              /* Token concat. loop   */
-	for (global->chpos = counter = 0; (type[(c = get(global))] == SPA);) {
+	for (global->chpos = counter = 0; type[(c = get(global))] == SPA;) {
 #if COMMENT_INVISIBLE
 	  if (c != COM_SEP)
 	    counter++;
