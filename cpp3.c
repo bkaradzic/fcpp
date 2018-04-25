@@ -35,7 +35,12 @@ ReturnCode fpp_openfile(struct Global *global, char *filename)
   FILE *fp;
   ReturnCode ret;
 
-  if ((fp = fopen(filename, "r")) == NULL)
+  if (global->openfile)
+    fp = global->openfile(filename, "r", global->userdata);
+  else
+    fp = fopen(filename, "r");
+
+  if (fp == NULL)
     ret=FPP_OPEN_ERROR;
   else
     ret=fpp_addfile(global, fp, filename);
@@ -267,6 +272,9 @@ int fpp_dooptions(struct Global *global, struct fppTag *tags)
       break;
     case FPPTAG_ALLOW_INCLUDE_LOCAL:
       global->allowincludelocal=(tags->data?1:0);
+      break;
+    case FPPTAG_FILEOPENFUNC:
+      global->openfile = (FILE* (*)(char *,char *))tags->data;
       break;
     default:
       fpp_cwarn(global, WARN_INTERNAL_ERROR, NULL);
