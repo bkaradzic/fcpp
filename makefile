@@ -26,36 +26,23 @@
 
 # Frexx PreProcessor Makefile
 
-#HOST		=-tp -B/home/danne/code/cpp/ -Wp\,-Q\,-Dunix\,-Ddpc\,-DAIX
-#DEFINES    = -Dunix -Dpdc -DAIX -DUNIX -DDEBUG
-DEFINES     = -Dunix -Dpdc -DUNIX -DDEBUG
-DEBUGFLAG	= -g
-LDFLAGS		=
-LIB         = libfpp.a
-CPP         = fpp
-FILECPP     = fcpp
-TEMP		= templib.o
-EXPORT		= fpp.exp
-CFLAGS		= $(DEBUGFLAG) $(DEFINES)
-ARFLAGS 	= rv
-.SUFFIXES: .o .c .c~ .h .h~ .a .i
-OBJS 		= cpp1.o cpp2.o cpp3.o cpp4.o cpp5.o cpp6.o
-FILEOBJS 		= cpp1.o cpp2.o cpp3.o cpp4.o cpp5.o cpp6.o usecpp.o
+DEFINES   = -Dunix -Dpdc -DUNIX -DDEBUG
+DEBUGFLAG = -g
+LIB       = libfpp.a
+CPP       = fpp
+FILECPP   = fcpp
+CFLAGS    = $(DEBUGFLAG) $(DEFINES)
+ARFLAGS   = rv
+OBJS      = cpp1.o cpp2.o cpp3.o cpp4.o cpp5.o cpp6.o
+FILEOBJS  = $(OBJS) usecpp.o
 
-# ** compile cpp
-#
-
-#all: $(LIB) $(CPP)
 all: $(FILECPP)
 
-$(LIB) : $(OBJS) $(EXPORT)
-	$(LD) $(OBJS) -o $(TEMP) -bE:$(EXPORT) -bM:SRE -T512 -H512 -lc
-	rm -f $(LIB)
-	$(AR) $(ARFLAGS) $(LIB) $(TEMP)
-	rm $(TEMP)
+$(LIB) : $(OBJS)
+	$(AR) $(ARFLAGS) $@ $(OBJS)
 
-$(CPP) : usecpp.c
-	$(CC) $(CFLAGS) -o $(CPP) usecpp.c -L. -lfpp
+$(CPP) : usecpp.c $(LIB)
+	$(CC) $(CFLAGS) -o $@ $< -L. -lfpp
 
 $(FILECPP) : $(FILEOBJS)
 	$(CC) $(FILEOBJS) -o $(FILECPP)
@@ -63,18 +50,8 @@ $(FILECPP) : $(FILEOBJS)
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
-cpp1.o:cpp1.c
-cpp2.o:cpp2.c
-cpp3.o:cpp3.c
-cpp4.o:cpp4.c
-cpp5.o:cpp5.c
-cpp6.o:cpp6.c
-memory.o:memory.c
-
-usecpp.o:usecpp.c
-
 clean :
-	rm -f *.o $(FILECPP)
+	rm -f *.o $(FILECPP) $(LIB) $(CPP)
 
 tgz:
 	rm -f makefile*~
