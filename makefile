@@ -33,8 +33,9 @@ CPP       = fpp
 FILECPP   = fcpp
 CFLAGS    = $(DEBUGFLAG) $(DEFINES)
 ARFLAGS   = rv
-OBJS      = cpp1.o cpp2.o cpp3.o cpp4.o cpp5.o cpp6.o
-FILEOBJS  = $(OBJS) usecpp.o
+O         = o
+OBJS      = cpp1.$(O) cpp2.$(O) cpp3.$(O) cpp4.$(O) cpp5.$(O) cpp6.$(O)
+FILEOBJS  = $(OBJS) usecpp.$(O)
 
 all: $(FILECPP)
 
@@ -47,11 +48,11 @@ $(CPP) : usecpp.c $(LIB)
 $(FILECPP) : $(FILEOBJS)
 	$(CC) $(FILEOBJS) -o $(FILECPP)
 
-.c.o:
+.c.$(O):
 	$(CC) $(CFLAGS) -c $<
 
 clean :
-	rm -f *.o $(FILECPP) $(LIB) $(CPP)
+	rm -f *.$(O) $(FILECPP) $(LIB) $(CPP)
 
 tgz:
 	rm -f makefile*~
