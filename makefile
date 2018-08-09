@@ -30,16 +30,13 @@
 #DEFINES    = -Dunix -Dpdc -DAIX -DUNIX -DDEBUG
 DEFINES     = -Dunix -Dpdc -DUNIX -DDEBUG
 DEBUGFLAG	= -g
-LD	        = ld
 LDFLAGS		=
 LIB         = libfpp.a
 CPP         = fpp
 FILECPP     = fcpp
 TEMP		= templib.o
 EXPORT		= fpp.exp
-CC          = gcc
 CFLAGS		= $(DEBUGFLAG) $(DEFINES)
-AR      	= ar
 ARFLAGS 	= rv
 .SUFFIXES: .o .c .c~ .h .h~ .a .i
 OBJS 		= cpp1.o cpp2.o cpp3.o cpp4.o cpp5.o cpp6.o
